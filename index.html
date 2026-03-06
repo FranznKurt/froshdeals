@@ -246,7 +246,7 @@
   <p>Every deal, every discount, every perk unlocked by your college email — all in one place.</p>
 
   <div class="stats">
-    <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Deals Listed</div></div>
+    <div class="stat"><div class="stat-num">100+</div><div class="stat-label">Deals Listed</div></div>
     <div class="stat"><div class="stat-num">$3,200</div><div class="stat-label">Avg Annual Savings</div></div>
     <div class="stat"><div class="stat-num">10M+</div><div class="stat-label">Students Saved</div></div>
     <div class="stat"><div class="stat-num">50+</div><div class="stat-label">Categories</div></div>
@@ -391,10 +391,95 @@ const DEALS = [
   { brand:"Ray-Ban", icon:"😎", discount:"15% off", category:"Clothing", desc:"15% off sunglasses with student verification through UNiDAYS.", affiliate:"CJ Affiliate", commission:"~5% on sales", dealUrl:L.direct("https://www.ray-ban.com/") },
   { brand:"The Economist", icon:"📖", discount:"50% off", category:"Entertainment", desc:"Stay informed on global affairs at half the regular subscription price.", affiliate:"CJ Affiliate", commission:"$10–$20 per sub", dealUrl:L.direct("https://www.economist.com/student") },
   { brand:"LinkedIn Learning", icon:"💡", discount:"Free Access", category:"Education", desc:"Many schools offer free LinkedIn Learning access — check your institution.", affiliate:"Impact.com", commission:"$10–$30 per signup", dealUrl:L.direct("https://www.linkedin.com/learning/") },
-  { brand:"Peacock", icon:"🦚", discount:"Student Rate", category:"Entertainment", desc:"Peacock Premium at a discounted student rate through campus portals.", affiliate:"CJ / FlexOffers", commission:"$5–$10 CPA", dealUrl:L.direct("https://www.peacocktv.com/") },
+  { brand:"Peacock", icon:"🦚", discount:"$2/mo (was $8)", category:"Entertainment", desc:"Peacock Premium at $2/month for verified students — 75% off.", affiliate:"CJ / FlexOffers", commission:"$5–$10 CPA", dealUrl:L.direct("https://www.peacocktv.com/student") },
+
+  // ── STREAMING & MUSIC ──
+  { brand:"Tidal", icon:"🎶", discount:"Free for 6 months", category:"Music", desc:"Tidal HiFi student plan — lossless audio streaming free for 6 months, then 50% off.", affiliate:"Direct", commission:"Referral", dealUrl:L.direct("https://tidal.com/store/student") },
+  { brand:"Apple Music", icon:"🎵", discount:"50% off", category:"Music", desc:"Apple Music for $5.99/mo instead of $10.99 with .edu verification.", affiliate:"Apple Partners", commission:"Apple affiliate program", dealUrl:L.apple("/apple-music") },
+  { brand:"Pandora", icon:"📻", discount:"Free Premium", category:"Music", desc:"Pandora Premium free for 3 months, then 50% off for verified students.", affiliate:"Direct", commission:"Referral", dealUrl:L.direct("https://www.pandora.com/upgrade/student") },
+  { brand:"Deezer", icon:"🎼", discount:"50% off Premium", category:"Music", desc:"Deezer Premium at 50% off with student verification.", affiliate:"Direct", commission:"Referral", dealUrl:L.direct("https://www.deezer.com/us/offers/student") },
+
+  // ── TECH & SOFTWARE ──
+  { brand:"Best Buy", icon:"🛒", discount:"Exclusive deals", category:"Tech", desc:"Student-exclusive tech deals via My Best Buy account. Extra savings on laptops, tablets, and more.", affiliate:"Impact.com", commission:"1–4% on sales", dealUrl:L.direct("https://www.bestbuy.com/site/misc/back-to-school/pcmcat334100050000.c") },
+  { brand:"HP", icon:"🖨️", discount:"Student pricing", category:"Tech", desc:"HP Education Store with exclusive student pricing on laptops, printers, and accessories.", affiliate:"CJ Affiliate", commission:"2–4% on sales", dealUrl:L.direct("https://www.hp.com/us-en/shop/cv/hp-education") },
+  { brand:"Bose", icon:"🎧", discount:"10% off", category:"Tech", desc:"10% off everything in your cart with .edu or ID.me student verification.", affiliate:"CJ Affiliate", commission:"3–5% on sales", dealUrl:L.direct("https://www.bose.com/idme-group-discounts-program") },
+  { brand:"Logitech", icon:"🖱️", discount:"Student pricing", category:"Tech", desc:"Exclusive student pricing on keyboards, mice, webcams, and headsets via UNiDAYS.", affiliate:"CJ Affiliate", commission:"3% on sales", dealUrl:L.direct("https://www.logitech.com/en-us/promo/students.html") },
+  { brand:"Samsung", icon:"📱", discount:"Up to 30% off", category:"Tech", desc:"Samsung Education Store — discounts on Galaxy phones, tablets, laptops, and TVs.", affiliate:"CJ Affiliate", commission:"1–3% on sales", dealUrl:L.direct("https://www.samsung.com/us/smartphones/galaxy-s/all-galaxy-s-phones/?galaxy-for=education") },
+  { brand:"GoPro", icon:"📷", discount:"5% off + free SD card", category:"Tech", desc:"GoPro student discount plus a free SD card with select camera purchases.", affiliate:"Impact.com", commission:"4% on sales", dealUrl:L.direct("https://gopro.com/en/us/info/static/student-discount") },
+  { brand:"Adorama", icon:"📸", discount:"Student pricing", category:"Tech", desc:"Camera gear, audio equipment, and studio essentials at student prices.", affiliate:"Direct", commission:"Referral", dealUrl:L.direct("https://www.adorama.com/students") },
+  { brand:"Avid", icon:"🎬", discount:"Education pricing", category:"Software", desc:"Pro Tools, Media Composer, and Sibelius at massive education discounts for music/film students.", affiliate:"Direct", commission:"Referral", dealUrl:L.direct("https://www.avid.com/avid-for-education/avid-education-discounts") },
+  { brand:"Codecademy", icon:"💻", discount:"35% off Pro", category:"Education", desc:"Learn to code with 35% off Codecademy Pro for eligible college students.", affiliate:"Impact.com", commission:"$10–$20 per signup", dealUrl:L.direct("https://www.codecademy.com/student-center") },
+  { brand:"Grammarly", icon:"✍️", discount:"20% off Premium", category:"Software", desc:"Grammarly Premium for writing assistance — student discount available.", affiliate:"Impact.com", commission:"$0.20 per free + $20 per premium", dealUrl:L.direct("https://www.grammarly.com/edu") },
+  { brand:"Evernote", icon:"📒", discount:"Student discount", category:"Software", desc:"Evernote Personal at reduced student pricing for note-taking and organization.", affiliate:"Direct", commission:"Referral", dealUrl:L.direct("https://evernote.com/") },
+  { brand:"LastPass", icon:"🔑", discount:"Free Premium", category:"Software", desc:"LastPass Premium password manager free for students through campus programs.", affiliate:"Impact.com", commission:"Referral", dealUrl:L.direct("https://www.lastpass.com/solutions/students") },
+  { brand:"Malwarebytes", icon:"🛡️", discount:"Student pricing", category:"Software", desc:"Malwarebytes Premium antivirus at student rates to keep your devices secure.", affiliate:"CJ Affiliate", commission:"Referral", dealUrl:L.direct("https://www.malwarebytes.com/") },
+
+  // ── CLOTHING & FASHION ──
+  { brand:"H&M", icon:"👗", discount:"15% off", category:"Clothing", desc:"15% off at H&M for students verified through UNiDAYS. Applies online and in-store.", affiliate:"CJ Affiliate", commission:"5–7% on sales", dealUrl:L.direct("https://www.hm.com/us/member/student-discount/") },
+  { brand:"Reebok", icon:"👟", discount:"Up to 72% off", category:"Clothing", desc:"Massive student discount on Reebok footwear and apparel via Student Beans.", affiliate:"Student Beans", commission:"5–8% on sales", dealUrl:L.direct("https://www.reebok.com/us") },
+  { brand:"Adidas", icon:"🎽", discount:"15% off", category:"Clothing", desc:"15% off adidas purchases for verified students through UNiDAYS.", affiliate:"CJ Affiliate", commission:"5–7% on sales", dealUrl:L.direct("https://www.adidas.com/us/student-discount") },
+  { brand:"PacSun", icon:"🌊", discount:"10% off", category:"Clothing", desc:"10% student discount at PacSun via UNiDAYS — great for casual/streetwear.", affiliate:"CJ Affiliate", commission:"5% on sales", dealUrl:L.direct("https://www.pacsun.com/") },
+  { brand:"Converse", icon:"👟", discount:"10% off", category:"Clothing", desc:"10% off Converse footwear and apparel for verified students.", affiliate:"CJ Affiliate", commission:"3–5% on sales", dealUrl:L.direct("https://www.converse.com/student-discount") },
+  { brand:"Madewell", icon:"👜", discount:"15% off", category:"Clothing", desc:"15% off full-price items at Madewell with student ID or .edu email.", affiliate:"ShareASale", commission:"5% on sales", dealUrl:L.direct("https://www.madewell.com/insiders/student-discount.html") },
+  { brand:"Vans", icon:"🛹", discount:"10% off", category:"Clothing", desc:"10% off shoes and apparel at Vans for verified students via UNiDAYS.", affiliate:"CJ Affiliate", commission:"3–5% on sales", dealUrl:L.direct("https://www.vans.com/en-us/student-discount.html") },
+  { brand:"Redbubble", icon:"🎨", discount:"15% off", category:"Clothing", desc:"15% off unique artist-designed merch, stickers, phone cases, and more.", affiliate:"ShareASale", commission:"5–8% on sales", dealUrl:L.direct("https://www.redbubble.com/") },
+  { brand:"Purple Mattress", icon:"🛏️", discount:"10% off", category:"Shopping", desc:"10% off mattresses and bedding — perfect for your first apartment or dorm.", affiliate:"Impact.com", commission:"5% on sales", dealUrl:L.direct("https://purple.com/") },
+  { brand:"Gymshark", icon:"🏋️", discount:"Student discount", category:"Clothing", desc:"Student discount on Gymshark activewear via Student Beans.", affiliate:"Student Beans", commission:"5% on sales", dealUrl:L.direct("https://www.gymshark.com/") },
+
+  // ── FOOD & DELIVERY ──
+  { brand:"DoorDash", icon:"🛵", discount:"DashPass free trial", category:"Food & Delivery", desc:"DashPass for $0 delivery — extended free trial for students. Save $9.99/mo.", affiliate:"CJ Affiliate", commission:"$5–$10 per signup", dealUrl:L.direct("https://www.doordash.com/dashpass/") },
+  { brand:"Chipotle", icon:"🌯", discount:"BOGO deals", category:"Food & Delivery", desc:"Chipotle runs student-exclusive BOGO and free guac offers through campus campaigns.", affiliate:"Direct", commission:"Brand deal opportunity", dealUrl:L.direct("https://www.chipotle.com/") },
+  { brand:"Domino's", icon:"🍕", discount:"Student deals", category:"Food & Delivery", desc:"Domino's frequently runs student discount nights and campus promotions.", affiliate:"Direct", commission:"Brand deal opportunity", dealUrl:L.direct("https://www.dominos.com/") },
+  { brand:"Papa John's", icon:"🍕", discount:"Student discount", category:"Food & Delivery", desc:"Special student pricing on orders via student discount codes.", affiliate:"CJ Affiliate", commission:"Referral", dealUrl:L.direct("https://www.papajohns.com/") },
+
+  // ── TRAVEL ──
+  { brand:"StudentUniverse", icon:"✈️", discount:"Up to 30% off flights", category:"Travel", desc:"Exclusive student flight deals — cheaper than any other booking site for .edu holders.", affiliate:"Direct / CJ", commission:"2–5% on bookings", dealUrl:L.direct("https://www.studentuniverse.com/") },
+  { brand:"Amtrak", icon:"🚂", discount:"15% off", category:"Travel", desc:"15% off Amtrak train tickets with a valid student ID — great for going home.", affiliate:"Direct", commission:"Referral", dealUrl:L.direct("https://www.amtrak.com/student-discounts") },
+  { brand:"Greyhound", icon:"🚌", discount:"10% off", category:"Travel", desc:"10% off bus tickets with student ID — budget travel between cities.", affiliate:"Direct", commission:"Referral", dealUrl:L.direct("https://www.greyhound.com/en/deals-and-promotions/student-advantage") },
+  { brand:"Hostelworld", icon:"🏨", discount:"Student rates", category:"Travel", desc:"Cheapest hostels worldwide — built for student travel budgets.", affiliate:"CJ Affiliate", commission:"$2–$4 per booking", dealUrl:L.direct("https://www.hostelworld.com/") },
+  { brand:"Hertz", icon:"🚗", discount:"Student pricing", category:"Travel", desc:"Hertz car rental student discount through campus programs and AAA.", affiliate:"CJ Affiliate", commission:"3–5% on bookings", dealUrl:L.direct("https://www.hertz.com/rentacar/discounts/student-discounts") },
+
+  // ── FINANCE & BANKING ──
+  { brand:"Discover Student Card", icon:"💳", discount:"5% cash back", category:"Finance", desc:"No annual fee student credit card with 5% rotating cash back categories. Build credit now.", affiliate:"CJ Affiliate", commission:"$50–$100 per approved app", dealUrl:L.direct("https://www.discover.com/credit-cards/student/") },
+  { brand:"Chase Freedom Student", icon:"💳", discount:"$50 bonus", category:"Finance", desc:"Chase Freedom Student card — no annual fee, $50 bonus after first purchase.", affiliate:"CJ Affiliate", commission:"$50–$100 per approved app", dealUrl:L.direct("https://creditcards.chase.com/freedom-credit-cards/freedom-rise") },
+  { brand:"Deserve EDU Card", icon:"💳", discount:"Amazon Prime free", category:"Finance", desc:"Student credit card that gives you a free year of Amazon Prime Student. No SSN required.", affiliate:"Direct", commission:"Referral", dealUrl:L.direct("https://www.deserve.com/edu/") },
+  { brand:"SoFi", icon:"🏦", discount:"Student loan refinancing", category:"Finance", desc:"Refinance student loans at lower rates — save thousands over the life of your loans.", affiliate:"Impact.com", commission:"$100–$200 per funded loan", dealUrl:L.direct("https://www.sofi.com/refinance-student-loan/") },
+  { brand:"US Mobile", icon:"📱", discount:"20% off phone plans", category:"Tech", desc:"20% off any mobile plan with .edu email. Great budget alternative to big carriers.", affiliate:"Direct", commission:"Referral", dealUrl:L.direct("https://www.usmobile.com/") },
+
+  // ── HEALTH & WELLNESS ──
+  { brand:"Peloton", icon:"🚴", discount:"Student discount", category:"Health", desc:"Peloton app membership at a reduced student rate — yoga, cycling, strength classes.", affiliate:"Impact.com", commission:"$10–$20 per signup", dealUrl:L.direct("https://www.onepeloton.com/") },
+  { brand:"Planet Fitness", icon:"💪", discount:"$10/mo student rate", category:"Health", desc:"Planet Fitness summer pass and ongoing low rates for students — no contract.", affiliate:"Direct", commission:"Referral", dealUrl:L.direct("https://www.planetfitness.com/") },
+  { brand:"Noom", icon:"🥗", discount:"Student discount", category:"Health", desc:"Noom weight management program at a discounted rate for students.", affiliate:"Impact.com", commission:"$15–$30 per signup", dealUrl:L.direct("https://www.noom.com/") },
+  { brand:"Insurance", icon:"🏥", discount:"Student health plans", category:"Health", desc:"Many states offer low-cost health insurance for students — check healthcare.gov.", affiliate:"Direct", commission:"Referral", dealUrl:L.direct("https://www.healthcare.gov/young-adults/") },
+
+  // ── GAMING ──
+  { brand:"Xbox Game Pass", icon:"🎮", discount:"$1 first month", category:"Gaming", desc:"Xbox Game Pass Ultimate for $1 first month — hundreds of games including EA Play.", affiliate:"Microsoft/CJ", commission:"5–10% on subscriptions", dealUrl:L.direct("https://www.xbox.com/en-US/xbox-game-pass") },
+  { brand:"EA Play", icon:"🕹️", discount:"Student pricing", category:"Gaming", desc:"EA Play Pro at a reduced student rate — FIFA, Madden, Apex Legends vault.", affiliate:"Direct", commission:"Referral", dealUrl:L.direct("https://www.ea.com/ea-play") },
+  { brand:"Twitch", icon:"📡", discount:"Free Turbo trial", category:"Gaming", desc:"Twitch Turbo free trial for students — no ads, exclusive emotes.", affiliate:"Amazon Associates", commission:"Part of Amazon ecosystem", dealUrl:L.amazon("/twitch") },
+  { brand:"Discord Nitro", icon:"💬", discount:"Student rate via GitHub", category:"Gaming", desc:"Discord Nitro free 3 months via GitHub Student Dev Pack.", affiliate:"GitHub Pack", commission:"Indirect", dealUrl:L.direct("https://education.github.com/pack") },
+
+  // ── SHOPPING & MISC ──
+  { brand:"Target", icon:"🎯", discount:"20% off + 50% off Circle 360", category:"Shopping", desc:"Target Circle members get 20% off one purchase + 50% off Circle 360 subscription.", affiliate:"Impact.com", commission:"1–5% on purchases", dealUrl:L.direct("https://www.target.com/l/target-circle-college-student-appreciation/") },
+  { brand:"Chegg Study", icon:"📖", discount:"Student pricing", category:"Education", desc:"Step-by-step textbook solutions, expert Q&A, and writing help at student rates.", affiliate:"CJ Affiliate", commission:"$5–$15 per sub", dealUrl:L.direct("https://www.chegg.com/study") },
+  { brand:"Course Hero", icon:"🎓", discount:"Free documents", category:"Education", desc:"Unlock study guides, class notes, and tutoring at student rates.", affiliate:"CJ Affiliate", commission:"$5–$10 per signup", dealUrl:L.direct("https://www.coursehero.com/") },
+  { brand:"iD.me", icon:"🪪", discount:"Verification hub", category:"Shopping", desc:"Set up your ID.me student verification once — use it to unlock 100s of student discounts.", affiliate:"Direct", commission:"Platform partner", dealUrl:L.direct("https://www.id.me/") },
+  { brand:"UNiDAYS", icon:"🎓", discount:"Discount aggregator", category:"Shopping", desc:"Verify once with UNiDAYS and unlock student discounts at Nike, Adidas, H&M, Apple, and more.", affiliate:"UNiDAYS Partner", commission:"Platform partner opportunity", dealUrl:L.direct("https://www.myunidays.com/US/en-US") },
+  { brand:"Student Beans", icon:"🫘", discount:"Discount aggregator", category:"Shopping", desc:"Student Beans verification unlocks deals at Gymshark, Reebok, Pandora, and more.", affiliate:"Student Beans Partner", commission:"Platform partner opportunity", dealUrl:L.direct("https://www.studentbeans.com/us") },
+  { brand:"Chewy", icon:"🐾", discount:"Student pricing", category:"Shopping", desc:"Pet food, supplies, and vet meds at student-friendly prices. Auto-ship saves extra.", affiliate:"CJ Affiliate", commission:"$15 per new customer", dealUrl:L.direct("https://www.chewy.com/") },
+  { brand:"AMC Theatres", icon:"🎬", discount:"Discounted tickets", category:"Entertainment", desc:"Discounted movie tickets with a valid college ID at select AMC locations.", affiliate:"CJ Affiliate", commission:"Referral", dealUrl:L.direct("https://www.amctheatres.com/discounts") },
+  { brand:"Regal Cinemas", icon:"🎞️", discount:"Student pricing", category:"Entertainment", desc:"Discounted tickets at Regal theatres with student ID — great for movie nights.", affiliate:"Direct", commission:"Referral", dealUrl:L.direct("https://www.regmovies.com/static/en/us/theatre/student-pricing-locations") },
+  { brand:"The Washington Post", icon:"📰", discount:"Free access", category:"Entertainment", desc:"Free Washington Post digital access for students at many universities.", affiliate:"CJ Affiliate", commission:"$5–$10 per sub", dealUrl:L.direct("https://subscribe.washingtonpost.com/student/") },
+  { brand:"Wall Street Journal", icon:"📊", discount:"$4/mo for students", category:"Entertainment", desc:"WSJ at $4/month — essential for finance, business, and economics students.", affiliate:"CJ Affiliate", commission:"$10–$15 per sub", dealUrl:L.direct("https://store.wsj.com/shop/wsjus/us_stuall/") },
+  { brand:"Statista", icon:"📈", discount:"Free student access", category:"Education", desc:"Premium data and statistics platform — many universities have free campus access.", affiliate:"Direct", commission:"Referral", dealUrl:L.direct("https://www.statista.com/") },
+  { brand:"Scribd", icon:"📚", discount:"60-day free trial", category:"Education", desc:"Unlimited audiobooks, ebooks, and documents — 60 days free for students.", affiliate:"Impact.com", commission:"$5 per trial", dealUrl:L.direct("https://www.scribd.com/") },
+  { brand:"Chegg Tutors", icon:"🧑‍🏫", discount:"First lesson free", category:"Education", desc:"One-on-one online tutoring — first lesson free for new students.", affiliate:"CJ Affiliate", commission:"$5–$15 per booking", dealUrl:L.direct("https://www.chegg.com/tutors") },
+  { brand:"Wix", icon:"🌐", discount:"Student pricing", category:"Software", desc:"Build your portfolio website with Wix at a student discount rate.", affiliate:"Impact.com", commission:"$10–$20 per paid plan", dealUrl:L.direct("https://www.wix.com/") },
+  { brand:"Squarespace", icon:"🟦", discount:"Student discount via GitHub", category:"Software", desc:"Squarespace free trial and discount via GitHub Student Dev Pack.", affiliate:"Impact.com", commission:"$10–$20 per plan", dealUrl:L.direct("https://education.github.com/pack") },
+  { brand:"Namecheap", icon:"🌐", discount:"Free domain + SSL", category:"Tech", desc:"Free .me domain for 1 year + free SSL certificate via GitHub Student Dev Pack.", affiliate:"Direct", commission:"Referral", dealUrl:L.direct("https://education.github.com/pack") },
+  { brand:"Digital Ocean", icon:"💧", discount:"$200 in credits", category:"Tech", desc:"$200 in cloud computing credits free for students via GitHub Dev Pack.", affiliate:"Direct", commission:"Referral", dealUrl:L.direct("https://education.github.com/pack") },
 ];
 
-const CATEGORIES = ["All","Tech","Entertainment","Software","Education","Food","Clothing","Health","Shopping"];
+const CATEGORIES = ["All","Tech","Entertainment","Software","Education","Food & Delivery","Clothing","Health","Shopping","Travel","Finance","Music","Gaming"];
 
 let activeCategory = "All";
 let searchTerm = "";
@@ -463,18 +548,24 @@ function handleGet(brand) {
 }
 
 const FREE_DEALS = [
-  { icon:"🐙", name:"GitHub Pro + Copilot", desc:"Free Pro account + AI coding assistant + $200k in dev tools", url:"https://education.github.com/pack" },
+  { icon:"🐙", name:"GitHub Pro + Copilot", desc:"Free Pro + AI coding assistant + $200k in dev tools via Student Dev Pack", url:"https://education.github.com/pack" },
   { icon:"📝", name:"Notion Personal Pro", desc:"Full Notion Pro — unlimited pages, file uploads, and more", url:"https://www.notion.so/students" },
   { icon:"🖌️", name:"Figma Professional", desc:"Pro plan for design & prototyping, completely free", url:"https://www.figma.com/education/" },
-  { icon:"💼", name:"Microsoft 365", desc:"Word, Excel, PowerPoint, Teams — the full suite", url:"https://www.microsoft.com/en-us/education/products/office" },
+  { icon:"💼", name:"Microsoft 365", desc:"Word, Excel, PowerPoint, Teams — the full suite via your school", url:"https://www.microsoft.com/en-us/education/products/office" },
   { icon:"✨", name:"Canva Pro", desc:"Premium templates, brand kits, unlimited storage", url:"https://www.canva.com/education/" },
-  { icon:"📐", name:"Autodesk Suite", desc:"AutoCAD, Maya, Fusion 360 and 100+ tools free", url:"https://www.autodesk.com/education/edu-software/overview" },
-  { icon:"🧑‍💻", name:"JetBrains All Products", desc:"PyCharm, IntelliJ, WebStorm and all IDEs free", url:"https://www.jetbrains.com/community/education/" },
-  { icon:"🔐", name:"1Password (1 year)", desc:"Password manager free for your first year", url:"https://1password.com/students/" },
-  { icon:"🎓", name:"Coursera Courses", desc:"Hundreds of free university courses available", url:"https://www.coursera.org/" },
-  { icon:"💡", name:"LinkedIn Learning", desc:"Thousands of professional courses via your school", url:"https://www.linkedin.com/learning/" },
-  { icon:"☁️", name:"AWS Educate", desc:"Cloud credits, training, and hands-on labs from Amazon", url:"https://aws.amazon.com/education/awseducate/" },
-  { icon:"🌐", name:"Cloudflare for Teams", desc:"Zero-trust security tools free for students", url:"https://www.cloudflare.com/forstartups/" },
+  { icon:"📐", name:"Autodesk Suite", desc:"AutoCAD, Maya, Fusion 360, and 100+ professional tools", url:"https://www.autodesk.com/education/edu-software/overview" },
+  { icon:"🧑‍💻", name:"JetBrains All IDEs", desc:"PyCharm, IntelliJ, WebStorm — every JetBrains IDE free", url:"https://www.jetbrains.com/community/education/" },
+  { icon:"🔐", name:"1Password (1 year)", desc:"Password manager free for your first full year", url:"https://1password.com/students/" },
+  { icon:"☁️", name:"AWS Educate", desc:"Cloud credits, training, and hands-on labs from Amazon Web Services", url:"https://aws.amazon.com/education/awseducate/" },
+  { icon:"💧", name:"DigitalOcean $200 Credits", desc:"$200 in cloud hosting credits — host apps and projects free", url:"https://education.github.com/pack" },
+  { icon:"🌐", name:"Namecheap Free Domain", desc:"Free .me domain + SSL certificate for 1 year", url:"https://education.github.com/pack" },
+  { icon:"📦", name:"Amazon Prime (6 mo)", desc:"6 months of Amazon Prime completely free with .edu email", url:"https://www.amazon.com/joinstudent" },
+  { icon:"💡", name:"LinkedIn Learning", desc:"Thousands of professional courses — many schools provide free access", url:"https://www.linkedin.com/learning/" },
+  { icon:"🔒", name:"LastPass Premium", desc:"Password manager Premium free for students", url:"https://www.lastpass.com/solutions/students" },
+  { icon:"💬", name:"Discord Nitro (3 mo)", desc:"3 months of Discord Nitro free via GitHub Student Dev Pack", url:"https://education.github.com/pack" },
+  { icon:"🌐", name:"Cloudflare for Students", desc:"Web performance and security tools free for student projects", url:"https://www.cloudflare.com/forstartups/" },
+  { icon:"📊", name:"Tableau Desktop", desc:"Tableau Desktop and Tableau Prep free for students", url:"https://www.tableau.com/academic/students" },
+  { icon:"🎓", name:"Google Workspace Edu", desc:"Gmail, Drive, Docs, Meet — unlimited storage through your school", url:"https://workspace.google.com/intl/en/edu/" },
 ];
 
 function renderFreeGrid() {
