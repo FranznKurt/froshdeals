@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FroshDeals — Every Discount Your .edu Unlocks</title>
+<style>
+  :root {
+    --bg: #0f0f13;
+    --surface: #1a1a24;
+    --surface2: #23232f;
+    --border: #2e2e3e;
+    --accent: #7c6ef5;
+    --accent2: #f55fa6;
+    --accent3: #43e8b0;
+    --text: #f0f0f8;
+    --muted: #8888aa;
+    --radius: 16px;
+    --card-radius: 20px;
+    --transition: 0.2s cubic-bezier(.4,0,.2,1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 24px;
+    background: rgba(15,15,19,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.5px; }
+  .logo span { background: linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .nav-badge {
+    background: linear-gradient(135deg,var(--accent),var(--accent2));
+    padding: 6px 16px; border-radius: 999px; font-size: .85rem; font-weight: 700;
+    cursor: pointer; border: none; color: #fff;
+  }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 80px 24px 60px;
+    background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(124,110,245,0.18) 0%, transparent 70%);
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    background: rgba(124,110,245,0.15);
+    border: 1px solid rgba(124,110,245,0.35);
+    color: var(--accent);
+    font-size: .8rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    padding: 6px 16px; border-radius: 999px; margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    font-weight: 900; letter-spacing: -2px; line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .hero h1 .grad {
+    background: linear-gradient(135deg,var(--accent) 0%,var(--accent2) 50%,var(--accent3) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero p {
+    font-size: 1.15rem; color: var(--muted); max-width: 520px; margin: 0 auto 36px;
+  }
+
+  /* STATS */
+  .stats {
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 32px;
+    margin-bottom: 48px;
+  }
+  .stat { text-align: center; }
+  .stat-num { font-size: 1.8rem; font-weight: 900; background: linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .stat-label { font-size: .8rem; color: var(--muted); font-weight: 600; letter-spacing: 0.5px; }
+
+  /* SEARCH */
+  .search-wrap {
+    max-width: 560px; margin: 0 auto;
+    position: relative;
+  }
+  .search-wrap input {
+    width: 100%; padding: 18px 20px 18px 52px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); color: var(--text);
+    font-size: 1rem; outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+  .search-wrap input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(124,110,245,0.15);
+  }
+  .search-wrap input::placeholder { color: var(--muted); }
+  .search-icon {
+    position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
+    font-size: 1.1rem; pointer-events: none;
+  }
+
+  /* CATEGORIES */
+  .categories {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+    padding: 36px 24px 12px;
+    max-width: 900px; margin: 0 auto;
+  }
+  .cat-btn {
+    padding: 9px 20px; border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface); color: var(--muted);
+    font-size: .9rem; font-weight: 600; cursor: pointer;
+    transition: all var(--transition);
+  }
+  .cat-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .cat-btn.active {
+    background: linear-gradient(135deg,var(--accent),var(--accent2));
+    border-color: transparent; color: #fff;
+  }
+
+  /* RESULTS COUNT */
+  .results-meta {
+    text-align: center; color: var(--muted); font-size: .9rem;
+    padding: 16px 24px 4px;
+  }
+
+  /* GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px; padding: 24px;
+    max-width: 1200px; margin: 0 auto;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--card-radius);
+    padding: 24px;
+    display: flex; flex-direction: column; gap: 12px;
+    transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+    position: relative; overflow: hidden;
+  }
+  .card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg,var(--accent),var(--accent2));
+    opacity: 0; transition: opacity var(--transition);
+  }
+  .card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 16px 48px rgba(124,110,245,0.15); }
+  .card:hover::before { opacity: 1; }
+
+  .card-top { display: flex; align-items: center; justify-content: space-between; }
+  .brand-icon { font-size: 2.2rem; line-height: 1; }
+  .verified {
+    display: flex; align-items: center; gap: 4px;
+    font-size: .72rem; font-weight: 700; color: var(--accent3);
+    background: rgba(67,232,176,0.1); padding: 4px 10px; border-radius: 999px;
+  }
+
+  .brand-name { font-size: 1.1rem; font-weight: 800; }
+  .discount {
+    font-size: 1.5rem; font-weight: 900;
+    background: linear-gradient(135deg,var(--accent),var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .desc { font-size: .88rem; color: var(--muted); flex: 1; }
+  .cat-tag {
+    display: inline-block;
+    font-size: .72rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    background: rgba(124,110,245,0.12); color: var(--accent);
+    border: 1px solid rgba(124,110,245,0.25);
+    width: fit-content;
+  }
+  .affiliate-tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: .7rem; font-weight: 600; color: var(--accent3);
+    background: rgba(67,232,176,0.08); padding: 3px 9px; border-radius: 999px;
+    border: 1px solid rgba(67,232,176,0.2); width: fit-content;
+  }
+  .commission-text {
+    font-size: .75rem; color: var(--muted); font-style: italic;
+  }
+  .get-btn {
+    margin-top: 4px; width: 100%; padding: 13px;
+    background: linear-gradient(135deg,var(--accent),var(--accent2));
+    border: none; border-radius: 12px; color: #fff;
+    font-size: .95rem; font-weight: 700; cursor: pointer;
+    transition: opacity var(--transition), transform var(--transition);
+  }
+  .get-btn:hover { opacity: .88; transform: scale(0.98); }
+
+  /* FOOTER */
+  footer {
+    text-align: center; padding: 60px 24px;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+  footer h3 { font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; }
+  footer p { color: var(--muted); margin-bottom: 24px; }
+  .email-row {
+    display: flex; max-width: 420px; margin: 0 auto; gap: 10px;
+  }
+  .email-row input {
+    flex: 1; padding: 14px 18px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); color: var(--text); font-size: .95rem; outline: none;
+  }
+  .email-row input:focus { border-color: var(--accent); }
+  .email-row button {
+    padding: 14px 22px;
+    background: linear-gradient(135deg,var(--accent),var(--accent2));
+    border: none; border-radius: var(--radius);
+    color: #fff; font-weight: 700; cursor: pointer;
+  }
+  .footer-copy { margin-top: 40px; color: var(--muted); font-size: .85rem; }
+
+  /* EMPTY STATE */
+  .empty { text-align: center; padding: 60px 24px; color: var(--muted); }
+  .empty-icon { font-size: 3rem; margin-bottom: 12px; }
+
+  @media (max-width: 600px) {
+    .hero { padding: 60px 16px 40px; }
+    .stats { gap: 20px; }
+    .grid { grid-template-columns: 1fr; padding: 16px; }
+    .email-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Student<span>Deals</span></div>
+  <button class="nav-badge">🎓 Get Started Free</button>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">🎓 For College Students</div>
+  <h1>Your .edu email is worth<br><span class="grad">thousands in discounts</span></h1>
+  <p>Every deal, every discount, every perk unlocked by your college email — all in one place.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Deals Listed</div></div>
+    <div class="stat"><div class="stat-num">$3,200</div><div class="stat-label">Avg Annual Savings</div></div>
+    <div class="stat"><div class="stat-num">10M+</div><div class="stat-label">Students Saved</div></div>
+    <div class="stat"><div class="stat-num">50+</div><div class="stat-label">Categories</div></div>
+  </div>
+
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input id="searchInput" type="text" placeholder="Search brands, categories, discounts…" oninput="filterDeals()" />
+  </div>
+</div>
+
+<!-- FREE SECTION -->
+<section style="max-width:1200px;margin:40px auto 0;padding:0 24px;">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+    <span style="font-size:1.8rem;">🆓</span>
+    <div>
+      <h2 style="font-size:1.5rem;font-weight:900;letter-spacing:-0.5px;">Completely Free With Your .edu</h2>
+      <p style="color:var(--muted);font-size:.9rem;">No credit card. No trial. Just free.</p>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;" id="freeGrid"></div>
+</section>
+
+<div style="max-width:1200px;margin:48px auto 0;padding:0 24px;">
+  <div style="height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);"></div>
+  <p style="text-align:center;color:var(--muted);font-size:.85rem;margin-top:20px;">✨ All deals below — search & filter</p>
+</div>
+
+<div class="categories" id="categories"></div>
+<div class="results-meta" id="resultsMeta"></div>
+<div class="grid" id="grid"></div>
+
+<section style="max-width:900px;margin:60px auto 0;padding:0 24px;">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--card-radius);padding:32px;">
+    <h2 style="font-size:1.4rem;font-weight:800;margin-bottom:8px;">💰 Affiliate Programs to Join</h2>
+    <p style="color:var(--muted);font-size:.9rem;margin-bottom:24px;">Sign up to these networks to get your tracking links and start earning on every deal click.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;">
+      ${[
+        {name:"Impact.com",desc:"Spotify, Canva, Headspace, Calm, Coursera",url:"https://impact.com/",color:"#7c6ef5"},
+        {name:"CJ Affiliate",desc:"Adobe, Amazon, Chegg, NY Times, Microsoft",url:"https://www.cj.com/",color:"#f55fa6"},
+        {name:"ShareASale",desc:"Backblaze, Wolfram, Bodybuilding.com",url:"https://www.shareasale.com/",color:"#43e8b0"},
+        {name:"Amazon Associates",desc:"Amazon Prime + millions of products",url:"https://affiliate-program.amazon.com/",color:"#f90"},
+        {name:"NordVPN Affiliate",desc:"Up to 40% per sale, high conversion",url:"https://nordvpn.com/affiliate/",color:"#4fc3f7"},
+        {name:"Apple Performance",desc:"Mac, iPad, software subscriptions",url:"https://affiliate.apple.com/",color:"#aaa"},
+        {name:"PartnerStack",desc:"1Password + SaaS tools (25% recurring)",url:"https://1password.partnerstack.com/",color:"#ff7043"},
+        {name:"FlexOffers",desc:"Hulu, Lenovo and 12,000+ merchants",url:"https://www.flexoffers.com/",color:"#ab47bc"},
+      ].map(n=>`
+        <a href="${n.url}" target="_blank" rel="noopener" style="text-decoration:none;">
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='${n.color}'" onmouseout="this.style.borderColor='var(--border)'">
+            <div style="font-weight:800;font-size:.95rem;color:${n.color};margin-bottom:4px;">${n.name}</div>
+            <div style="font-size:.78rem;color:var(--muted);">${n.desc}</div>
+            <div style="margin-top:10px;font-size:.75rem;font-weight:700;color:${n.color};">Sign Up →</div>
+          </div>
+        </a>
+      `).join("")}
+    </div>
+  </div>
+</section>
+
+<footer>
+  <h3>Never miss a deal 📬</h3>
+  <p>Get notified when new student discounts drop.</p>
+  <div class="email-row">
+    <input type="email" placeholder="your@college.edu" />
+    <button>Subscribe</button>
+  </div>
+  <div class="footer-copy">© 2026 FroshDeals · Built for students, by students</div>
+</footer>
+
+<script>
+// ============================================================
+// 🔑 AFFILIATE ID CONFIG — fill in your IDs as you get approved
+// ============================================================
+const AFF = {
+  amazon:      "froshdeals-20",          // Amazon Associates tag (replace with yours from associates.amazon.com)
+  nordvpn:     "YOUR_NORDVPN_AFF_ID",   // from nordvpn.com/affiliate — replace after approval
+  impact:      "YOUR_IMPACT_ID",         // Impact.com — Spotify, Canva, Headspace, Calm, Skillshare, Coursera
+  cj:          "YOUR_CJ_ID",            // CJ Affiliate — Adobe, Chegg, NY Times, ASOS, Ray-Ban, Economist
+  shareasale:  "YOUR_SHAREASALE_ID",    // ShareASale — Backblaze, Bodybuilding.com
+  partnerstack: "YOUR_PS_ID",           // PartnerStack — 1Password
+  flexoffers:  "YOUR_FO_ID",            // FlexOffers — Hulu, Lenovo
+  apple:       "YOUR_APPLE_AFF_ID",     // affiliate.apple.com
+};
+
+// Link builders — these auto-apply your IDs
+const L = {
+  amazon:    (path="") => `https://www.amazon.com${path}?tag=${AFF.amazon}`,
+  nordvpn:   ()        => AFF.nordvpn === "YOUR_NORDVPN_AFF_ID"
+                            ? "https://nordvpn.com/student/"
+                            : `https://go.nordvpn.net/aff_c?offer_id=15&aff_id=${AFF.nordvpn}`,
+  spotify:   ()        => `https://www.spotify.com/us/student/`,   // Impact link generated in dashboard
+  adobe:     ()        => `https://www.adobe.com/creativecloud/plans/students.html`, // CJ link from dashboard
+  canva:     ()        => `https://www.canva.com/education/`,       // Impact link from dashboard
+  hulu:      ()        => `https://www.hulu.com/student`,           // FlexOffers link from dashboard
+  chegg:     ()        => `https://www.chegg.com/`,                 // CJ link from dashboard
+  coursera:  ()        => `https://www.coursera.org/`,              // Impact link from dashboard
+  skillshare:()        => `https://www.skillshare.com/en/student`,  // Impact link from dashboard
+  headspace: ()        => `https://www.headspace.com/studentplan`,  // Impact link from dashboard
+  nytimes:   ()        => `https://www.nytimes.com/subscription/student`, // CJ link
+  onepass:   ()        => `https://1password.com/students/`,        // PartnerStack link from dashboard
+  apple:     (path="") => AFF.apple === "YOUR_APPLE_AFF_ID"
+                            ? `https://www.apple.com${path}`
+                            : `https://apple.sjv.io/c/${AFF.apple}${path}`,
+  direct:    (url)     => url,
+};
+
+// ============================================================
+const DEALS = [
+  { brand:"Adobe Creative Cloud", icon:"🎨", discount:"60% off", category:"Software", desc:"Photoshop, Illustrator, Premiere Pro — the full suite for creators.", affiliate:"CJ Affiliate", commission:"85% of 1st month", dealUrl:L.adobe() },
+  { brand:"NordVPN", icon:"🔒", discount:"Up to 63% off", category:"Tech", desc:"Fast, secure VPN — essential for public campus WiFi. Top student pick.", affiliate:"NordVPN Direct", commission:"Up to 40% + recurring", dealUrl:L.nordvpn() },
+  { brand:"Spotify", icon:"🎵", discount:"50% off Premium", category:"Entertainment", desc:"$2.99/mo Spotify Premium. Best music streaming deal for students.", affiliate:"Impact.com", commission:"$7.35 per signup", dealUrl:L.spotify() },
+  { brand:"Amazon Prime", icon:"📦", discount:"50% off Prime", category:"Shopping", desc:"$7.49/mo instead of $14.99. Free shipping, Prime Video, and more.", affiliate:"Amazon Associates", commission:"3–10% on purchases", dealUrl:L.amazon("/joinstudent") },
+  { brand:"Hulu", icon:"📺", discount:"$1.99/mo", category:"Entertainment", desc:"Hulu with Ads for just $1.99/month — one of the best streaming deals around.", affiliate:"FlexOffers", commission:"$2–$4 CPA", dealUrl:L.hulu() },
+  { brand:"Chegg", icon:"📚", discount:"Textbook Savings", category:"Education", desc:"Rent textbooks, step-by-step homework help, and tutoring at student rates.", affiliate:"CJ Affiliate", commission:"$5–$15 per sub", dealUrl:L.chegg() },
+  { brand:"Nike", icon:"👟", discount:"10% off", category:"Clothing", desc:"10% student discount sitewide on Nike.com through UNiDAYS.", affiliate:"Partnerize", commission:"5–11% on sales", dealUrl:L.direct("https://www.unidays.com/us/stores/nike/") },
+  { brand:"ASOS", icon:"🛍️", discount:"10% off", category:"Clothing", desc:"10% off everything on ASOS — fashion, shoes, accessories.", affiliate:"CJ Affiliate", commission:"5–7% on sales", dealUrl:L.direct("https://www.asos.com/discover/student-discount/") },
+  { brand:"Apple", icon:"🍎", discount:"10-20% off + free AirPods", category:"Tech", desc:"Save on MacBooks, iPads, AirPods. Seasonal free AirPods with Mac purchase.", affiliate:"Apple Partners", commission:"2.5% hardware / 400% apps", dealUrl:L.apple("/shop/buy-mac/mac-laptop/students") },
+  { brand:"Notion", icon:"📝", discount:"Free Personal Pro", category:"Software", desc:"Full Notion Personal Pro plan completely free with a .edu email.", affiliate:"Featured Listing", commission:"Sponsored opportunity", dealUrl:L.direct("https://www.notion.so/students") },
+  { brand:"GitHub", icon:"🐙", discount:"Free Pro + Copilot", category:"Tech", desc:"GitHub Student Dev Pack: free Pro, Copilot AI, and $200k+ in partner tools.", affiliate:"Partner Indirect", commission:"Drives partner affiliate traffic", dealUrl:L.direct("https://education.github.com/pack") },
+  { brand:"Figma", icon:"🖌️", discount:"Free Professional", category:"Software", desc:"Figma Professional plan free for students and educators.", affiliate:"Featured Listing", commission:"Sponsored opportunity", dealUrl:L.direct("https://www.figma.com/education/") },
+  { brand:"Microsoft 365", icon:"💼", discount:"Free", category:"Software", desc:"Word, Excel, PowerPoint, Teams — full Microsoft 365 free through your school.", affiliate:"CJ Affiliate", commission:"7–10% on paid subs", dealUrl:L.direct("https://www.microsoft.com/en-us/education/products/office") },
+  { brand:"Headspace", icon:"🧘", discount:"85% off", category:"Health", desc:"$9.99/year (normally $69.99). Meditation and mindfulness for students.", affiliate:"Impact.com", commission:"$10 per sub", dealUrl:L.headspace() },
+  { brand:"Calm", icon:"😌", discount:"40% off", category:"Health", desc:"Premium meditation and sleep app at a big discount for students.", affiliate:"Impact.com", commission:"$5–$10 per sub", dealUrl:L.direct("https://www.calm.com/students") },
+  { brand:"Canva", icon:"✨", discount:"Free Pro", category:"Software", desc:"Canva Pro free for students. Premium templates, brand kits, unlimited storage.", affiliate:"Impact.com", commission:"$36 per new Pro sub", dealUrl:L.canva() },
+  { brand:"Skillshare", icon:"🎬", discount:"1 Month Free", category:"Education", desc:"Free 1-month trial to Skillshare's entire creative course library.", affiliate:"Impact.com", commission:"$7 per trial", dealUrl:L.skillshare() },
+  { brand:"NY Times", icon:"📰", discount:"$1/week", category:"Entertainment", desc:"Full digital access to the New York Times for just $1/week.", affiliate:"CJ Affiliate", commission:"$10–$15 per sub", dealUrl:L.nytimes() },
+  { brand:"Levi's", icon:"👖", discount:"15% off", category:"Clothing", desc:"15% off all Levi's orders verified through Student Beans.", affiliate:"Student Beans", commission:"5–8% on sales", dealUrl:L.direct("https://www.levis.com/US/en_US/") },
+  { brand:"Under Armour", icon:"🏃", discount:"10% off", category:"Clothing", desc:"10% student discount on UA gear through UNiDAYS.", affiliate:"CJ / ShareASale", commission:"5–8% on sales", dealUrl:L.direct("https://www.unidays.com/us/stores/under-armour/") },
+  { brand:"Dell", icon:"💻", discount:"10-20% off", category:"Tech", desc:"Student discount on laptops, monitors, and accessories through Dell's student store.", affiliate:"CJ Affiliate", commission:"1–3% on hardware", dealUrl:L.direct("https://www.dell.com/en-us/shop/dell-advantage/cp/students") },
+  { brand:"Lenovo", icon:"🖥️", discount:"10% off", category:"Tech", desc:"Lenovo Education Store with 10%+ off laptops and accessories.", affiliate:"FlexOffers", commission:"1–5% on sales", dealUrl:L.direct("https://www.lenovo.com/us/en/landingpage/studentdiscount/") },
+  { brand:"1Password", icon:"🔐", discount:"Free for 1 year", category:"Software", desc:"1Password password manager free for students for the first year.", affiliate:"PartnerStack", commission:"25% recurring", dealUrl:L.onepass() },
+  { brand:"Autodesk", icon:"📐", discount:"Free", category:"Software", desc:"AutoCAD, Maya, and 100+ tools free for verified students.", affiliate:"CJ Affiliate", commission:"9% on subs", dealUrl:L.direct("https://www.autodesk.com/education/edu-software/overview") },
+  { brand:"JetBrains", icon:"🧑‍💻", discount:"Free All IDEs", category:"Software", desc:"PyCharm, IntelliJ, WebStorm, and all JetBrains IDEs — free for students.", affiliate:"Featured Listing", commission:"Sponsored opportunity", dealUrl:L.direct("https://www.jetbrains.com/community/education/") },
+  { brand:"Coursera", icon:"🎓", discount:"Free Courses", category:"Education", desc:"Hundreds of free courses from top universities. Paid certs available.", affiliate:"Impact.com", commission:"45% on purchases", dealUrl:L.coursera() },
+  { brand:"Grubhub", icon:"🍔", discount:"Free Grubhub+", category:"Food", desc:"Free Grubhub+ with $0 delivery fees for Amazon Prime student members.", affiliate:"CJ Affiliate", commission:"$5–$10 per sub", dealUrl:L.direct("https://www.grubhub.com/plus") },
+  { brand:"YouTube Premium", icon:"▶️", discount:"Student Rate", category:"Entertainment", desc:"Ad-free YouTube + YouTube Music at a reduced student rate.", affiliate:"Partnerize", commission:"$5–$10 CPA", dealUrl:L.direct("https://www.youtube.com/premium/student") },
+  { brand:"Dropbox", icon:"📂", discount:"Free via campus", category:"Tech", desc:"Many schools offer Dropbox Business through campus licenses — check yours.", affiliate:"CJ Affiliate", commission:"~20% on paid plans", dealUrl:L.direct("https://www.dropbox.com/education") },
+  { brand:"Backblaze", icon:"💾", discount:"Free Trial", category:"Tech", desc:"Cloud backup for your laptop — essential for protecting school work.", affiliate:"ShareASale", commission:"$5 trial + 10% on paid", dealUrl:L.direct("https://www.backblaze.com/cloud-backup.html") },
+  { brand:"Wolfram Alpha", icon:"🧮", discount:"Student Pricing", category:"Education", desc:"Step-by-step math, science, and computation. Essential for STEM students.", affiliate:"ShareASale", commission:"Varies", dealUrl:L.direct("https://www.wolframalpha.com/pro/pricing/") },
+  { brand:"Duolingo", icon:"🦉", discount:"Reduced Super", category:"Education", desc:"Duolingo Super (ad-free + offline) at a reduced price for students.", affiliate:"Featured Listing", commission:"Sponsored opportunity", dealUrl:L.direct("https://www.duolingo.com/") },
+  { brand:"Bodybuilding.com", icon:"💪", discount:"10% off", category:"Health", desc:"10% off supplements and gym gear with student verification.", affiliate:"ShareASale", commission:"5–8% on sales", dealUrl:L.direct("https://www.bodybuilding.com/") },
+  { brand:"Ray-Ban", icon:"😎", discount:"15% off", category:"Clothing", desc:"15% off sunglasses with student verification through UNiDAYS.", affiliate:"CJ Affiliate", commission:"~5% on sales", dealUrl:L.direct("https://www.ray-ban.com/") },
+  { brand:"The Economist", icon:"📖", discount:"50% off", category:"Entertainment", desc:"Stay informed on global affairs at half the regular subscription price.", affiliate:"CJ Affiliate", commission:"$10–$20 per sub", dealUrl:L.direct("https://www.economist.com/student") },
+  { brand:"LinkedIn Learning", icon:"💡", discount:"Free Access", category:"Education", desc:"Many schools offer free LinkedIn Learning access — check your institution.", affiliate:"Impact.com", commission:"$10–$30 per signup", dealUrl:L.direct("https://www.linkedin.com/learning/") },
+  { brand:"Peacock", icon:"🦚", discount:"Student Rate", category:"Entertainment", desc:"Peacock Premium at a discounted student rate through campus portals.", affiliate:"CJ / FlexOffers", commission:"$5–$10 CPA", dealUrl:L.direct("https://www.peacocktv.com/") },
+];
+
+const CATEGORIES = ["All","Tech","Entertainment","Software","Education","Food","Clothing","Health","Shopping"];
+
+let activeCategory = "All";
+let searchTerm = "";
+
+function renderCategories() {
+  const el = document.getElementById("categories");
+  el.innerHTML = CATEGORIES.map(c =>
+    `<button class="cat-btn ${c===activeCategory?'active':''}" onclick="setCategory('${c}')">${c}</button>`
+  ).join("");
+}
+
+function setCategory(c) {
+  activeCategory = c;
+  renderCategories();
+  renderGrid();
+}
+
+function filterDeals() {
+  searchTerm = document.getElementById("searchInput").value.toLowerCase();
+  renderGrid();
+}
+
+function getFiltered() {
+  return DEALS.filter(d => {
+    const matchCat = activeCategory === "All" || d.category === activeCategory;
+    const matchSearch = !searchTerm ||
+      d.brand.toLowerCase().includes(searchTerm) ||
+      d.category.toLowerCase().includes(searchTerm) ||
+      d.discount.toLowerCase().includes(searchTerm) ||
+      d.desc.toLowerCase().includes(searchTerm);
+    return matchCat && matchSearch;
+  });
+}
+
+function renderGrid() {
+  const filtered = getFiltered();
+  const meta = document.getElementById("resultsMeta");
+  const grid = document.getElementById("grid");
+
+  meta.textContent = `Showing ${filtered.length} deal${filtered.length!==1?'s':''}`;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🔍</div><div>No deals match "${searchTerm}"</div></div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(d => `
+    <div class="card">
+      <div class="card-top">
+        <span class="brand-icon">${d.icon}</span>
+        <span class="verified">✓ Verified</span>
+      </div>
+      <div class="brand-name">${d.brand}</div>
+      <div class="discount">${d.discount}</div>
+      <span class="cat-tag">${d.category}</span>
+      <div class="desc">${d.desc}</div>
+      <a href="${d.dealUrl}" target="_blank" rel="noopener" style="text-decoration:none;">
+        <button class="get-btn">Get This Deal →</button>
+      </a>
+    </div>
+  `).join("");
+}
+
+function handleGet(brand) {
+  alert(`Redirecting to ${brand}'s student discount page…\n(In production this would open the verified deal link)`);
+}
+
+const FREE_DEALS = [
+  { icon:"🐙", name:"GitHub Pro + Copilot", desc:"Free Pro account + AI coding assistant + $200k in dev tools", url:"https://education.github.com/pack" },
+  { icon:"📝", name:"Notion Personal Pro", desc:"Full Notion Pro — unlimited pages, file uploads, and more", url:"https://www.notion.so/students" },
+  { icon:"🖌️", name:"Figma Professional", desc:"Pro plan for design & prototyping, completely free", url:"https://www.figma.com/education/" },
+  { icon:"💼", name:"Microsoft 365", desc:"Word, Excel, PowerPoint, Teams — the full suite", url:"https://www.microsoft.com/en-us/education/products/office" },
+  { icon:"✨", name:"Canva Pro", desc:"Premium templates, brand kits, unlimited storage", url:"https://www.canva.com/education/" },
+  { icon:"📐", name:"Autodesk Suite", desc:"AutoCAD, Maya, Fusion 360 and 100+ tools free", url:"https://www.autodesk.com/education/edu-software/overview" },
+  { icon:"🧑‍💻", name:"JetBrains All Products", desc:"PyCharm, IntelliJ, WebStorm and all IDEs free", url:"https://www.jetbrains.com/community/education/" },
+  { icon:"🔐", name:"1Password (1 year)", desc:"Password manager free for your first year", url:"https://1password.com/students/" },
+  { icon:"🎓", name:"Coursera Courses", desc:"Hundreds of free university courses available", url:"https://www.coursera.org/" },
+  { icon:"💡", name:"LinkedIn Learning", desc:"Thousands of professional courses via your school", url:"https://www.linkedin.com/learning/" },
+  { icon:"☁️", name:"AWS Educate", desc:"Cloud credits, training, and hands-on labs from Amazon", url:"https://aws.amazon.com/education/awseducate/" },
+  { icon:"🌐", name:"Cloudflare for Teams", desc:"Zero-trust security tools free for students", url:"https://www.cloudflare.com/forstartups/" },
+];
+
+function renderFreeGrid() {
+  const el = document.getElementById("freeGrid");
+  el.innerHTML = FREE_DEALS.map(d => `
+    <a href="${d.url}" target="_blank" rel="noopener" style="text-decoration:none;">
+      <div style="background:var(--surface);border:1px solid rgba(67,232,176,0.2);border-radius:16px;padding:20px;cursor:pointer;transition:all .2s;height:100%;"
+        onmouseover="this.style.borderColor='var(--accent3)';this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 32px rgba(67,232,176,0.12)'"
+        onmouseout="this.style.borderColor='rgba(67,232,176,0.2)';this.style.transform='';this.style.boxShadow=''">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+          <span style="font-size:1.8rem;">${d.icon}</span>
+          <span style="font-size:.68rem;font-weight:800;color:var(--accent3);background:rgba(67,232,176,0.1);padding:3px 9px;border-radius:999px;border:1px solid rgba(67,232,176,0.25);">FREE</span>
+        </div>
+        <div style="font-weight:800;font-size:.95rem;margin-bottom:6px;">${d.name}</div>
+        <div style="font-size:.78rem;color:var(--muted);">${d.desc}</div>
+        <div style="margin-top:12px;font-size:.8rem;font-weight:700;color:var(--accent3);">Claim Free →</div>
+      </div>
+    </a>
+  `).join("");
+}
+
+renderFreeGrid();
+renderCategories();
+renderGrid();
+</script>
+</body>
+</html>

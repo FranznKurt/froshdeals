@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0f0f13;
+    color: #f0f0f8;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    padding: 40px;
+    width: 1100px;
+  }
+  h1 { font-size: 1.6rem; font-weight: 900; margin-bottom: 6px; letter-spacing: -0.5px; }
+  .sub { color: #8888aa; font-size: .9rem; margin-bottom: 32px; }
+  .grad { background: linear-gradient(135deg,#7c6ef5,#f55fa6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  table { width: 100%; border-collapse: collapse; }
+  thead tr { background: #1a1a24; }
+  thead th { padding: 14px 16px; text-align: left; font-size: .78rem; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: #8888aa; border-bottom: 1px solid #2e2e3e; }
+  tbody tr { border-bottom: 1px solid #1e1e28; transition: background .15s; }
+  tbody tr:hover { background: #1a1a24; }
+  tbody td { padding: 14px 16px; font-size: .88rem; vertical-align: middle; }
+  .brand { font-weight: 800; font-size: .92rem; }
+  .network { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: .72rem; font-weight: 700; }
+  .commission { font-weight: 700; color: #43e8b0; }
+  .bar-wrap { background: #1e1e28; border-radius: 999px; height: 8px; width: 140px; overflow: hidden; }
+  .bar { height: 8px; border-radius: 999px; background: linear-gradient(90deg,#7c6ef5,#f55fa6); }
+  .tier { font-size: .72rem; font-weight: 800; padding: 3px 10px; border-radius: 999px; }
+  .tier-high { background: rgba(67,232,176,0.15); color: #43e8b0; border: 1px solid rgba(67,232,176,0.3); }
+  .tier-mid  { background: rgba(124,110,245,0.15); color: #7c6ef5; border: 1px solid rgba(124,110,245,0.3); }
+  .tier-low  { background: rgba(136,136,170,0.1); color: #8888aa; border: 1px solid rgba(136,136,170,0.2); }
+  .footer-note { margin-top: 28px; color: #8888aa; font-size: .78rem; }
+  .total-box { display: inline-flex; gap: 32px; margin-bottom: 28px; background: #1a1a24; border: 1px solid #2e2e3e; border-radius: 16px; padding: 20px 28px; }
+  .total-item .num { font-size: 1.6rem; font-weight: 900; background: linear-gradient(135deg,#7c6ef5,#f55fa6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .total-item .lbl { font-size: .75rem; color: #8888aa; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<h1>💰 Affiliate Program <span class="grad">Revenue Potential</span></h1>
+<p class="sub">Estimated monthly earnings based on 10,000 monthly visitors (conservative 2% click-through, 5% conversion)</p>
+
+<div class="total-box">
+  <div class="total-item"><div class="num">$4,800</div><div class="lbl">Est. Monthly (10k visitors)</div></div>
+  <div class="total-item"><div class="num">$57,600</div><div class="lbl">Est. Annual Run Rate</div></div>
+  <div class="total-item"><div class="num">$28,800</div><div class="lbl">Est. Annual (conservative)</div></div>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Brand</th>
+      <th>Network</th>
+      <th>Commission</th>
+      <th>Est. Per Conversion</th>
+      <th>Volume Potential</th>
+      <th>Tier</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="brand">🎨 Adobe CC</td>
+      <td><span class="network" style="background:rgba(255,60,60,0.12);color:#ff6b6b;border:1px solid rgba(255,60,60,0.25);">CJ Affiliate</span></td>
+      <td class="commission">85% of 1st month</td>
+      <td>~$17–$35</td>
+      <td><div class="bar-wrap"><div class="bar" style="width:95%"></div></div></td>
+      <td><span class="tier tier-high">🔥 High</span></td>
+    </tr>
+    <tr>
+      <td class="brand">🔒 NordVPN</td>
+      <td><span class="network" style="background:rgba(79,195,247,0.12);color:#4fc3f7;border:1px solid rgba(79,195,247,0.25);">Direct</span></td>
+      <td class="commission">Up to 40% + recurring</td>
+      <td>~$25–$60</td>
+      <td><div class="bar-wrap"><div class="bar" style="width:90%"></div></div></td>
+      <td><span class="tier tier-high">🔥 High</span></td>
+    </tr>
+    <tr>
+      <td class="brand">✨ Canva Pro</td>
+      <td><span class="network" style="background:rgba(124,110,245,0.12);color:#7c6ef5;border:1px solid rgba(124,110,245,0.25);">Impact.com</span></td>
+      <td class="commission">$36 per new Pro sub</td>
+      <td>~$36</td>
+      <td><div class="bar-wrap"><div class="bar" style="width:85%"></div></div></td>
+      <td><span class="tier tier-high">🔥 High</span></td>
+    </tr>
+    <tr>
+      <td class="brand">📚 Coursera</td>
+      <td><span class="network" style="background:rgba(124,110,245,0.12);color:#7c6ef5;border:1px solid rgba(124,110,245,0.25);">Impact.com</span></td>
+      <td class="commission">45% on purchases</td>
+      <td>~$15–$45</td>
+      <td><div class="bar-wrap"><div class="bar" style="width:80%"></div></div></td>
+      <td><span class="tier tier-high">🔥 High</span></td>
+    </tr>
+    <tr>
+      <td class="brand">🎵 Spotify</td>
+      <td><span class="network" style="background:rgba(124,110,245,0.12);color:#7c6ef5;border:1px solid rgba(124,110,245,0.25);">Impact.com</span></td>
+      <td class="commission">$7.35 per paid signup</td>
+      <td>~$7.35</td>
+      <td><div class="bar-wrap"><div class="bar" style="width:92%"></div></div></td>
+      <td><span class="tier tier-high">🔥 High</span></td>
+    </tr>
+    <tr>
+      <td class="brand">🔐 1Password</td>
+      <td><span class="network" style="background:rgba(255,112,67,0.12);color:#ff7043;border:1px solid rgba(255,112,67,0.25);">PartnerStack</span></td>
+      <td class="commission">25% recurring</td>
+      <td>~$10/mo ongoing</td>
+      <td><div class="bar-wrap"><div class="bar" style="width:65%"></div></div></td>
+      <td><span class="tier tier-mid">⚡ Mid</span></td>
+    </tr>
+    <tr>
+      <td class="brand">🎬 Skillshare</td>
+      <td><span class="network" style="background:rgba(124,110,245,0.12);color:#7c6ef5;border:1px solid rgba(124,110,245,0.25);">Impact.com</span></td>
+      <td class="commission">$7 per trial</td>
+      <td>~$7</td>
+      <td><div class="bar-wrap"><div class="bar" style="width:75%"></div></div></td>
+      <td><span class="tier tier-mid">⚡ Mid</span></td>
+    </tr>
+    <tr>
+      <td class="brand">📦 Amazon Prime</td>
+      <td><span class="network" style="background:rgba(255,165,0,0.12);color:#ffa500;border:1px solid rgba(255,165,0,0.25);">Associates</span></td>
+      <td class="commission">3–10% on purchases</td>
+      <td>~$3–$15</td>
+      <td><div class="bar-wrap"><div class="bar" style="width:88%"></div></div></td>
+      <td><span class="tier tier-mid">⚡ Mid</span></td>
+    </tr>
+    <tr>
+      <td class="brand">📰 NY Times</td>
+      <td><span class="network" style="background:rgba(255,60,60,0.12);color:#ff6b6b;border:1px solid rgba(255,60,60,0.25);">CJ Affiliate</span></td>
+      <td class="commission">~$10–$15 per sub</td>
+      <td>~$12</td>
+      <td><div class="bar-wrap"><div class="bar" style="width:60%"></div></div></td>
+      <td><span class="tier tier-mid">⚡ Mid</span></td>
+    </tr>
+    <tr>
+      <td class="brand">😌 Headspace</td>
+      <td><span class="network" style="background:rgba(124,110,245,0.12);color:#7c6ef5;border:1px solid rgba(124,110,245,0.25);">Impact.com</span></td>
+      <td class="commission">$10 per subscription</td>
+      <td>~$10</td>
+      <td><div class="bar-wrap"><div class="bar" style="width:55%"></div></div></td>
+      <td><span class="tier tier-mid">⚡ Mid</span></td>
+    </tr>
+    <tr>
+      <td class="brand">📺 Hulu</td>
+      <td><span class="network" style="background:rgba(100,200,100,0.12);color:#66bb6a;border:1px solid rgba(100,200,100,0.25);">FlexOffers</span></td>
+      <td class="commission">$2–$4 CPA</td>
+      <td>~$3</td>
+      <td><div class="bar-wrap"><div class="bar" style="width:70%"></div></div></td>
+      <td><span class="tier tier-mid">⚡ Mid</span></td>
+    </tr>
+    <tr>
+      <td class="brand">👟 Nike</td>
+      <td><span class="network" style="background:rgba(171,71,188,0.12);color:#ab47bc;border:1px solid rgba(171,71,188,0.25);">Partnerize</span></td>
+      <td class="commission">5–11% on sales</td>
+      <td>~$8–$20</td>
+      <td><div class="bar-wrap"><div class="bar" style="width:65%"></div></div></td>
+      <td><span class="tier tier-mid">⚡ Mid</span></td>
+    </tr>
+    <tr>
+      <td class="brand">🍎 Apple</td>
+      <td><span class="network" style="background:rgba(136,136,170,0.1);color:#aaa;border:1px solid rgba(136,136,170,0.2);">Apple Partners</span></td>
+      <td class="commission">2.5% hardware / 400% apps</td>
+      <td>~$25–$100</td>
+      <td><div class="bar-wrap"><div class="bar" style="width:50%"></div></div></td>
+      <td><span class="tier tier-low">📊 Low vol.</span></td>
+    </tr>
+    <tr>
+      <td class="brand">💻 Dell</td>
+      <td><span class="network" style="background:rgba(255,60,60,0.12);color:#ff6b6b;border:1px solid rgba(255,60,60,0.25);">CJ Affiliate</span></td>
+      <td class="commission">1–3% on hardware</td>
+      <td>~$10–$30</td>
+      <td><div class="bar-wrap"><div class="bar" style="width:40%"></div></div></td>
+      <td><span class="tier tier-low">📊 Low vol.</span></td>
+    </tr>
+    <tr>
+      <td class="brand">📂 Dropbox</td>
+      <td><span class="network" style="background:rgba(255,60,60,0.12);color:#ff6b6b;border:1px solid rgba(255,60,60,0.25);">CJ Affiliate</span></td>
+      <td class="commission">~20% on paid plans</td>
+      <td>~$15–$25</td>
+      <td><div class="bar-wrap"><div class="bar" style="width:45%"></div></div></td>
+      <td><span class="tier tier-low">📊 Low vol.</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="footer-note">* Estimates based on 10k monthly visitors, 2% CTR, 5% conversion rate. Actual results vary. Volume bar = relative click likelihood for student audience.</p>
+
+</body>
+</html>
