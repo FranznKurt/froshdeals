@@ -263,14 +263,17 @@
 
 <!-- FREE SECTION -->
 <section style="max-width:1200px;margin:40px auto 0;padding:0 24px;">
-  <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
-    <span style="font-size:1.8rem;">🆓</span>
-    <div>
-      <h2 style="font-size:1.5rem;font-weight:900;letter-spacing:-0.5px;">Completely Free With Your .edu</h2>
-      <p style="color:var(--muted);font-size:.9rem;">No credit card. No trial. Just free.</p>
+  <button onclick="toggleFree()" id="freeToggleBtn" style="width:100%;display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid rgba(67,232,176,0.3);border-radius:16px;padding:20px 24px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--accent3)'" onmouseout="this.style.borderColor='rgba(67,232,176,0.3)'">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span style="font-size:1.8rem;">🆓</span>
+      <div style="text-align:left;">
+        <div style="font-size:1.2rem;font-weight:900;color:#fff;letter-spacing:-0.5px;">Completely Free With Your .edu</div>
+        <div style="color:var(--muted);font-size:.85rem;">No credit card. No trial. Just free. — click to expand</div>
+      </div>
     </div>
-  </div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;" id="freeGrid"></div>
+    <span id="freeArrow" style="font-size:1.4rem;color:var(--accent3);transition:transform .3s;">▼</span>
+  </button>
+  <div id="freeGrid" style="display:none;margin-top:16px;display:none;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;"></div>
 </section>
 
 <div style="max-width:1200px;margin:48px auto 0;padding:0 24px;">
@@ -582,12 +585,26 @@ function renderFreeGrid() {
           <span style="font-size:1.8rem;">${d.icon}</span>
           <span style="font-size:.68rem;font-weight:800;color:var(--accent3);background:rgba(67,232,176,0.1);padding:3px 9px;border-radius:999px;border:1px solid rgba(67,232,176,0.25);">FREE</span>
         </div>
-        <div style="font-weight:800;font-size:.95rem;margin-bottom:6px;">${d.name}</div>
+        <div style="font-weight:800;font-size:.95rem;margin-bottom:6px;color:#fff;">${d.name}</div>
         <div style="font-size:.78rem;color:var(--muted);">${d.desc}</div>
         <div style="margin-top:12px;font-size:.8rem;font-weight:700;color:var(--accent3);">Claim Free →</div>
       </div>
     </a>
   `).join("");
+}
+
+let freeOpen = false;
+function toggleFree() {
+  freeOpen = !freeOpen;
+  const grid = document.getElementById("freeGrid");
+  const arrow = document.getElementById("freeArrow");
+  if (freeOpen) {
+    grid.style.display = "grid";
+    arrow.style.transform = "rotate(180deg)";
+  } else {
+    grid.style.display = "none";
+    arrow.style.transform = "rotate(0deg)";
+  }
 }
 
 renderFreeGrid();
