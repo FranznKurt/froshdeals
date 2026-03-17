@@ -261,6 +261,29 @@
   </div>
 </div>
 
+<!-- DEAL OF THE WEEK -->
+<section style="max-width:1200px;margin:48px auto 0;padding:0 24px;" id="dotw-section">
+  <div id="dotw-card" style="position:relative;overflow:hidden;border-radius:24px;background:linear-gradient(135deg,#1a1a24 0%,#23232f 100%);border:2px solid var(--accent);box-shadow:0 0 60px rgba(124,110,245,0.2);padding:36px 40px;display:flex;align-items:center;gap:40px;flex-wrap:wrap;">
+    <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));"></div>
+    <div style="flex:0 0 auto;text-align:center;">
+      <div style="font-size:4rem;" id="dotw-icon">🎨</div>
+      <div style="margin-top:8px;background:linear-gradient(135deg,#f5c518,#ff9500);color:#000;font-size:.7rem;font-weight:900;padding:4px 12px;border-radius:999px;letter-spacing:1px;">🔥 DEAL OF THE WEEK</div>
+    </div>
+    <div style="flex:1;min-width:200px;">
+      <div style="font-size:.75rem;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Featured Deal</div>
+      <div style="font-size:1.8rem;font-weight:900;letter-spacing:-0.5px;margin-bottom:4px;" id="dotw-brand">Adobe Creative Cloud</div>
+      <div style="font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:10px;" id="dotw-discount">60% off for students</div>
+      <div style="color:var(--muted);font-size:.95rem;line-height:1.5;max-width:480px;" id="dotw-desc">Photoshop, Illustrator, Premiere Pro, and 20+ apps — the full Creative Cloud suite at 60% off. Every design, art, and media student needs this. Highest affiliate commission on the site.</div>
+    </div>
+    <div style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:12px;">
+      <a id="dotw-link" href="https://www.adobe.com/creativecloud/plans/students.html" target="_blank" rel="noopener" style="text-decoration:none;">
+        <button style="padding:16px 36px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:14px;color:#fff;font-size:1.05rem;font-weight:800;cursor:pointer;white-space:nowrap;transition:opacity .2s,transform .2s;" onmouseover="this.style.opacity='.88';this.style.transform='scale(0.97)'" onmouseout="this.style.opacity='1';this.style.transform=''">Get This Deal →</button>
+      </a>
+      <div style="font-size:.75rem;color:var(--muted);">⏰ Refreshes every Saturday</div>
+    </div>
+  </div>
+</section>
+
 <!-- FREE SECTION -->
 <section style="max-width:1200px;margin:40px auto 0;padding:0 24px;">
   <button onclick="toggleFree()" id="freeToggleBtn" style="width:100%;display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid rgba(67,232,176,0.3);border-radius:16px;padding:20px 24px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--accent3)'" onmouseout="this.style.borderColor='rgba(67,232,176,0.3)'">
@@ -617,6 +640,40 @@ function toggleFree() {
 renderFreeGrid();
 renderCategories();
 renderGrid();
+
+// ── DEAL OF THE WEEK ─────────────────────────────────────────
+// Rotates weekly based on the current week number.
+// To change the featured deal, update DOTW_DEALS or the index logic.
+const DOTW_DEALS = [
+  { icon:"🎨", brand:"Adobe Creative Cloud", discount:"60% off for students", desc:"Photoshop, Illustrator, Premiere Pro, and 20+ apps — the full Creative Cloud suite at 60% off. Every design, art, and media student needs this.", url:"https://www.adobe.com/creativecloud/plans/students.html" },
+  { icon:"🔒", brand:"NordVPN", discount:"Up to 63% off + free months", desc:"Stay safe on campus WiFi with the #1 student VPN. Up to 63% off plus extra months free. Essential for anyone using public networks.", url:"https://nordvpn.com/student/" },
+  { icon:"🎵", brand:"Spotify Premium", discount:"$2.99/mo for students", desc:"Spotify Premium for just $2.99/month — that's 50% off the regular price. Ad-free music, offline listening, and unlimited skips.", url:"https://www.spotify.com/us/student/" },
+  { icon:"📦", brand:"Amazon Prime Student", discount:"6 months FREE then 50% off", desc:"Free 6-month trial then just $7.49/mo (vs $14.99). Free 2-day shipping, Prime Video, Prime Gaming, and more.", url:"https://www.amazon.com/joinstudent?tag=" + AFF.amazon },
+  { icon:"📺", brand:"Hulu", discount:"$1.99/mo", desc:"Hulu with ads for just $1.99/month with your student verification. Watch current-season TV, movies, and Hulu originals at the best streaming price around.", url:"https://www.hulu.com/student" },
+  { icon:"🍎", brand:"Apple Education Store", discount:"Up to 20% off + free AirPods", desc:"Shop the Apple Education Store for discounts on MacBooks, iPads, and AirPods. Seasonal back-to-school deals include free AirPods with Mac purchase.", url:"https://www.apple.com/shop/buy-mac/mac-laptop/students" },
+  { icon:"🎮", brand:"Xbox Game Pass Ultimate", discount:"Student pricing available", desc:"Play hundreds of games on console, PC, and cloud for less. Perfect for study breaks — Xbox offers student rates through select campus programs.", url:"https://www.xbox.com/en-US/xbox-game-pass" },
+  { icon:"📚", brand:"Chegg Study", discount:"Save on textbooks + homework help", desc:"Rent or buy textbooks for a fraction of the retail price, plus get 24/7 step-by-step homework help and expert tutoring.", url:"https://www.chegg.com/" },
+];
+
+function getWeekNumber(date) {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+}
+
+function renderDOTW() {
+  const week = getWeekNumber(new Date());
+  const deal = DOTW_DEALS[week % DOTW_DEALS.length];
+  document.getElementById("dotw-icon").textContent = deal.icon;
+  document.getElementById("dotw-brand").textContent = deal.brand;
+  document.getElementById("dotw-discount").textContent = deal.discount;
+  document.getElementById("dotw-desc").textContent = deal.desc;
+  document.getElementById("dotw-link").href = deal.url;
+}
+
+renderDOTW();
 </script>
 </body>
 </html>
