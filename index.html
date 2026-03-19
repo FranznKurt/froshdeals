@@ -158,6 +158,12 @@
 
   .card-top { display: flex; align-items: center; justify-content: space-between; }
   .brand-icon { font-size: 2.2rem; line-height: 1; }
+  .brand-logo {
+    width: 44px; height: 44px; border-radius: 10px;
+    object-fit: contain; background: #fff; padding: 4px;
+    flex-shrink: 0;
+  }
+  .brand-logo-fallback { font-size: 2.2rem; line-height: 1; }
   .verified {
     display: flex; align-items: center; gap: 4px;
     font-size: .72rem; font-weight: 700; color: var(--accent3);
@@ -347,6 +353,147 @@
 
 <script>
 // ============================================================
+// ============================================================
+// 🖼️ BRAND LOGO MAP — Clearbit logo API (free, no key required)
+// ============================================================
+const BRAND_LOGO = {
+  "Amazon Prime":           "amazon.com",
+  "Spotify":                "spotify.com",
+  "Hulu":                   "hulu.com",
+  "Apple Music":            "apple.com",
+  "YouTube Premium":        "youtube.com",
+  "Apple":                  "apple.com",
+  "Nike":                   "nike.com",
+  "Chegg":                  "chegg.com",
+  "Adobe Creative Cloud":   "adobe.com",
+  "Microsoft 365":          "microsoft.com",
+  "DoorDash":               "doordash.com",
+  "Grubhub":                "grubhub.com",
+  "ASOS":                   "asos.com",
+  "Notion":                 "notion.so",
+  "GitHub":                 "github.com",
+  "Figma":                  "figma.com",
+  "Headspace":              "headspace.com",
+  "Calm":                   "calm.com",
+  "Canva":                  "canva.com",
+  "Skillshare":             "skillshare.com",
+  "NY Times":               "nytimes.com",
+  "Levi's":                 "levi.com",
+  "Under Armour":           "underarmour.com",
+  "Dell":                   "dell.com",
+  "Lenovo":                 "lenovo.com",
+  "1Password":              "1password.com",
+  "Autodesk":               "autodesk.com",
+  "JetBrains":              "jetbrains.com",
+  "Coursera":               "coursera.org",
+  "Dropbox":                "dropbox.com",
+  "Backblaze":              "backblaze.com",
+  "Wolfram Alpha":          "wolframalpha.com",
+  "Duolingo":               "duolingo.com",
+  "Bodybuilding.com":       "bodybuilding.com",
+  "Ray-Ban":                "ray-ban.com",
+  "The Economist":          "economist.com",
+  "LinkedIn Learning":      "linkedin.com",
+  "Peacock":                "peacocktv.com",
+  "Tidal":                  "tidal.com",
+  "Pandora":                "pandora.com",
+  "Deezer":                 "deezer.com",
+  "Best Buy":               "bestbuy.com",
+  "HP":                     "hp.com",
+  "Bose":                   "bose.com",
+  "Logitech":               "logitech.com",
+  "Samsung":                "samsung.com",
+  "GoPro":                  "gopro.com",
+  "Adorama":                "adorama.com",
+  "Avid":                   "avid.com",
+  "Codecademy":             "codecademy.com",
+  "Grammarly":              "grammarly.com",
+  "Evernote":               "evernote.com",
+  "LastPass":               "lastpass.com",
+  "Malwarebytes":           "malwarebytes.com",
+  "H&M":                    "hm.com",
+  "Reebok":                 "reebok.com",
+  "Adidas":                 "adidas.com",
+  "PacSun":                 "pacsun.com",
+  "Converse":               "converse.com",
+  "Madewell":               "madewell.com",
+  "Vans":                   "vans.com",
+  "Redbubble":              "redbubble.com",
+  "Purple Mattress":        "purple.com",
+  "Gymshark":               "gymshark.com",
+  "Chipotle":               "chipotle.com",
+  "Domino's":               "dominos.com",
+  "Papa John's":            "papajohns.com",
+  "StudentUniverse":        "studentuniverse.com",
+  "Amtrak":                 "amtrak.com",
+  "Greyhound":              "greyhound.com",
+  "Hostelworld":            "hostelworld.com",
+  "Hertz":                  "hertz.com",
+  "Discover Student Card":  "discover.com",
+  "Chase Freedom Student":  "chase.com",
+  "Deserve EDU Card":       "deserve.com",
+  "SoFi":                   "sofi.com",
+  "US Mobile":              "usmobile.com",
+  "Peloton":                "onepeloton.com",
+  "Planet Fitness":         "planetfitness.com",
+  "Noom":                   "noom.com",
+  "Xbox Game Pass":         "xbox.com",
+  "EA Play":                "ea.com",
+  "Twitch":                 "twitch.tv",
+  "Discord Nitro":          "discord.com",
+  "Target":                 "target.com",
+  "Chegg Study":            "chegg.com",
+  "Course Hero":            "coursehero.com",
+  "iD.me":                  "id.me",
+  "UNiDAYS":                "myunidays.com",
+  "Student Beans":          "studentbeans.com",
+  "Chewy":                  "chewy.com",
+  "AMC Theatres":           "amctheatres.com",
+  "Regal Cinemas":          "regmovies.com",
+  "The Washington Post":    "washingtonpost.com",
+  "Wall Street Journal":    "wsj.com",
+  "Statista":               "statista.com",
+  "Scribd":                 "scribd.com",
+  "Chegg Tutors":           "chegg.com",
+  "Wix":                    "wix.com",
+  "Squarespace":            "squarespace.com",
+  "Namecheap":              "namecheap.com",
+  "Digital Ocean":          "digitalocean.com",
+  "NordVPN":                "nordvpn.com",
+  "GitHub Pro + Copilot":   "github.com",
+  "Notion Personal Pro":    "notion.so",
+  "Figma Professional":     "figma.com",
+  "Canva Pro":              "canva.com",
+  "Autodesk Suite":         "autodesk.com",
+  "JetBrains All IDEs":     "jetbrains.com",
+  "1Password (1 year)":     "1password.com",
+  "AWS Educate":            "aws.amazon.com",
+  "DigitalOcean $200 Credits": "digitalocean.com",
+  "Namecheap Free Domain":  "namecheap.com",
+  "Amazon Prime (6 mo)":    "amazon.com",
+  "LastPass Premium":       "lastpass.com",
+  "Discord Nitro (3 mo)":   "discord.com",
+  "Cloudflare for Students":"cloudflare.com",
+  "Tableau Desktop":        "tableau.com",
+  "Google Workspace Edu":   "google.com",
+  "Adobe Creative Cloud (DOTW)": "adobe.com",
+  "Spotify Premium":        "spotify.com",
+  "Amazon Prime Student":   "amazon.com",
+  "Apple Education Store":  "apple.com",
+  "Xbox Game Pass Ultimate":"xbox.com",
+  "Chegg Study (DOTW)":     "chegg.com",
+};
+
+function brandLogo(name, fallbackEmoji, size=44) {
+  const domain = BRAND_LOGO[name];
+  if (!domain) return `<span class="brand-logo-fallback">${fallbackEmoji}</span>`;
+  return `<img class="brand-logo" width="${size}" height="${size}"
+    src="https://logo.clearbit.com/${domain}"
+    alt="${name} logo"
+    onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
+    <span class="brand-logo-fallback" style="display:none">${fallbackEmoji}</span>`;
+}
+
 // 🔑 AFFILIATE ID CONFIG — fill in your IDs as you get approved
 // ============================================================
 const AFF = {
@@ -565,7 +712,7 @@ function renderGrid() {
   grid.innerHTML = filtered.map(d => `
     <div class="card">
       <div class="card-top">
-        <span class="brand-icon">${d.icon}</span>
+        <div style="display:flex;align-items:center;">${brandLogo(d.brand, d.icon)}</div>
         <span class="verified">✓ Verified</span>
       </div>
       <div class="brand-name">${d.brand}</div>
@@ -612,7 +759,7 @@ function renderFreeGrid() {
         onmouseover="this.style.borderColor='var(--accent3)';this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 32px rgba(67,232,176,0.12)'"
         onmouseout="this.style.borderColor='rgba(67,232,176,0.2)';this.style.transform='';this.style.boxShadow=''">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
-          <span style="font-size:1.8rem;">${d.icon}</span>
+          <div style="display:flex;align-items:center;">${brandLogo(d.name, d.icon, 36)}</div>
           <span style="font-size:.68rem;font-weight:800;color:var(--accent3);background:rgba(67,232,176,0.1);padding:3px 9px;border-radius:999px;border:1px solid rgba(67,232,176,0.25);">FREE</span>
         </div>
         <div style="font-weight:800;font-size:.95rem;margin-bottom:6px;color:#fff;">${d.name}</div>
@@ -666,7 +813,16 @@ function getWeekNumber(date) {
 function renderDOTW() {
   const week = getWeekNumber(new Date());
   const deal = DOTW_DEALS[week % DOTW_DEALS.length];
-  document.getElementById("dotw-icon").textContent = deal.icon;
+  // Logo with fallback to emoji
+  const iconEl = document.getElementById("dotw-icon");
+  const domain = BRAND_LOGO[deal.brand];
+  if (domain) {
+    iconEl.innerHTML = `<img src="https://logo.clearbit.com/${domain}" alt="${deal.brand} logo"
+      style="width:72px;height:72px;border-radius:16px;object-fit:contain;background:#fff;padding:6px;"
+      onerror="this.outerHTML='<span style=\\'font-size:4rem\\'>${deal.icon}</span>'">`;
+  } else {
+    iconEl.textContent = deal.icon;
+  }
   document.getElementById("dotw-brand").textContent = deal.brand;
   document.getElementById("dotw-discount").textContent = deal.discount;
   document.getElementById("dotw-desc").textContent = deal.desc;
