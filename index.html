@@ -160,8 +160,8 @@
   .brand-icon { font-size: 2.2rem; line-height: 1; }
   .brand-logo {
     width: 44px; height: 44px; border-radius: 10px;
-    object-fit: contain; background: #fff; padding: 4px;
-    flex-shrink: 0;
+    object-fit: contain; padding: 6px;
+    flex-shrink: 0; background: rgba(255,255,255,0.07);
   }
   .brand-logo-fallback { font-size: 2.2rem; line-height: 1; }
   .verified {
@@ -354,141 +354,156 @@
 <script>
 // ============================================================
 // ============================================================
-// 🖼️ BRAND LOGO MAP — Clearbit logo API (free, no key required)
+// 🖼️ BRAND LOGO MAP — Simple Icons CDN (cdn.simpleicons.org)
+// Key = brand display name, Value = [simpleicons slug, hex color]
+// Browse slugs at: https://simpleicons.org
 // ============================================================
 const BRAND_LOGO = {
-  "Amazon Prime":           "amazon.com",
-  "Spotify":                "spotify.com",
-  "Hulu":                   "hulu.com",
-  "Apple Music":            "apple.com",
-  "YouTube Premium":        "youtube.com",
-  "Apple":                  "apple.com",
-  "Nike":                   "nike.com",
-  "Chegg":                  "chegg.com",
-  "Adobe Creative Cloud":   "adobe.com",
-  "Microsoft 365":          "microsoft.com",
-  "DoorDash":               "doordash.com",
-  "Grubhub":                "grubhub.com",
-  "ASOS":                   "asos.com",
-  "Notion":                 "notion.so",
-  "GitHub":                 "github.com",
-  "Figma":                  "figma.com",
-  "Headspace":              "headspace.com",
-  "Calm":                   "calm.com",
-  "Canva":                  "canva.com",
-  "Skillshare":             "skillshare.com",
-  "NY Times":               "nytimes.com",
-  "Levi's":                 "levi.com",
-  "Under Armour":           "underarmour.com",
-  "Dell":                   "dell.com",
-  "Lenovo":                 "lenovo.com",
-  "1Password":              "1password.com",
-  "Autodesk":               "autodesk.com",
-  "JetBrains":              "jetbrains.com",
-  "Coursera":               "coursera.org",
-  "Dropbox":                "dropbox.com",
-  "Backblaze":              "backblaze.com",
-  "Wolfram Alpha":          "wolframalpha.com",
-  "Duolingo":               "duolingo.com",
-  "Bodybuilding.com":       "bodybuilding.com",
-  "Ray-Ban":                "ray-ban.com",
-  "The Economist":          "economist.com",
-  "LinkedIn Learning":      "linkedin.com",
-  "Peacock":                "peacocktv.com",
-  "Tidal":                  "tidal.com",
-  "Pandora":                "pandora.com",
-  "Deezer":                 "deezer.com",
-  "Best Buy":               "bestbuy.com",
-  "HP":                     "hp.com",
-  "Bose":                   "bose.com",
-  "Logitech":               "logitech.com",
-  "Samsung":                "samsung.com",
-  "GoPro":                  "gopro.com",
-  "Adorama":                "adorama.com",
-  "Avid":                   "avid.com",
-  "Codecademy":             "codecademy.com",
-  "Grammarly":              "grammarly.com",
-  "Evernote":               "evernote.com",
-  "LastPass":               "lastpass.com",
-  "Malwarebytes":           "malwarebytes.com",
-  "H&M":                    "hm.com",
-  "Reebok":                 "reebok.com",
-  "Adidas":                 "adidas.com",
-  "PacSun":                 "pacsun.com",
-  "Converse":               "converse.com",
-  "Madewell":               "madewell.com",
-  "Vans":                   "vans.com",
-  "Redbubble":              "redbubble.com",
-  "Purple Mattress":        "purple.com",
-  "Gymshark":               "gymshark.com",
-  "Chipotle":               "chipotle.com",
-  "Domino's":               "dominos.com",
-  "Papa John's":            "papajohns.com",
-  "StudentUniverse":        "studentuniverse.com",
-  "Amtrak":                 "amtrak.com",
-  "Greyhound":              "greyhound.com",
-  "Hostelworld":            "hostelworld.com",
-  "Hertz":                  "hertz.com",
-  "Discover Student Card":  "discover.com",
-  "Chase Freedom Student":  "chase.com",
-  "Deserve EDU Card":       "deserve.com",
-  "SoFi":                   "sofi.com",
-  "US Mobile":              "usmobile.com",
-  "Peloton":                "onepeloton.com",
-  "Planet Fitness":         "planetfitness.com",
-  "Noom":                   "noom.com",
-  "Xbox Game Pass":         "xbox.com",
-  "EA Play":                "ea.com",
-  "Twitch":                 "twitch.tv",
-  "Discord Nitro":          "discord.com",
-  "Target":                 "target.com",
-  "Chegg Study":            "chegg.com",
-  "Course Hero":            "coursehero.com",
-  "iD.me":                  "id.me",
-  "UNiDAYS":                "myunidays.com",
-  "Student Beans":          "studentbeans.com",
-  "Chewy":                  "chewy.com",
-  "AMC Theatres":           "amctheatres.com",
-  "Regal Cinemas":          "regmovies.com",
-  "The Washington Post":    "washingtonpost.com",
-  "Wall Street Journal":    "wsj.com",
-  "Statista":               "statista.com",
-  "Scribd":                 "scribd.com",
-  "Chegg Tutors":           "chegg.com",
-  "Wix":                    "wix.com",
-  "Squarespace":            "squarespace.com",
-  "Namecheap":              "namecheap.com",
-  "Digital Ocean":          "digitalocean.com",
-  "NordVPN":                "nordvpn.com",
-  "GitHub Pro + Copilot":   "github.com",
-  "Notion Personal Pro":    "notion.so",
-  "Figma Professional":     "figma.com",
-  "Canva Pro":              "canva.com",
-  "Autodesk Suite":         "autodesk.com",
-  "JetBrains All IDEs":     "jetbrains.com",
-  "1Password (1 year)":     "1password.com",
-  "AWS Educate":            "aws.amazon.com",
-  "DigitalOcean $200 Credits": "digitalocean.com",
-  "Namecheap Free Domain":  "namecheap.com",
-  "Amazon Prime (6 mo)":    "amazon.com",
-  "LastPass Premium":       "lastpass.com",
-  "Discord Nitro (3 mo)":   "discord.com",
-  "Cloudflare for Students":"cloudflare.com",
-  "Tableau Desktop":        "tableau.com",
-  "Google Workspace Edu":   "google.com",
-  "Adobe Creative Cloud (DOTW)": "adobe.com",
-  "Spotify Premium":        "spotify.com",
-  "Amazon Prime Student":   "amazon.com",
-  "Apple Education Store":  "apple.com",
-  "Xbox Game Pass Ultimate":"xbox.com",
-  "Chegg Study (DOTW)":     "chegg.com",
+  // Entertainment / Streaming
+  "Spotify":                ["spotify",         "1DB954"],
+  "Spotify Premium":        ["spotify",         "1DB954"],
+  "Hulu":                   ["hulu",            "1CE783"],
+  "YouTube Premium":        ["youtube",         "FF0000"],
+  "Apple Music":            ["applemusic",      "FC3C44"],
+  "Tidal":                  ["tidal",           "000000"],
+  "Pandora":                ["pandora",         "3668FF"],
+  "Deezer":                 ["deezer",          "FF0092"],
+  "AMC Theatres":           ["amc",             "E31837"],
+  "Peacock":                ["peacock",         "000000"],
+  "The Washington Post":    ["washingtonpost",  "000000"],
+  "Wall Street Journal":    ["wsj",             "000000"],
+  "Paramount+":             ["paramount",       "0064FF"],
+  "Apple TV+":              ["appletv",         "000000"],
+
+  // Music
+  "Apple":                  ["apple",           "999999"],
+  "Apple Education Store":  ["apple",           "999999"],
+
+  // Tech / Software
+  "Adobe Creative Cloud":   ["adobe",           "FF0000"],
+  "Microsoft 365":          ["microsoftoffice", "D83B01"],
+  "Notion":                 ["notion",          "ffffff"],
+  "Notion Personal Pro":    ["notion",          "ffffff"],
+  "GitHub":                 ["github",          "ffffff"],
+  "GitHub Pro + Copilot":   ["github",          "ffffff"],
+  "Figma":                  ["figma",           "F24E1E"],
+  "Figma Professional":     ["figma",           "F24E1E"],
+  "Canva":                  ["canva",           "00C4CC"],
+  "Canva Pro":              ["canva",           "00C4CC"],
+  "JetBrains":              ["jetbrains",       "000000"],
+  "JetBrains All IDEs":     ["jetbrains",       "000000"],
+  "1Password":              ["1password",       "0094F5"],
+  "1Password (1 year)":     ["1password",       "0094F5"],
+  "Autodesk":               ["autodesk",        "000000"],
+  "Autodesk Suite":         ["autodesk",        "000000"],
+  "Dropbox":                ["dropbox",         "0061FF"],
+  "Grammarly":              ["grammarly",       "15C39A"],
+  "Evernote":               ["evernote",        "00A82D"],
+  "LastPass":               ["lastpass",        "D32D27"],
+  "LastPass Premium":       ["lastpass",        "D32D27"],
+  "Malwarebytes":           ["malwarebytes",    "00A5DF"],
+  "NordVPN":                ["nordvpn",         "4687FF"],
+  "Codecademy":             ["codecademy",      "1F4056"],
+  "Wix":                    ["wix",             "FAAD00"],
+  "Squarespace":            ["squarespace",     "ffffff"],
+  "Discord Nitro":          ["discord",         "5865F2"],
+  "Discord Nitro (3 mo)":   ["discord",         "5865F2"],
+  "Cloudflare for Students":["cloudflare",      "F38020"],
+  "Tableau Desktop":        ["tableau",         "E97627"],
+
+  // Education
+  "Coursera":               ["coursera",        "0056D2"],
+  "Skillshare":             ["skillshare",      "00FF84"],
+  "Duolingo":               ["duolingo",        "58CC02"],
+  "Chegg":                  ["chegg",           "F15A22"],
+  "Chegg Study":            ["chegg",           "F15A22"],
+  "Chegg Tutors":           ["chegg",           "F15A22"],
+  "Course Hero":            ["coursehero",      "FF8C00"],
+  "Scribd":                 ["scribd",          "1E7B85"],
+  "Babbel":                 ["babbel",          "572A7B"],
+  "Overleaf":               ["overleaf",        "47A141"],
+  "LinkedIn Learning":      ["linkedin",        "0A66C2"],
+  "Google Workspace Edu":   ["google",          "4285F4"],
+
+  // Cloud / Dev
+  "AWS Educate":            ["amazonaws",       "FF9900"],
+  "Namecheap":              ["namecheap",       "DE3723"],
+  "Namecheap Free Domain":  ["namecheap",       "DE3723"],
+  "Digital Ocean":          ["digitalocean",    "0080FF"],
+  "DigitalOcean $200 Credits":["digitalocean",  "0080FF"],
+
+  // Shopping / Retail
+  "Amazon Prime":           ["amazon",          "FF9900"],
+  "Amazon Prime Student":   ["amazon",          "FF9900"],
+  "Amazon Prime (6 mo)":    ["amazon",          "FF9900"],
+  "Target":                 ["target",          "CC0000"],
+  "Nike":                   ["nike",            "ffffff"],
+  "ASOS":                   ["asos",            "ffffff"],
+  "Adidas":                 ["adidas",          "ffffff"],
+  "H&M":                    ["hm",              "E50010"],
+  "Reebok":                 ["reebok",          "000000"],
+  "Converse":               ["converse",        "000000"],
+  "Vans":                   ["vans",            "000000"],
+  "Gymshark":               ["gymshark",        "ffffff"],
+  "Redbubble":              ["redbubble",       "E41321"],
+  "Under Armour":           ["underarmour",     "C8102E"],
+  "Chewy":                  ["chewy",           "0066CC"],
+
+  // Food / Delivery
+  "DoorDash":               ["doordash",        "FF3008"],
+  "Grubhub":                ["grubhub",         "F63440"],
+  "Chipotle":               ["chipotle",        "491F10"],
+  "Domino's":               ["dominospizza",    "006491"],
+  "Papa John's":            ["papajohns",       "2E7D32"],
+
+  // Tech Hardware
+  "Apple (hardware)":       ["apple",           "999999"],
+  "Dell":                   ["dell",            "007DB8"],
+  "Lenovo":                 ["lenovo",          "E2231A"],
+  "HP":                     ["hp",              "0096D6"],
+  "Samsung":                ["samsung",         "1428A0"],
+  "Logitech":               ["logitech",        "00B8FC"],
+  "GoPro":                  ["gopro",           "000000"],
+  "Best Buy":               ["bestbuy",         "FFE000"],
+
+  // Finance
+  "Discover Student Card":  ["discover",        "FF6600"],
+  "Chase Freedom Student":  ["chase",           "117ACA"],
+  "SoFi":                   ["sofi",            "8B5CF6"],
+
+  // Health / Fitness
+  "Headspace":              ["headspace",       "F47D31"],
+  "Calm":                   ["calm",            "00818A"],
+  "Peloton":                ["peloton",         "FC1040"],
+
+  // Travel
+  "Hertz":                  ["hertz",           "FFD100"],
+  "Amtrak":                 ["amtrak",          "004B87"],
+  "Hostelworld":            ["hostelworld",     "FF6600"],
+
+  // Gaming
+  "Xbox Game Pass":         ["xbox",            "107C10"],
+  "Xbox Game Pass Ultimate":["xbox",            "107C10"],
+  "EA Play":                ["ea",              "FF4747"],
+  "Twitch":                 ["twitch",          "9146FF"],
+
+  // Aggregators / Misc
+  "iD.me":                  ["idme",            "47A0D9"],
+  "UNiDAYS":                ["unidays",         "000000"],
+
+  // DOTW entries
+  "NordVPN (DOTW)":         ["nordvpn",         "4687FF"],
+  "Spotify Premium (DOTW)": ["spotify",         "1DB954"],
 };
 
 function brandLogo(name, fallbackEmoji, size=44) {
-  const domain = BRAND_LOGO[name];
-  if (!domain) return `<span class="brand-logo-fallback">${fallbackEmoji}</span>`;
+  const entry = BRAND_LOGO[name];
+  if (!entry) return `<span class="brand-logo-fallback">${fallbackEmoji}</span>`;
+  const [slug, color] = entry;
+  // Simple Icons CDN: svg colored with the brand hex
+  const url = `https://cdn.simpleicons.org/${slug}/${color}`;
   return `<img class="brand-logo" width="${size}" height="${size}"
-    src="https://logo.clearbit.com/${domain}"
+    src="${url}"
     alt="${name} logo"
     onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
     <span class="brand-logo-fallback" style="display:none">${fallbackEmoji}</span>`;
@@ -823,10 +838,11 @@ function renderDOTW() {
   const deal = DOTW_DEALS[week % DOTW_DEALS.length];
   // Logo with fallback to emoji
   const iconEl = document.getElementById("dotw-icon");
-  const domain = BRAND_LOGO[deal.brand];
-  if (domain) {
-    iconEl.innerHTML = `<img src="https://logo.clearbit.com/${domain}" alt="${deal.brand} logo"
-      style="width:72px;height:72px;border-radius:16px;object-fit:contain;background:#fff;padding:6px;"
+  const entry = BRAND_LOGO[deal.brand];
+  if (entry) {
+    const [slug, color] = entry;
+    iconEl.innerHTML = `<img src="https://cdn.simpleicons.org/${slug}/${color}" alt="${deal.brand} logo"
+      style="width:72px;height:72px;border-radius:16px;object-fit:contain;background:rgba(255,255,255,0.07);padding:10px;"
       onerror="this.outerHTML='<span style=\\'font-size:4rem\\'>${deal.icon}</span>'">`;
   } else {
     iconEl.textContent = deal.icon;
