@@ -489,11 +489,14 @@ const BRAND_LOGO = {
 function brandLogo(name, fallbackEmoji, size=44) {
   const domain = BRAND_LOGO[name];
   if (!domain) return `<span class="brand-logo-fallback">${fallbackEmoji}</span>`;
-  const url = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+  // Use logo.dev CDN — high quality brand logos by domain, free tier
+  const url = `https://img.logo.dev/${domain}?token=pk_X6DXs9qTQCSBjhpbQCDNuA&size=64&format=png`;
+  const fallback1 = `https://logo.clearbit.com/${domain}`;
+  const fallback2 = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
   return `<img class="brand-logo" width="${size}" height="${size}"
     src="${url}"
     alt="${name} logo"
-    onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
+    onerror="this.src='${fallback1}';this.onerror=function(){this.src='${fallback2}';this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='inline'}}">
     <span class="brand-logo-fallback" style="display:none">${fallbackEmoji}</span>`;
 }
 
@@ -829,9 +832,12 @@ function renderDOTW() {
   const iconEl = document.getElementById("dotw-icon");
   const domain = BRAND_LOGO[deal.brand];
   if (domain) {
-    iconEl.innerHTML = `<img src="https://www.google.com/s2/favicons?domain=${domain}&sz=128" alt="${deal.brand} logo"
+    const u1 = `https://img.logo.dev/${domain}?token=pk_X6DXs9qTQCSBjhpbQCDNuA&size=128&format=png`;
+    const u2 = `https://logo.clearbit.com/${domain}`;
+    const u3 = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+    iconEl.innerHTML = `<img src="${u1}" alt="${deal.brand} logo"
       style="width:72px;height:72px;border-radius:16px;object-fit:contain;background:rgba(255,255,255,0.07);padding:10px;"
-      onerror="this.outerHTML='<span style=\\'font-size:4rem\\'>${deal.icon}</span>'">`;
+      onerror="this.src='${u2}';this.onerror=function(){this.src='${u3}';this.onerror=function(){this.outerHTML='<span style=\\'font-size:4rem\\'>${deal.icon}</span>'}}">`;
   } else {
     iconEl.textContent = deal.icon;
   }
