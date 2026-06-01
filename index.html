@@ -191,6 +191,12 @@
     background: rgba(67,232,176,0.08); padding: 3px 9px; border-radius: 999px;
     border: 1px solid rgba(67,232,176,0.2); width: fit-content;
   }
+  .official-tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: .7rem; font-weight: 600; color: var(--muted);
+    background: rgba(255,255,255,0.05); padding: 3px 9px; border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.08); width: fit-content;
+  }
   .commission-text {
     font-size: .75rem; color: var(--muted); font-style: italic;
   }
@@ -397,7 +403,7 @@
       </div>
     </div>
     <p style="text-align:center;color:var(--muted);font-size:.78rem;margin-top:20px;line-height:1.6;">
-      FroshDeals may earn a commission when you click certain links and make purchases — at no extra cost to you. This helps keep the site free. All deals are independently researched and verified.
+      Some FroshDeals links are tracked affiliate links and some go straight to the brand's official student page. If a tracked link leads to a purchase, we may earn a commission at no extra cost to you.
     </p>
   </div>
 </footer>
@@ -2388,6 +2394,10 @@ function getFiltered() {
   });
 }
 
+function isTrackedDealUrl(url) {
+  return /[?&]tag=campusunlock-20\b/i.test(url);
+}
+
 function renderGrid() {
   const filtered = getFiltered();
   const meta = document.getElementById("resultsMeta");
@@ -2415,7 +2425,11 @@ function renderGrid() {
       <div class="brand-name">${d.brand}</div>
       <div class="discount">${d.discount}</div>
       <span class="cat-tag">${d.category}</span>
+      <span class="${isTrackedDealUrl(d.dealUrl) ? 'affiliate-tag' : 'official-tag'}">
+        ${isTrackedDealUrl(d.dealUrl) ? '↗ Affiliate Link' : '↗ Official Link'}
+      </span>
       <div class="desc">${d.desc}</div>
+      <div class="commission-text">${isTrackedDealUrl(d.dealUrl) ? `Tracked: ${d.commission}` : `Direct to the brand's verified student page`}</div>
       <a href="${d.dealUrl}" target="_blank" rel="noopener" style="text-decoration:none;">
         <button class="get-btn">Get This Deal →</button>
       </a>
@@ -2545,9 +2559,9 @@ const MODALS = {
     <p style="color:var(--muted);line-height:1.7;margin-bottom:12px;">We use standard analytics (page views, clicks) to understand which deals are most useful. No personally identifiable information is tracked.</p>
     <p style="color:var(--muted);line-height:1.7;">Questions? Contact us at hello@froshdeals.com.</p>`,
   affiliate: `<h2 style="font-size:1.5rem;font-weight:900;margin-bottom:16px;">Affiliate Disclosure</h2>
-    <p style="color:var(--muted);line-height:1.7;margin-bottom:12px;">FroshDeals participates in affiliate marketing programs. When you click certain links and make a purchase, we may earn a small commission — at <strong style="color:var(--text);">no extra cost to you</strong>.</p>
-    <p style="color:var(--muted);line-height:1.7;margin-bottom:12px;">Affiliate commissions help us keep the site free, updated, and ad-light. They do not influence which deals we list — we only list deals that are genuinely valuable for students.</p>
-    <p style="color:var(--muted);line-height:1.7;">We're transparent about this because we think you deserve to know how the site works.</p>`,
+    <p style="color:var(--muted);line-height:1.7;margin-bottom:12px;">FroshDeals includes a mix of <strong style="color:var(--text);">tracked affiliate links</strong> and <strong style="color:var(--text);">direct official links</strong>. We only earn money when a tracked affiliate link qualifies for a commission, and never from the official links.</p>
+    <p style="color:var(--muted);line-height:1.7;margin-bottom:12px;">Tracked affiliate links help keep the site free, updated, and ad-light. They do not influence which deals we list — we only include deals that are genuinely useful for students.</p>
+    <p style="color:var(--muted);line-height:1.7;">Each card now labels whether it opens an affiliate-tracked link or the brand's direct student page.</p>`,
 };
 
 function showModal(key) {
