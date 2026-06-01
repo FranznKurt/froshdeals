@@ -1144,7 +1144,7 @@
     "desc": "Amazon Music Unlimited for $5.99/month for college students — regularly $8.99/month. Ad-free streaming.",
     "affiliate": "Amazon",
     "commission": "3–5%",
-    "dealUrl": "https://www.amazon.comhttps://www.amazon.com/music/unlimited/student?tag=campusunlock-20"
+    "dealUrl": "https://www.amazon.com/music/unlimited/student?tag=campusunlock-20"
   },
   {
     "brand": "HelloFresh",

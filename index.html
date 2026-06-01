@@ -1556,7 +1556,7 @@
     "desc": "Amazon Music Unlimited for $5.99/month for college students — regularly $8.99/month. Ad-free streaming.",
     "affiliate": "Amazon",
     "commission": "3–5%",
-    "dealUrl": "https://www.amazon.comhttps://www.amazon.com/music/unlimited/student?tag=campusunlock-20"
+    "dealUrl": "https://www.amazon.com/music/unlimited/student?tag=campusunlock-20"
   },
   {
     "brand": "HelloFresh",
@@ -2331,41 +2331,6 @@ function brandLogo(name, fallbackEmoji, size=44) {
 }
 
 
-// 🔑 AFFILIATE ID CONFIG — fill in your IDs as you get approved
-// ============================================================
-const AFF = {
-  amazon:      "campusunlock-20",         // Amazon Associates tag ✅ LIVE
-  nordvpn:     "YOUR_NORDVPN_AFF_ID",   // from nordvpn.com/affiliate — replace after approval
-  impact:      "YOUR_IMPACT_ID",         // Impact.com — Spotify, Canva, Headspace, Calm, Skillshare, Coursera
-  cj:          "YOUR_CJ_ID",            // CJ Affiliate — Adobe, Chegg, NY Times, ASOS, Ray-Ban, Economist
-  shareasale:  "YOUR_SHAREASALE_ID",    // ShareASale — Backblaze, Bodybuilding.com
-  partnerstack: "YOUR_PS_ID",           // PartnerStack — 1Password
-  flexoffers:  "YOUR_FO_ID",            // FlexOffers — Hulu, Lenovo
-  apple:       "YOUR_APPLE_AFF_ID",     // affiliate.apple.com
-};
-
-// Link builders — these auto-apply your IDs
-const L = {
-  amazon:    (path="") => `https://www.amazon.com${path}?tag=${AFF.amazon}`,
-  nordvpn:   ()        => AFF.nordvpn === "YOUR_NORDVPN_AFF_ID"
-                            ? "https://nordvpn.com/student/"
-                            : `https://go.nordvpn.net/aff_c?offer_id=15&aff_id=${AFF.nordvpn}`,
-  spotify:   ()        => `https://www.spotify.com/us/student/`,   // Impact link generated in dashboard
-  adobe:     ()        => `https://www.adobe.com/creativecloud/plans/students.html`, // CJ link from dashboard
-  canva:     ()        => `https://www.canva.com/education/`,       // Impact link from dashboard
-  hulu:      ()        => `https://www.hulu.com/student`,           // FlexOffers link from dashboard
-  chegg:     ()        => `https://www.chegg.com/`,                 // CJ link from dashboard
-  coursera:  ()        => `https://www.coursera.org/`,              // Impact link from dashboard
-  skillshare:()        => `https://www.skillshare.com/en/student`,  // Impact link from dashboard
-  headspace: ()        => `https://www.headspace.com/studentplan`,  // Impact link from dashboard
-  nytimes:   ()        => `https://www.nytimes.com/subscription/student`, // CJ link
-  onepass:   ()        => `https://1password.com/students/`,        // PartnerStack link from dashboard
-  apple:     (path="") => AFF.apple === "YOUR_APPLE_AFF_ID"
-                            ? `https://www.apple.com${path}`
-                            : `https://apple.sjv.io/c/${AFF.apple}${path}`,
-  direct:    (url)     => url,
-};
-
 // ============================================================
 // Ordered by expected student click rate (highest first)
 function loadDealsSafely() {
@@ -2527,7 +2492,7 @@ const DOTW_DEALS = [
   { icon:"🎨", brand:"Adobe Creative Cloud", discount:"60% off for students", desc:"Photoshop, Illustrator, Premiere Pro, and 20+ apps — the full Creative Cloud suite at 60% off. Every design, art, and media student needs this.", url:"https://www.adobe.com/creativecloud/plans/students.html" },
   { icon:"🔒", brand:"NordVPN", discount:"Up to 63% off + free months", desc:"Stay safe on campus WiFi with the #1 student VPN. Up to 63% off plus extra months free. Essential for anyone using public networks.", url:"https://nordvpn.com/student/" },
   { icon:"🎵", brand:"Spotify Premium", discount:"$2.99/mo for students", desc:"Spotify Premium for just $2.99/month — that's 50% off the regular price. Ad-free music, offline listening, and unlimited skips.", url:"https://www.spotify.com/us/student/" },
-  { icon:"📦", brand:"Amazon Prime Student", discount:"6 months FREE then 50% off", desc:"Free 6-month trial then just $7.49/mo (vs $14.99). Free 2-day shipping, Prime Video, Prime Gaming, and more.", url:"https://www.amazon.com/joinstudent?tag=" + AFF.amazon },
+  { icon:"📦", brand:"Amazon Prime Student", discount:"6 months FREE then 50% off", desc:"Free 6-month trial then just $7.49/mo (vs $14.99). Free 2-day shipping, Prime Video, Prime Gaming, and more.", url:"https://www.amazon.com/joinstudent?tag=campusunlock-20" },
   { icon:"📺", brand:"Hulu", discount:"$1.99/mo", desc:"Hulu with ads for just $1.99/month with your student verification. Watch current-season TV, movies, and Hulu originals at the best streaming price around.", url:"https://www.hulu.com/student" },
   { icon:"🍎", brand:"Apple Education Store", discount:"Up to 20% off + free AirPods", desc:"Shop the Apple Education Store for discounts on MacBooks, iPads, and AirPods. Seasonal back-to-school deals include free AirPods with Mac purchase.", url:"https://www.apple.com/shop/buy-mac/mac-laptop/students" },
   { icon:"🎮", brand:"Xbox Game Pass Ultimate", discount:"Student pricing available", desc:"Play hundreds of games on console, PC, and cloud for less. Perfect for study breaks — Xbox offers student rates through select campus programs.", url:"https://www.xbox.com/en-US/xbox-game-pass" },
