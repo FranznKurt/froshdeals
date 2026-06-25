@@ -40,23 +40,6 @@
   }
   .logo { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.5px; }
   .logo span { background: linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-  .nav-actions {
-    display: flex; align-items: center; gap: 10px;
-  }
-  .nav-link {
-    display: inline-flex; align-items: center;
-    padding: 6px 14px; border-radius: 999px;
-    font-size: .85rem; font-weight: 700;
-    color: var(--text); text-decoration: none;
-    border: 1px solid var(--border);
-    background: rgba(255,255,255,0.04);
-    transition: border-color var(--transition), color var(--transition), background var(--transition);
-  }
-  .nav-link:hover {
-    color: var(--accent3);
-    border-color: rgba(67,232,176,0.45);
-    background: rgba(67,232,176,0.08);
-  }
   .nav-badge {
     background: linear-gradient(135deg,var(--accent),var(--accent2));
     padding: 6px 16px; border-radius: 999px; font-size: .85rem; font-weight: 700;
@@ -269,10 +252,7 @@
 
 <nav>
   <div class="logo">Frosh<span>Deals</span></div>
-  <div class="nav-actions">
-    <a class="nav-link" href="/launch-dashboard.html">Launch Dashboard</a>
-    <button class="nav-badge" onclick="document.getElementById('searchInput').focus()">🔍 Find My Deals</button>
-  </div>
+  <button class="nav-badge" onclick="document.getElementById('searchInput').focus()">🔍 Find My Deals</button>
 </nav>
 
 <div class="hero">

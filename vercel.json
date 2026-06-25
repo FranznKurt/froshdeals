@@ -6,7 +6,7 @@
       "use": "@vercel/static"
     },
     {
-      "src": "launch-dashboard.html",
+      "src": "ops-board-a15-7f3k.html",
       "use": "@vercel/static"
     }
   ],
