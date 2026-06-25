@@ -301,6 +301,17 @@
       line-height: 1.4;
     }
 
+    .sync-note {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.74rem;
+      line-height: 1.35;
+    }
+
+    .sync-note strong {
+      color: var(--ink);
+    }
+
     h1 {
       margin: 18px 0 10px;
       font-family: var(--font-display);
@@ -679,7 +690,8 @@
           <div class="monitor-edit">
             <input id="monitorInput" type="text" maxlength="120" placeholder="What am I working on right now?" />
           </div>
-          <div class="monitor-note">Quick note: this status box is lightweight and shared by URL, but for now it updates manually in your browser.</div>
+          <div id="syncNote" class="sync-note"><strong>Sync:</strong> connecting...</div>
+          <div class="monitor-note">This panel now live-syncs between open dashboards. It is still an ops tool, not a hardened auth system.</div>
         </aside>
       </div>
       <h1>Day-by-day plan to get FroshDeals fully live and promoted by August 15, 2026.</h1>
@@ -817,6 +829,9 @@
     const PASSCODE = "2662";
     const ACCESS_KEY = "froshdeals-ops-board-access";
     const MONITOR_KEY = "froshdeals-ops-monitor";
+    const MONITOR_CHANNEL = "froshdeals-ops-board-monitor";
+    const SUPABASE_URL = "https://csaoavtczwsutosatooq.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_tqvuDCzSGt9FIHs43atsRQ_3lDzWqdi";
 
     const gateEl = document.getElementById("gate");
     const boardEl = document.getElementById("board");
@@ -829,6 +844,16 @@
     const monitorMeta = document.getElementById("monitorMeta");
     const monitorInput = document.getElementById("monitorInput");
     const monitorButtons = Array.from(document.querySelectorAll(".monitor-btn"));
+    const syncNote = document.getElementById("syncNote");
+
+    let realtimeChannel = null;
+    let realtimeClient = null;
+
+    function setSyncNote(message, emphasis) {
+      const safeMessage = message || "offline cache only";
+      const label = emphasis || "Sync";
+      syncNote.innerHTML = `<strong>${label}:</strong> ${safeMessage}`;
+    }
 
     function readMonitor() {
       try {
@@ -888,6 +913,67 @@
 
       localStorage.setItem(MONITOR_KEY, JSON.stringify(payload));
       renderMonitor(payload);
+
+      if (realtimeChannel) {
+        realtimeChannel.send({
+          type: "broadcast",
+          event: "monitor:update",
+          payload
+        }).catch(() => {
+          setSyncNote("live sync send failed, using local cache", "Sync");
+        });
+      }
+    }
+
+    async function initRealtimeMonitor() {
+      try {
+        const supabaseModule = await import("https://esm.sh/@supabase/supabase-js@2");
+        const { createClient } = supabaseModule;
+
+        realtimeClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+          auth: { persistSession: false },
+          realtime: { params: { eventsPerSecond: 4 } }
+        });
+
+        realtimeChannel = realtimeClient.channel(MONITOR_CHANNEL, {
+          config: { broadcast: { self: true } }
+        });
+
+        realtimeChannel.on("broadcast", { event: "monitor:update" }, ({ payload }) => {
+          if (!payload || typeof payload !== "object") {
+            return;
+          }
+
+          localStorage.setItem(MONITOR_KEY, JSON.stringify(payload));
+          renderMonitor(payload);
+          setSyncNote("live across open dashboards", "Sync");
+        });
+
+        realtimeChannel.subscribe((status) => {
+          if (status === "SUBSCRIBED") {
+            setSyncNote("live across open dashboards", "Sync");
+            const cached = readMonitor();
+
+            realtimeChannel.send({
+              type: "broadcast",
+              event: "monitor:update",
+              payload: cached
+            }).catch(() => {
+              setSyncNote("connected, but send failed", "Sync");
+            });
+          }
+
+          if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
+            setSyncNote("realtime unavailable, using local cache", "Sync");
+          }
+
+          if (status === "CLOSED") {
+            setSyncNote("connection closed, using local cache", "Sync");
+          }
+        });
+      } catch {
+        setSyncNote("realtime setup failed, using local cache", "Sync");
+      }
     }
 
     function unlockBoard() {
@@ -925,6 +1011,8 @@
     monitorInput.addEventListener("change", () => {
       saveMonitor({ task: monitorInput.value });
     });
+
+    initRealtimeMonitor();
 
     const schedule = [
       {
