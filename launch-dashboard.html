@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FroshDeals Launch Dashboard</title>
+  <style>
+    :root {
+      --bg: #f4efe5;
+      --paper: rgba(255, 251, 245, 0.82);
+      --ink: #16211c;
+      --muted: #5f6d64;
+      --line: rgba(22, 33, 28, 0.12);
+      --forest: #1d6b4f;
+      --gold: #d7a437;
+      --brick: #c3563f;
+      --sky: #4e7aa6;
+      --cream: #fff8ed;
+      --shadow: 0 20px 60px rgba(51, 45, 30, 0.14);
+      --radius: 22px;
+      --font-display: "Avenir Next Condensed", "Futura", "Trebuchet MS", sans-serif;
+      --font-body: "Avenir Next", "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font-body);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(215, 164, 55, 0.28), transparent 28%),
+        radial-gradient(circle at top right, rgba(78, 122, 166, 0.22), transparent 26%),
+        linear-gradient(180deg, #f7f1e7 0%, #f0e8d7 100%);
+    }
+
+    .page {
+      width: min(1360px, calc(100vw - 32px));
+      margin: 22px auto 40px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 32px;
+      border-radius: 32px;
+      background:
+        linear-gradient(145deg, rgba(255, 248, 237, 0.96), rgba(246, 239, 226, 0.92)),
+        var(--cream);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -80px auto;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: rgba(29, 107, 79, 0.08);
+      filter: blur(4px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(29, 107, 79, 0.08);
+      color: var(--forest);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 18px 0 10px;
+      font-family: var(--font-display);
+      font-size: clamp(2.3rem, 5vw, 4.4rem);
+      line-height: 0.94;
+      letter-spacing: -0.04em;
+      max-width: 900px;
+    }
+
+    .hero p {
+      max-width: 860px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+
+    .hero-grid,
+    .summary-grid,
+    .milestone-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .hero-grid {
+      grid-template-columns: 1.6fr 1fr;
+      margin-top: 26px;
+    }
+
+    .card {
+      background: var(--paper);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      border-radius: var(--radius);
+      box-shadow: 0 12px 30px rgba(69, 55, 27, 0.08);
+    }
+
+    .hero-card {
+      padding: 22px;
+    }
+
+    .hero-card h2,
+    .section-head h2 {
+      margin: 0 0 10px;
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      letter-spacing: -0.03em;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .metric {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid rgba(22, 33, 28, 0.08);
+    }
+
+    .metric strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 2rem;
+      letter-spacing: -0.04em;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .rules,
+    .stakeholders {
+      display: grid;
+      gap: 10px;
+      padding-left: 18px;
+      margin: 0;
+    }
+
+    .rules li,
+    .stakeholders li {
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .section {
+      margin-top: 22px;
+      padding: 24px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 720px;
+      line-height: 1.55;
+    }
+
+    .summary-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .summary-card,
+    .milestone,
+    .day-card {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.52);
+      border: 1px solid rgba(22, 33, 28, 0.08);
+    }
+
+    .summary-card h3,
+    .milestone h3,
+    .day-header h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .summary-card p,
+    .milestone p,
+    .day-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 0.94rem;
+    }
+
+    .milestone-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .milestone {
+      border-top: 4px solid var(--forest);
+    }
+
+    .milestone:nth-child(2) {
+      border-top-color: var(--gold);
+    }
+
+    .milestone:nth-child(3) {
+      border-top-color: var(--sky);
+    }
+
+    .milestone:nth-child(4) {
+      border-top-color: var(--brick);
+    }
+
+    .timeline-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid rgba(22, 33, 28, 0.08);
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .phase {
+      display: inline-flex;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .phase-foundation { background: rgba(29, 107, 79, 0.12); color: var(--forest); }
+    .phase-monetization { background: rgba(215, 164, 55, 0.16); color: #8b6110; }
+    .phase-content { background: rgba(78, 122, 166, 0.16); color: #2c5f8d; }
+    .phase-launch { background: rgba(195, 86, 63, 0.15); color: #8f3727; }
+
+    .days-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .day-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 256px;
+    }
+
+    .day-card::after {
+      content: "";
+      position: absolute;
+      inset: auto -14px -14px auto;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: rgba(29, 107, 79, 0.05);
+    }
+
+    .day-header {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .day-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      background: rgba(22, 33, 28, 0.06);
+      color: var(--ink);
+    }
+
+    .checkboxes {
+      display: grid;
+      gap: 9px;
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .checkboxes li {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 10px;
+      align-items: start;
+      color: var(--ink);
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
+    .checkboxes input {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--forest);
+      cursor: pointer;
+    }
+
+    .footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-grid,
+      .summary-grid,
+      .milestone-grid,
+      .days-grid,
+      .metrics {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        width: min(100vw - 18px, 100%);
+        margin: 10px auto 28px;
+      }
+
+      .hero,
+      .section {
+        padding: 18px;
+      }
+
+      .hero-grid,
+      .summary-grid,
+      .milestone-grid,
+      .days-grid,
+      .metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        align-items: start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <div class="eyebrow">FroshDeals launch operating board</div>
+      <h1>Day-by-day plan to get FroshDeals fully live and promoted by August 15, 2026.</h1>
+      <p>
+        Built for 60-120 focused minutes per day. The goal is simple: tighten the product,
+        finish monetization and SEO foundations, then show up in August with a real launch push
+        instead of quietly hoping traffic appears.
+      </p>
+
+      <div class="metrics">
+        <div class="metric">
+          <strong>53</strong>
+          <span>calendar days mapped</span>
+        </div>
+        <div class="metric">
+          <strong>~71h</strong>
+          <span>planned focused work</span>
+        </div>
+        <div class="metric">
+          <strong>8/15</strong>
+          <span>public-ready target date</span>
+        </div>
+        <div class="metric">
+          <strong>2</strong>
+          <span>owners: Kurt + Pr1me/Franz</span>
+        </div>
+      </div>
+
+      <div class="hero-grid">
+        <div class="card hero-card">
+          <div class="label">Non-negotiables</div>
+          <ul class="rules">
+            <li>Only first-party brand deal pages. No Student Beans, UNiDAYS, or similar third-party wrapper links as destination URLs.</li>
+            <li>Every work session should end with one visible shipped artifact: updated deal, page improvement, analytics check, or launch asset.</li>
+            <li>By August 1, the site should already feel real. The first half of August is for trust, promotion, and iteration, not core build-out.</li>
+            <li>Use direct tracked affiliate links only where approved. If tracking is not approved, keep the deal first-party and clearly labeled.</li>
+          </ul>
+        </div>
+        <div class="card hero-card">
+          <div class="label">Who does what</div>
+          <ul class="stakeholders">
+            <li><strong>Kurt:</strong> affiliate account setup, outreach, social posting, decision-making, any account/application steps.</li>
+            <li><strong>Pr1me / Franz:</strong> site updates, SEO, analytics, content pages, UI polish, dashboard upkeep, deployment.</li>
+            <li><strong>Shared:</strong> daily checkoff, deal quality reviews, launch messaging, referral/outreach list, and weekly retro.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section card">
+      <div class="section-head">
+        <div>
+          <div class="label">Launch pillars</div>
+          <h2>What has to be true by mid-August</h2>
+        </div>
+        <p>
+          These are the scoreboards that matter most: enough trustworthy deals, enough SEO surface area,
+          clean analytics, a believable brand, and an actual promotion engine.
+        </p>
+      </div>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <h3>Product quality</h3>
+          <p>Site is fast, mobile-friendly, easy to scan, and every featured deal feels verified and current.</p>
+        </div>
+        <div class="summary-card">
+          <h3>Monetization</h3>
+          <p>Core affiliate programs are live, top deals use approved links where possible, and disclosures are clean.</p>
+        </div>
+        <div class="summary-card">
+          <h3>Traffic foundation</h3>
+          <p>Search Console, analytics, sitemap, metadata, and several indexable landing pages are in place.</p>
+        </div>
+        <div class="summary-card">
+          <h3>Promotion rhythm</h3>
+          <p>Social clips, student community outreach, referral asks, and launch-week posting are all prepped.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section card">
+      <div class="section-head">
+        <div>
+          <div class="label">Weekly checkpoints</div>
+          <h2>Milestones that keep the schedule honest</h2>
+        </div>
+        <p>
+          If these land on time, the daily plan stays under control. Miss one, and the next week should be rebalanced immediately.
+        </p>
+      </div>
+      <div class="milestone-grid">
+        <div class="milestone">
+          <h3>By July 1</h3>
+          <p>Audit current site, lock launch targets, and fix the ugliest trust or data issues.</p>
+        </div>
+        <div class="milestone">
+          <h3>By July 15</h3>
+          <p>Affiliate stack, analytics, metadata, and first round of content pages are live.</p>
+        </div>
+        <div class="milestone">
+          <h3>By August 1</h3>
+          <p>Launch-ready product with polished homepage, outreach list, and weekly content engine running.</p>
+        </div>
+        <div class="milestone">
+          <h3>By August 15</h3>
+          <p>Promoted launch complete, feedback loop active, and first real traffic data informing next moves.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section card">
+      <div class="section-head">
+        <div>
+          <div class="label">Daily operating plan</div>
+          <h2>June 24 to August 15 checklist</h2>
+        </div>
+        <p>
+          Each card is designed for one session. Hit the top item first. If you finish early, start the next day’s tasks.
+          Checkboxes save in your browser on this device.
+        </p>
+      </div>
+
+      <div class="timeline-toolbar">
+        <div class="pill">Time budget: 60-120 min/day</div>
+        <div class="pill">Focus order: Trust → Monetization → SEO → Promotion</div>
+        <div class="pill">Shared file: open locally or deploy alongside the site</div>
+      </div>
+
+      <div id="days" class="days-grid"></div>
+      <p class="footer">Tip: if you deploy this page with the site, pin it in Discord so both of you always have the same launch board handy.</p>
+    </section>
+  </div>
+
+  <script>
+    const schedule = [
+      {
+        date: "2026-06-24",
+        title: "Launch scoreboard setup",
+        phase: "foundation",
+        owner: "Shared",
+        duration: "60 min",
+        outcome: "Create the operating system for the next 7 weeks.",
+        tasks: [
+          "Read through this dashboard together and agree that August 15 is the target.",
+          "List the 5 most important launch metrics: traffic, affiliate links live, email signups, indexed pages, and referral posts.",
+          "Write down the 3 biggest blockers still standing between the current site and launch-ready quality."
+        ]
+      },
+      {
+        date: "2026-06-25",
+        title: "Current-state audit",
+        phase: "foundation",
+        owner: "Pr1me",
+        duration: "90 min",
+        outcome: "Know exactly what is broken, weak, or missing.",
+        tasks: [
+          "Audit homepage on desktop and mobile and note trust gaps, copy gaps, and layout issues.",
+          "Open the current deal dataset and flag stale, questionable, or low-value deals.",
+          "Create a short punch list: must fix, should fix, nice to have."
+        ]
+      },
+      {
+        date: "2026-06-26",
+        title: "Deal quality cleanup",
+        phase: "foundation",
+        owner: "Shared",
+        duration: "90 min",
+        outcome: "Remove anything that weakens trust.",
+        tasks: [
+          "Delete or quarantine any deal that lacks a first-party destination page.",
+          "Verify 10 top homepage deals manually and note the last-checked date.",
+          "Make sure no Student Beans or UNiDAYS wrapper links are being added anywhere."
+        ]
+      },
+      {
+        date: "2026-06-27",
+        title: "Homepage trust pass",
+        phase: "foundation",
+        owner: "Pr1me",
+        duration: "90 min",
+        outcome: "Visitors should instantly understand what the site is and why to trust it.",
+        tasks: [
+          "Tighten the hero copy and headline for clarity.",
+          "Add or improve trust elements: update cadence, verification language, and direct-link labeling.",
+          "Make the top categories and best deals easier to scan."
+        ]
+      },
+      {
+        date: "2026-06-28",
+        title: "Analytics foundation",
+        phase: "foundation",
+        owner: "Pr1me",
+        duration: "60 min",
+        outcome: "Stop flying blind.",
+        tasks: [
+          "Set up or confirm analytics for visits, clicks, and outbound deal interactions.",
+          "Add event tracking for deal clicks and key CTA buttons.",
+          "Write down where metrics will be checked weekly."
+        ]
+      },
+      {
+        date: "2026-06-29",
+        title: "Search Console + sitemap",
+        phase: "foundation",
+        owner: "Pr1me",
+        duration: "60 min",
+        outcome: "Search engines can find and understand the site.",
+        tasks: [
+          "Connect the site to Google Search Console.",
+          "Submit sitemap if not already done.",
+          "Check for indexing or coverage errors and log any issues."
+        ]
+      },
+      {
+        date: "2026-06-30",
+        title: "Week 1 review",
+        phase: "foundation",
+        owner: "Shared",
+        duration: "60 min",
+        outcome: "Finish June with a clean picture of reality.",
+        tasks: [
+          "Review everything completed in the first week.",
+          "Mark carryover items that still block July work.",
+          "Agree on the July 1 to July 15 focus: monetization and SEO pages."
+        ]
+      },
+      {
+        date: "2026-07-01",
+        title: "Affiliate account status sweep",
+        phase: "monetization",
+        owner: "Kurt",
+        duration: "75 min",
+        outcome: "Know exactly which programs are live, pending, or blocked.",
+        tasks: [
+          "Review Impact, CJ, Amazon, NordVPN, and 1Password application status.",
+          "List missing credentials or company info needed to finish applications.",
+          "Prioritize the top 10 deals that should get tracked links first."
+        ]
+      },
+      {
+        date: "2026-07-02",
+        title: "Affiliate applications push",
+        phase: "monetization",
+        owner: "Kurt",
+        duration: "90 min",
+        outcome: "Reduce external blockers.",
+        tasks: [
+          "Submit or finish any incomplete affiliate applications.",
+          "Update program profiles with stronger site description and launch intent.",
+          "Save login links and approval notes in a shared place."
+        ]
+      },
+      {
+        date: "2026-07-03",
+        title: "Top-money pages mapping",
+        phase: "monetization",
+        owner: "Shared",
+        duration: "60 min",
+        outcome: "The revenue plan is visible, not random.",
+        tasks: [
+          "Identify the 15 deals with the best mix of demand and commission.",
+          "Sort them into homepage features, category pages, and future SEO pages.",
+          "Decide which deals stay direct-only until tracked approval exists."
+        ]
+      },
+      {
+        date: "2026-07-04",
+        title: "Disclosure and link labeling pass",
+        phase: "monetization",
+        owner: "Pr1me",
+        duration: "60 min",
+        outcome: "Monetization is transparent and clean.",
+        tasks: [
+          "Review affiliate disclosure copy site-wide.",
+          "Ensure deal cards clearly distinguish tracked vs direct links.",
+          "Spot-check that outbound links behave correctly."
+        ]
+      },
+      {
+        date: "2026-07-05",
+        title: "High-value link replacement",
+        phase: "monetization",
+        owner: "Pr1me",
+        duration: "90 min",
+        outcome: "The best opportunities are actually monetized.",
+        tasks: [
+          "Replace placeholder or generic links for the top approved programs.",
+          "Test every new tracked link manually.",
+          "Keep a simple log of which brands still need real affiliate links."
+        ]
+      },
+      {
+        date: "2026-07-06",
+        title: "Offer verification batch",
+        phase: "monetization",
+        owner: "Shared",
+        duration: "75 min",
+        outcome: "Homepage claims match reality.",
+        tasks: [
+          "Re-verify the top 20 deals now that July promotions may have changed.",
+          "Update discount copy where necessary.",
+          "Remove any fuzzy or seasonal offer that no longer feels reliable."
+        ]
+      },
+      {
+        date: "2026-07-07",
+        title: "Category prioritization",
+        phase: "content",
+        owner: "Shared",
+        duration: "60 min",
+        outcome: "Content gets focused on what students actually search.",
+        tasks: [
+          "Choose the 6 most important categories to build around.",
+          "Pick one lead keyword/theme for each category page.",
+          "Decide which category should be pushed hardest in July."
+        ]
+      },
+      {
+        date: "2026-07-08",
+        title: "SEO page template",
+        phase: "content",
+        owner: "Pr1me",
+        duration: "90 min",
+        outcome: "Future pages can be built quickly without looking sloppy.",
+        tasks: [
+          "Create a reusable structure for category or roundup pages.",
+          "Include intro copy, top picks, FAQ, and trust notes.",
+          "Make sure the template looks good on mobile before duplicating it."
+        ]
+      },
+      {
+        date: "2026-07-09",
+        title: "First category page",
+        phase: "content",
+        owner: "Pr1me",
+        duration: "90 min",
+        outcome: "First strong SEO/supporting page is live.",
+        tasks: [
+          "Publish the first category or roundup page.",
+          "Internally link it from the homepage and relevant deal cards.",
+          "Write a title and meta description that actually deserve clicks."
+        ]
+      },
+      {
+        date: "2026-07-10",
+        title: "Second category page",
+        phase: "content",
+        owner: "Pr1me",
+        duration: "90 min",
+        outcome: "The site stops being a single-page experience.",
+        tasks: [
+          "Publish the second category or roundup page.",
+          "Use better supporting copy than generic filler.",
+          "Make sure the new page reinforces first-party verification rules."
+        ]
+      },
+      {
+        date: "2026-07-11",
+        title: "Branding polish session",
+        phase: "content",
+        owner: "Pr1me",
+        duration: "60 min",
+        outcome: "The site feels more like a brand and less like a spreadsheet.",
+        tasks: [
+          "Tighten color, typography, spacing, and card consistency.",
+          "Improve small visual details that make trust feel higher.",
+          "Choose one signature visual treatment to repeat across launch materials."
+        ]
+      },
+      {
+        date: "2026-07-12",
+        title: "Social proof setup",
+        phase: "content",
+        owner: "Shared",
+        duration: "60 min",
+        outcome: "There is a plan for credibility beyond the site itself.",
+        tasks: [
+          "Decide what social proof can exist by launch: testimonials, feedback quotes, usage numbers, or community mentions.",
+          "Create a short process to collect student reactions once outreach begins.",
+          "Draft 2-3 lines of copy that explain the mission in plain English."
+        ]
+      },
+      {
+        date: "2026-07-13",
+        title: "FAQ / trust content",
+        phase: "content",
+        owner: "Pr1me",
+        duration: "75 min",
+        outcome: "Answer the questions that stop clicks.",
+        tasks: [
+          "Publish or expand FAQ content covering verification, link types, and updates.",
+          "Address how deals are checked and why some links are direct.",
+          "Add internal links from the homepage or footer."
+        ]
+      },
+      {
+        date: "2026-07-14",
+        title: "Week 3 review + bug cleanup",
+        phase: "content",
+        owner: "Shared",
+        duration: "60 min",
+        outcome: "Pause long enough to keep quality from drifting.",
+        tasks: [
+          "Review the last 2 weeks of changes on mobile and desktop.",
+          "Fix the 5 most obvious issues immediately.",
+          "Reset priorities for July 15 to July 31: scaling pages and launch prep."
+        ]
+      },
+      {
+        date: "2026-07-15",
+        title: "Launch narrative drafting",
+        phase: "launch",
+        owner: "Shared",
+        duration: "60 min",
+        outcome: "You know how to talk about the product.",
+        tasks: [
+          "Write a simple launch narrative: what FroshDeals is, who it's for, why it matters, and why now.",
+          "Draft a short version for social and a longer version for community posts.",
+          "Note the 3 strongest value props to repeat everywhere."
+        ]
+      },
+      {
+        date: "2026-07-16",
+        title: "Third SEO/supporting page",
+        phase: "content",
+        owner: "Pr1me",
+        duration: "90 min",
+        outcome: "Search surface area keeps expanding.",
+        tasks: [
+          "Publish a third supporting page focused on a high-intent category.",
+          "Make the page genuinely useful, not just keyword-shaped.",
+          "Cross-link it from at least two existing pages."
+        ]
+      },
+      {
+        date: "2026-07-17",
+        title: "Fourth SEO/supporting page",
+        phase: "content",
+        owner: "Pr1me",
+        duration: "90 min",
+        outcome: "The site starts to look indexable at scale.",
+        tasks: [
+          "Publish a fourth supporting page.",
+          "Add a top picks section with clear deal reasoning.",
+          "Check metadata and page hierarchy before shipping."
+        ]
+      },
+      {
+        date: "2026-07-18",
+        title: "Internal linking pass",
+        phase: "content",
+        owner: "Pr1me",
+        duration: "60 min",
+        outcome: "Pages strengthen each other instead of floating alone.",
+        tasks: [
+          "Link the homepage to the best supporting pages.",
+          "Add related links between category pages.",
+          "Make sure anchor text sounds natural and student-friendly."
+        ]
+      },
+      {
+        date: "2026-07-19",
+        title: "Summer/back-to-school deals sweep",
+        phase: "launch",
+        owner: "Shared",
+        duration: "90 min",
+        outcome: "Seasonality starts working for you.",
+        tasks: [
+          "Verify brands with strong back-to-school or summer promo relevance.",
+          "Feature the best seasonal deals on the homepage.",
+          "Archive weak deals that distract from August buying intent."
+        ]
+      },
+      {
+        date: "2026-07-20",
+        title: "Email capture decision",
+        phase: "launch",
+        owner: "Shared",
+        duration: "60 min",
+        outcome: "Decide whether to collect emails before the push.",
+        tasks: [
+          "Choose whether the site should collect emails before launch week.",
+          "If yes, define the offer: weekly best deals, back-to-school alerts, or category drops.",
+          "If no, double down on traffic and social clickthrough instead."
+        ]
+      },
+      {
+        date: "2026-07-21",
+        title: "Contact / submission path",
+        phase: "launch",
+        owner: "Pr1me",
+        duration: "60 min",
+        outcome: "Brands, students, or partners have a way to reach out.",
+        tasks: [
+          "Add or improve contact/submission pathways.",
+          "Make it easy for students to suggest missing deals.",
+          "Write lightweight copy for brand partnership or featured listing interest."
+        ]
+      },
+      {
+        date: "2026-07-22",
+        title: "Launch creative batch 1",
+        phase: "launch",
+        owner: "Shared",
+        duration: "90 min",
+        outcome: "Promotional content starts existing before the rush.",
+        tasks: [
+          "Draft 3 launch-week social post concepts.",
+          "Create 1 short-form visual or screenshot-based promo asset.",
+          "Write hooks that lead with savings and convenience, not vague hype."
+        ]
+      },
+      {
+        date: "2026-07-23",
+        title: "Referral target list",
+        phase: "launch",
+        owner: "Kurt",
+        duration: "60 min",
+        outcome: "Promotion has distribution targets.",
+        tasks: [
+          "List student communities, Discords, subreddits, campus pages, or friends who could share the launch.",
+          "Separate warm contacts from cold outreach targets.",
+          "Pick the top 10 highest-likelihood distribution points."
+        ]
+      },
+      {
+        date: "2026-07-24",
+        title: "Speed and mobile pass",
+        phase: "launch",
+        owner: "Pr1me",
+        duration: "75 min",
+        outcome: "The site feels quick and solid on phones.",
+        tasks: [
+          "Review mobile layout, image sizing, spacing, and perceived speed.",
+          "Trim anything that feels slow, cluttered, or hard to tap.",
+          "Test the main conversion path from homepage to deal click."
+        ]
+      },
+      {
+        date: "2026-07-25",
+        title: "Launch creative batch 2",
+        phase: "launch",
+        owner: "Shared",
+        duration: "90 min",
+        outcome: "Promotion assets are not being made at the last minute.",
+        tasks: [
+          "Create 2 more promo posts or carousels.",
+          "Prepare one post focused on best overall deals and one on back-to-school tech.",
+          "Save captions and CTAs in a reusable doc."
+        ]
+      },
+      {
+        date: "2026-07-26",
+        title: "Fifth SEO/supporting page",
+        phase: "content",
+        owner: "Pr1me",
+        duration: "90 min",
+        outcome: "Search depth continues to improve.",
+        tasks: [
+          "Publish a fifth useful supporting page.",
+          "Use real student buying context in the intro and picks.",
+          "Link it to at least 3 relevant deal cards or pages."
+        ]
+      },
+      {
+        date: "2026-07-27",
+        title: "Weekly metrics review",
+        phase: "launch",
+        owner: "Shared",
+        duration: "45 min",
+        outcome: "Data starts shaping the next 3 weeks.",
+        tasks: [
+          "Check visits, click events, indexed pages, and top-performing deals.",
+          "Note which pages or categories are attracting the most attention.",
+          "Update the homepage emphasis if data shows a clear winner."
+        ]
+      },
+      {
+        date: "2026-07-28",
+        title: "Launch week calendar draft",
+        phase: "launch",
+        owner: "Shared",
+        duration: "60 min",
+        outcome: "The first half of August gets organized.",
+        tasks: [
+          "Map the major promotional beats from August 1 through August 15.",
+          "Choose which days get social posts, outreach, feature drops, and metric reviews.",
+          "Assign who owns each promotional action."
+        ]
+      },
+      {
+        date: "2026-07-29",
+        title: "Sixth SEO/supporting page",
+        phase: "content",
+        owner: "Pr1me",
+        duration: "90 min",
+        outcome: "Indexable footprint reaches a healthier level.",
+        tasks: [
+          "Publish the sixth supporting page.",
+          "Use the same quality bar as the best previous pages.",
+          "Double-check metadata and links."
+        ]
+      },
+      {
+        date: "2026-07-30",
+        title: "Press / outreach blurb pack",
+        phase: "launch",
+        owner: "Shared",
+        duration: "60 min",
+        outcome: "You have copy ready for shares and asks.",
+        tasks: [
+          "Write a one-line pitch, short blurb, and long blurb for FroshDeals.",
+          "Draft a personal ask message for friends or communities.",
+          "Make sure the angle feels helpful, not spammy."
+        ]
+      },
+      {
+        date: "2026-07-31",
+        title: "July checkpoint",
+        phase: "launch",
+        owner: "Shared",
+        duration: "60 min",
+        outcome: "Enter August with a stable product.",
+        tasks: [
+          "Review progress against the July milestones.",
+          "Cut or defer any feature that does not directly help launch.",
+          "Lock August priorities: promotion, trust, iteration, and traffic learning."
+        ]
+      },
+      {
+        date: "2026-08-01",
+        title: "Back-to-school homepage refresh",
+        phase: "launch",
+        owner: "Pr1me",
+        duration: "90 min",
+        outcome: "Homepage matches August intent.",
+        tasks: [
+          "Refresh homepage sections around back-to-school demand.",
+          "Feature laptops, software, supplies, and everyday student essentials where relevant.",
+          "Make the top money pages easier to reach from the homepage."
+        ]
+      },
+      {
+        date: "2026-08-02",
+        title: "Launch promo post 1",
+        phase: "launch",
+        owner: "Kurt",
+        duration: "60 min",
+        outcome: "Start warming up distribution.",
+        tasks: [
+          "Publish or schedule the first promo post.",
+          "Use one strong screenshot or visual from the site.",
+          "Track which communities or accounts engage."
+        ]
+      },
+      {
+        date: "2026-08-03",
+        title: "Student feedback round 1",
+        phase: "launch",
+        owner: "Shared",
+        duration: "75 min",
+        outcome: "Get real reactions before the main push.",
+        tasks: [
+          "Share the site with 3-5 students or friends in the target audience.",
+          "Ask what feels useful, confusing, or sketchy.",
+          "Record the top 3 feedback items without arguing with them."
+        ]
+      },
+      {
+        date: "2026-08-04",
+        title: "Feedback fixes",
+        phase: "launch",
+        owner: "Pr1me",
+        duration: "90 min",
+        outcome: "Respond to real user friction quickly.",
+        tasks: [
+          "Fix the most important issues surfaced from feedback.",
+          "Clarify copy, layout, or categories where users hesitated.",
+          "Retest the homepage flow after edits."
+        ]
+      },
+      {
+        date: "2026-08-05",
+        title: "Launch promo post 2",
+        phase: "launch",
+        owner: "Kurt",
+        duration: "60 min",
+        outcome: "Stay visible instead of doing one lonely announcement.",
+        tasks: [
+          "Publish a second promo post focused on best-value deals.",
+          "Encourage saves, shares, or student suggestions.",
+          "Note any patterns in the comments or DMs."
+        ]
+      },
+      {
+        date: "2026-08-06",
+        title: "Outreach batch 1",
+        phase: "launch",
+        owner: "Kurt",
+        duration: "75 min",
+        outcome: "Warm distribution starts moving.",
+        tasks: [
+          "Send launch blurbs to the top warm contacts or communities.",
+          "Ask for shares or quick feedback rather than broad vague support.",
+          "Track who responded and where follow-up is needed."
+        ]
+      },
+      {
+        date: "2026-08-07",
+        title: "Deal freshness sweep",
+        phase: "launch",
+        owner: "Shared",
+        duration: "90 min",
+        outcome: "Launch happens with current deals, not stale listings.",
+        tasks: [
+          "Re-verify the 25 most visible deals.",
+          "Update any expired discount copy or destination links.",
+          "Promote any newly strong seasonal offers to homepage visibility."
+        ]
+      },
+      {
+        date: "2026-08-08",
+        title: "Launch promo post 3",
+        phase: "launch",
+        owner: "Kurt",
+        duration: "60 min",
+        outcome: "Keep building attention ahead of mid-August.",
+        tasks: [
+          "Publish a promo post around back-to-school savings or top student essentials.",
+          "Test a sharper CTA than previous posts.",
+          "Watch which framing seems to get the best response."
+        ]
+      },
+      {
+        date: "2026-08-09",
+        title: "Metrics and click review",
+        phase: "launch",
+        owner: "Shared",
+        duration: "45 min",
+        outcome: "Use live data to make the last week smarter.",
+        tasks: [
+          "Review traffic, click behavior, top pages, and top deals.",
+          "Identify what is getting ignored and what is outperforming expectations.",
+          "Decide one homepage or content change based on the data."
+        ]
+      },
+      {
+        date: "2026-08-10",
+        title: "Outreach batch 2",
+        phase: "launch",
+        owner: "Kurt",
+        duration: "75 min",
+        outcome: "Expand distribution beyond the first circle.",
+        tasks: [
+          "Reach out to colder but relevant student communities or channels.",
+          "Tailor the message slightly for each target.",
+          "Avoid spammy mass-posting; prioritize places where the site is genuinely helpful."
+        ]
+      },
+      {
+        date: "2026-08-11",
+        title: "Homepage final polish",
+        phase: "launch",
+        owner: "Pr1me",
+        duration: "75 min",
+        outcome: "The front door looks launch-ready.",
+        tasks: [
+          "Tighten visual hierarchy, spacing, and CTA placement one last time.",
+          "Highlight the strongest student-useful categories and deals.",
+          "Remove any leftover rough edges that make the site feel unfinished."
+        ]
+      },
+      {
+        date: "2026-08-12",
+        title: "Launch assets pack",
+        phase: "launch",
+        owner: "Shared",
+        duration: "60 min",
+        outcome: "Everything needed for the main push is assembled.",
+        tasks: [
+          "Prepare screenshots, links, blurbs, and any launch-day captions in one place.",
+          "Confirm the canonical URL and any shortlinks you want to use.",
+          "Make sure both owners can access the same final asset set."
+        ]
+      },
+      {
+        date: "2026-08-13",
+        title: "Soft launch / bigger share",
+        phase: "launch",
+        owner: "Shared",
+        duration: "75 min",
+        outcome: "Start the real push before the deadline day.",
+        tasks: [
+          "Publish the strongest launch post so far or share to the biggest available channel.",
+          "Watch for immediate feedback or questions.",
+          "Log any issues that need fixing before August 15."
+        ]
+      },
+      {
+        date: "2026-08-14",
+        title: "Pre-launch cleanup",
+        phase: "launch",
+        owner: "Pr1me",
+        duration: "90 min",
+        outcome: "Enter the target weekend with confidence.",
+        tasks: [
+          "Fix any last bugs or trust issues revealed by the soft launch.",
+          "Run a final deal and mobile verification pass.",
+          "Confirm analytics, metadata, and top navigation still look clean."
+        ]
+      },
+      {
+        date: "2026-08-15",
+        title: "Launch day",
+        phase: "launch",
+        owner: "Shared",
+        duration: "120 min",
+        outcome: "Go public with focus and follow-through.",
+        tasks: [
+          "Publish the main launch push and share to the best available channels.",
+          "Monitor traffic, click activity, replies, and feedback for at least one focused session.",
+          "Write down what worked, what flopped, and the top 3 next actions for the week after launch."
+        ]
+      }
+    ];
+
+    const phaseClasses = {
+      foundation: "phase-foundation",
+      monetization: "phase-monetization",
+      content: "phase-content",
+      launch: "phase-launch"
+    };
+
+    const phaseLabels = {
+      foundation: "Foundation",
+      monetization: "Monetization",
+      content: "Content + SEO",
+      launch: "Launch + Promo"
+    };
+
+    function formatDate(value) {
+      const date = new Date(`${value}T12:00:00`);
+      return date.toLocaleDateString("en-US", {
+        weekday: "short",
+        month: "short",
+        day: "numeric"
+      });
+    }
+
+    function keyFor(date, index) {
+      return `froshdeals-dashboard:${date}:${index}`;
+    }
+
+    const daysEl = document.getElementById("days");
+
+    schedule.forEach((day) => {
+      const article = document.createElement("article");
+      article.className = "day-card";
+
+      const items = day.tasks.map((task, index) => {
+        const id = keyFor(day.date, index);
+        return `
+          <li>
+            <input type="checkbox" id="${id}" ${localStorage.getItem(id) === "true" ? "checked" : ""}>
+            <label for="${id}">${task}</label>
+          </li>
+        `;
+      }).join("");
+
+      article.innerHTML = `
+        <div class="day-header">
+          <div>
+            <div class="label">${formatDate(day.date)}</div>
+            <h3>${day.title}</h3>
+            <div class="day-meta">
+              <span class="phase ${phaseClasses[day.phase]}">${phaseLabels[day.phase]}</span>
+              <span class="tag">${day.owner}</span>
+              <span class="tag">${day.duration}</span>
+            </div>
+          </div>
+        </div>
+        <p><strong>Win condition:</strong> ${day.outcome}</p>
+        <ul class="checkboxes">${items}</ul>
+      `;
+
+      daysEl.appendChild(article);
+    });
+
+    document.querySelectorAll('input[type="checkbox"]').forEach((input) => {
+      input.addEventListener("change", (event) => {
+        localStorage.setItem(event.target.id, String(event.target.checked));
+      });
+    });
+  </script>
+</body>
+</html>
