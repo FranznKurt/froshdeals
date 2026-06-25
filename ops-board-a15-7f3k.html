@@ -154,6 +154,13 @@
       filter: blur(4px);
     }
 
+    .hero-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
     .eyebrow {
       display: inline-flex;
       align-items: center;
@@ -166,6 +173,132 @@
       font-weight: 800;
       letter-spacing: 0.08em;
       text-transform: uppercase;
+    }
+
+    .monitor {
+      width: min(340px, 100%);
+      padding: 18px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.62);
+      border: 1px solid rgba(22, 33, 28, 0.09);
+      box-shadow: 0 10px 25px rgba(69, 55, 27, 0.08);
+      flex-shrink: 0;
+    }
+
+    .monitor-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .monitor-title {
+      font-size: 0.82rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .live-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      background: rgba(22, 33, 28, 0.05);
+      color: var(--ink);
+    }
+
+    .live-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--muted);
+      box-shadow: 0 0 0 0 rgba(95, 109, 100, 0.35);
+    }
+
+    .live-pill.working .live-dot {
+      background: var(--forest);
+      animation: pulse 1.6s infinite;
+    }
+
+    .live-pill.idle .live-dot {
+      background: var(--gold);
+      box-shadow: 0 0 0 0 rgba(215, 164, 55, 0.35);
+    }
+
+    .live-pill.blocked .live-dot {
+      background: var(--brick);
+      box-shadow: 0 0 0 0 rgba(195, 86, 63, 0.35);
+    }
+
+    .monitor-task {
+      margin: 0 0 8px;
+      font-size: 1rem;
+      line-height: 1.45;
+    }
+
+    .monitor-meta {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+
+    .monitor-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .monitor-btn {
+      border: 0;
+      padding: 8px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 800;
+      background: rgba(22, 33, 28, 0.06);
+      color: var(--ink);
+    }
+
+    .monitor-btn.active {
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .monitor-edit {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .monitor-edit input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(22, 33, 28, 0.12);
+      background: rgba(255, 255, 255, 0.88);
+      color: var(--ink);
+      font-size: 0.92rem;
+      outline: none;
+    }
+
+    .monitor-edit input:focus {
+      border-color: var(--forest);
+      box-shadow: 0 0 0 3px rgba(29, 107, 79, 0.12);
+    }
+
+    .monitor-note {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.4;
     }
 
     h1 {
@@ -481,9 +614,29 @@
         grid-template-columns: 1fr;
       }
 
+      .hero-top {
+        flex-direction: column;
+      }
+
+      .monitor {
+        width: 100%;
+      }
+
       .section-head {
         align-items: start;
         flex-direction: column;
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(29, 107, 79, 0.45);
+      }
+      70% {
+        box-shadow: 0 0 0 10px rgba(29, 107, 79, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(29, 107, 79, 0);
       }
     }
   </style>
@@ -504,7 +657,31 @@
 
   <div id="board" class="page hidden-board">
     <section class="hero">
-      <div class="eyebrow">FroshDeals launch operating board</div>
+      <div class="hero-top">
+        <div>
+          <div class="eyebrow">FroshDeals launch operating board</div>
+        </div>
+        <aside class="monitor">
+          <div class="monitor-head">
+            <div class="monitor-title">Franz Monitor</div>
+            <div id="monitorStatePill" class="live-pill idle">
+              <span class="live-dot"></span>
+              <span id="monitorStateText">Idle</span>
+            </div>
+          </div>
+          <p id="monitorTask" class="monitor-task"><strong>Current task:</strong> Waiting for the next move.</p>
+          <p id="monitorMeta" class="monitor-meta">Last updated: not set</p>
+          <div class="monitor-actions">
+            <button type="button" class="monitor-btn active" data-state="idle">Idle</button>
+            <button type="button" class="monitor-btn" data-state="working">Working</button>
+            <button type="button" class="monitor-btn" data-state="blocked">Blocked</button>
+          </div>
+          <div class="monitor-edit">
+            <input id="monitorInput" type="text" maxlength="120" placeholder="What am I working on right now?" />
+          </div>
+          <div class="monitor-note">Quick note: this status box is lightweight and shared by URL, but for now it updates manually in your browser.</div>
+        </aside>
+      </div>
       <h1>Day-by-day plan to get FroshDeals fully live and promoted by August 15, 2026.</h1>
       <p>
         Built for 60-120 focused minutes per day. The goal is simple: tighten the product,
@@ -639,12 +816,79 @@
   <script>
     const PASSCODE = "2662";
     const ACCESS_KEY = "froshdeals-ops-board-access";
+    const MONITOR_KEY = "froshdeals-ops-monitor";
 
     const gateEl = document.getElementById("gate");
     const boardEl = document.getElementById("board");
     const gateForm = document.getElementById("gateForm");
     const passcodeInput = document.getElementById("passcodeInput");
     const gateError = document.getElementById("gateError");
+    const monitorStatePill = document.getElementById("monitorStatePill");
+    const monitorStateText = document.getElementById("monitorStateText");
+    const monitorTask = document.getElementById("monitorTask");
+    const monitorMeta = document.getElementById("monitorMeta");
+    const monitorInput = document.getElementById("monitorInput");
+    const monitorButtons = Array.from(document.querySelectorAll(".monitor-btn"));
+
+    function readMonitor() {
+      try {
+        return JSON.parse(localStorage.getItem(MONITOR_KEY)) || {
+          state: "idle",
+          task: "Waiting for the next move.",
+          updatedAt: null
+        };
+      } catch {
+        return {
+          state: "idle",
+          task: "Waiting for the next move.",
+          updatedAt: null
+        };
+      }
+    }
+
+    function formatStamp(value) {
+      if (!value) {
+        return "Last updated: not set";
+      }
+
+      return `Last updated: ${new Date(value).toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit"
+      })}`;
+    }
+
+    function renderMonitor(data) {
+      const state = ["idle", "working", "blocked"].includes(data.state) ? data.state : "idle";
+      const labelMap = {
+        idle: "Idle",
+        working: "Working",
+        blocked: "Blocked"
+      };
+
+      monitorStatePill.className = `live-pill ${state}`;
+      monitorStateText.textContent = labelMap[state];
+      monitorTask.innerHTML = `<strong>Current task:</strong> ${data.task || "Waiting for the next move."}`;
+      monitorMeta.textContent = formatStamp(data.updatedAt);
+      monitorInput.value = data.task || "";
+
+      monitorButtons.forEach((button) => {
+        button.classList.toggle("active", button.dataset.state === state);
+      });
+    }
+
+    function saveMonitor(next) {
+      const current = readMonitor();
+      const payload = {
+        state: next.state || current.state || "idle",
+        task: typeof next.task === "string" ? next.task.trim() || "Waiting for the next move." : current.task || "Waiting for the next move.",
+        updatedAt: new Date().toISOString()
+      };
+
+      localStorage.setItem(MONITOR_KEY, JSON.stringify(payload));
+      renderMonitor(payload);
+    }
 
     function unlockBoard() {
       sessionStorage.setItem(ACCESS_KEY, "granted");
@@ -668,6 +912,18 @@
 
       gateError.textContent = "Wrong code. Try again.";
       passcodeInput.select();
+    });
+
+    renderMonitor(readMonitor());
+
+    monitorButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        saveMonitor({ state: button.dataset.state, task: monitorInput.value });
+      });
+    });
+
+    monitorInput.addEventListener("change", () => {
+      saveMonitor({ task: monitorInput.value });
     });
 
     const schedule = [
