@@ -38,6 +38,94 @@
         linear-gradient(180deg, #f7f1e7 0%, #f0e8d7 100%);
     }
 
+    body.locked {
+      overflow: hidden;
+    }
+
+    .gate {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background:
+        radial-gradient(circle at top, rgba(29, 107, 79, 0.18), transparent 30%),
+        rgba(244, 239, 229, 0.96);
+      backdrop-filter: blur(12px);
+    }
+
+    .gate-card {
+      width: min(420px, 100%);
+      padding: 28px;
+      border-radius: 28px;
+      background: rgba(255, 251, 245, 0.96);
+      border: 1px solid rgba(22, 33, 28, 0.1);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .gate-card h1 {
+      margin: 0 0 10px;
+      font-family: var(--font-display);
+      font-size: 2.1rem;
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+    }
+
+    .gate-card p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .gate-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .gate-form input {
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 16px;
+      border: 1px solid rgba(22, 33, 28, 0.12);
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--ink);
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-align: center;
+      letter-spacing: 0.25em;
+      outline: none;
+    }
+
+    .gate-form input:focus {
+      border-color: var(--forest);
+      box-shadow: 0 0 0 3px rgba(29, 107, 79, 0.12);
+    }
+
+    .gate-form button {
+      padding: 14px 18px;
+      border: 0;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--forest), var(--sky));
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .gate-error {
+      min-height: 20px;
+      color: var(--brick);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .hidden-board {
+      display: none;
+    }
+
     .page {
       width: min(1360px, calc(100vw - 32px));
       margin: 22px auto 40px;
@@ -400,8 +488,21 @@
     }
   </style>
 </head>
-<body>
-  <div class="page">
+<body class="locked">
+  <div id="gate" class="gate">
+    <div class="gate-card">
+      <div class="eyebrow">Private ops board</div>
+      <h1>Enter passcode</h1>
+      <p>This planning page is hidden from the public FroshDeals site.</p>
+      <form id="gateForm" class="gate-form">
+        <input id="passcodeInput" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="0000" autocomplete="off" />
+        <button type="submit">Open dashboard</button>
+        <div id="gateError" class="gate-error"></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="board" class="page hidden-board">
     <section class="hero">
       <div class="eyebrow">FroshDeals launch operating board</div>
       <h1>Day-by-day plan to get FroshDeals fully live and promoted by August 15, 2026.</h1>
@@ -536,6 +637,39 @@
   </div>
 
   <script>
+    const PASSCODE = "2662";
+    const ACCESS_KEY = "froshdeals-ops-board-access";
+
+    const gateEl = document.getElementById("gate");
+    const boardEl = document.getElementById("board");
+    const gateForm = document.getElementById("gateForm");
+    const passcodeInput = document.getElementById("passcodeInput");
+    const gateError = document.getElementById("gateError");
+
+    function unlockBoard() {
+      sessionStorage.setItem(ACCESS_KEY, "granted");
+      document.body.classList.remove("locked");
+      gateEl.style.display = "none";
+      boardEl.style.display = "block";
+    }
+
+    if (sessionStorage.getItem(ACCESS_KEY) === "granted") {
+      unlockBoard();
+    }
+
+    gateForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      if (passcodeInput.value === PASSCODE) {
+        gateError.textContent = "";
+        unlockBoard();
+        return;
+      }
+
+      gateError.textContent = "Wrong code. Try again.";
+      passcodeInput.select();
+    });
+
     const schedule = [
       {
         date: "2026-06-24",
