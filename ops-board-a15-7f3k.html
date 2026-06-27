@@ -226,7 +226,8 @@
       animation: pulse 1.6s infinite;
     }
 
-    .live-pill.idle .live-dot {
+    .live-pill.idle .live-dot,
+    .live-pill.seen .live-dot {
       background: var(--gold);
       box-shadow: 0 0 0 0 rgba(215, 164, 55, 0.35);
     }
@@ -246,6 +247,13 @@
       margin: 0;
       color: var(--muted);
       font-size: 0.84rem;
+      line-height: 1.45;
+    }
+
+    .monitor-submeta {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 0.76rem;
       line-height: 1.45;
     }
 
@@ -766,9 +774,12 @@
           </div>
           <p id="monitorTask" class="monitor-task"><strong>Current task:</strong> Waiting for the next move.</p>
           <p id="monitorMeta" class="monitor-meta">Last updated: not set</p>
+          <p id="monitorSubmeta" class="monitor-submeta">Waiting for the first live signal.</p>
           <div class="monitor-actions">
             <button type="button" class="monitor-btn active" data-state="idle">Idle</button>
+            <button type="button" class="monitor-btn" data-state="seen">Seen</button>
             <button type="button" class="monitor-btn" data-state="working">Working</button>
+            <button type="button" class="monitor-btn" data-state="waiting">Waiting</button>
             <button type="button" class="monitor-btn" data-state="blocked">Blocked</button>
           </div>
           <div class="monitor-edit">
@@ -935,6 +946,7 @@
     const monitorStateText = document.getElementById("monitorStateText");
     const monitorTask = document.getElementById("monitorTask");
     const monitorMeta = document.getElementById("monitorMeta");
+    const monitorSubmeta = document.getElementById("monitorSubmeta");
     const monitorInput = document.getElementById("monitorInput");
     const monitorButtons = Array.from(document.querySelectorAll(".monitor-btn"));
     const syncNote = document.getElementById("syncNote");
@@ -957,12 +969,14 @@
         return JSON.parse(localStorage.getItem(MONITOR_KEY)) || {
           state: "idle",
           task: "Waiting for the next move.",
+          detail: "Waiting for the first live signal.",
           updatedAt: null
         };
       } catch {
         return {
           state: "idle",
           task: "Waiting for the next move.",
+          detail: "Waiting for the first live signal.",
           updatedAt: null
         };
       }
@@ -981,11 +995,51 @@
       })}`;
     }
 
+    function formatFreshness(value) {
+      if (!value) {
+        return "No heartbeat yet";
+      }
+
+      const deltaMs = Date.now() - new Date(value).getTime();
+      const deltaSeconds = Math.max(0, Math.floor(deltaMs / 1000));
+
+      if (deltaSeconds < 15) {
+        return "Live now";
+      }
+
+      if (deltaSeconds < 60) {
+        return `${deltaSeconds}s ago`;
+      }
+
+      const deltaMinutes = Math.floor(deltaSeconds / 60);
+
+      if (deltaMinutes < 60) {
+        return `${deltaMinutes}m ago`;
+      }
+
+      const deltaHours = Math.floor(deltaMinutes / 60);
+      return `${deltaHours}h ago`;
+    }
+
+    function resolveDisplayState(data) {
+      const allowedStates = ["idle", "seen", "working", "waiting", "blocked"];
+      const rawState = allowedStates.includes(data.state) ? data.state : "idle";
+
+      if (!data.updatedAt) {
+        return rawState;
+      }
+
+      const ageMs = Date.now() - new Date(data.updatedAt).getTime();
+      return ageMs > 1000 * 60 * 10 ? "idle" : rawState;
+    }
+
     function renderMonitor(data) {
-      const state = ["idle", "working", "blocked"].includes(data.state) ? data.state : "idle";
+      const state = resolveDisplayState(data);
       const labelMap = {
         idle: "Idle",
+        seen: "Seen",
         working: "Working",
+        waiting: "Waiting",
         blocked: "Blocked"
       };
 
@@ -993,10 +1047,12 @@
       monitorStateText.textContent = labelMap[state];
       monitorTask.innerHTML = `<strong>Current task:</strong> ${data.task || "Waiting for the next move."}`;
       monitorMeta.textContent = formatStamp(data.updatedAt);
+      const detailText = data.detail || "Heartbeat received";
+      monitorSubmeta.textContent = `${detailText} • ${formatFreshness(data.updatedAt)}`;
       monitorInput.value = data.task || "";
 
       monitorButtons.forEach((button) => {
-        button.classList.toggle("active", button.dataset.state === state);
+        button.classList.toggle("active", button.dataset.state === (data.state || "idle"));
       });
     }
 
@@ -1005,6 +1061,7 @@
       const payload = {
         state: next.state || current.state || "idle",
         task: typeof next.task === "string" ? next.task.trim() || "Waiting for the next move." : current.task || "Waiting for the next move.",
+        detail: typeof next.detail === "string" ? next.detail.trim() || current.detail || "Waiting for the first live signal." : current.detail || "Waiting for the first live signal.",
         updatedAt: new Date().toISOString()
       };
 
@@ -1098,16 +1155,43 @@
     });
 
     renderMonitor(readMonitor());
+    setInterval(() => {
+      renderMonitor(readMonitor());
+    }, 15000);
 
     monitorButtons.forEach((button) => {
       button.addEventListener("click", () => {
-        saveMonitor({ state: button.dataset.state, task: monitorInput.value });
+        saveMonitor({
+          state: button.dataset.state,
+          task: monitorInput.value,
+          detail: `Manual board update • ${labelMapForState(button.dataset.state)}`
+        });
       });
     });
 
     monitorInput.addEventListener("change", () => {
       saveMonitor({ task: monitorInput.value });
     });
+
+    function labelMapForState(state) {
+      return {
+        idle: "Idle",
+        seen: "Seen",
+        working: "Working",
+        waiting: "Waiting",
+        blocked: "Blocked"
+      }[state] || "Idle";
+    }
+
+    window.froshDealsMonitor = {
+      update(next) {
+        if (!next || typeof next !== "object") {
+          return;
+        }
+
+        saveMonitor(next);
+      }
+    };
 
     initRealtimeMonitor();
 
