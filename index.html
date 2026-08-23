@@ -427,39 +427,51 @@
 ]);
 
   function validateDealsData(deals) {
+    if (!Array.isArray(deals)) {
+      console.error("Deals data must be an array.");
+      return [];
+    }
+
     const seenBrands = new Set();
+    const validDeals = [];
 
-    return deals.map((deal) => {
-      if (!deal || typeof deal !== "object") {
-        throw new Error("Invalid deal entry encountered");
-      }
-
-      const requiredFields = ["brand", "icon", "discount", "category", "desc", "affiliate", "commission", "dealUrl"];
-      for (const field of requiredFields) {
-        if (!deal[field]) {
-          throw new Error(`Missing ${field} for ${deal.brand || "unknown brand"}`);
-        }
-      }
-
-      const normalizedBrand = deal.brand.trim().toLowerCase();
-      if (seenBrands.has(normalizedBrand)) {
-        throw new Error(`Duplicate brand in deal data: ${deal.brand}`);
-      }
-      seenBrands.add(normalizedBrand);
-
-      let host;
+    for (const deal of deals) {
       try {
-        host = new URL(deal.dealUrl).hostname.toLowerCase();
-      } catch {
-        throw new Error(`Invalid deal URL for ${deal.brand}: ${deal.dealUrl}`);
-      }
+        if (!deal || typeof deal !== "object") {
+          throw new Error("Invalid deal entry encountered");
+        }
 
-      if (BLOCKED_DEAL_HOSTS.has(host)) {
-        throw new Error(`Blocked third-party host for ${deal.brand}: ${host}`);
-      }
+        const requiredFields = ["brand", "icon", "discount", "category", "desc", "affiliate", "commission", "dealUrl"];
+        for (const field of requiredFields) {
+          if (!deal[field]) {
+            throw new Error(`Missing ${field} for ${deal.brand || "unknown brand"}`);
+          }
+        }
 
-      return Object.freeze({ ...deal });
-    });
+        const normalizedBrand = deal.brand.trim().toLowerCase();
+        if (seenBrands.has(normalizedBrand)) {
+          throw new Error(`Duplicate brand in deal data: ${deal.brand}`);
+        }
+
+        let host;
+        try {
+          host = new URL(deal.dealUrl).hostname.toLowerCase();
+        } catch {
+          throw new Error(`Invalid deal URL for ${deal.brand}: ${deal.dealUrl}`);
+        }
+
+        if (BLOCKED_DEAL_HOSTS.has(host)) {
+          throw new Error(`Blocked third-party host for ${deal.brand}: ${host}`);
+        }
+
+        seenBrands.add(normalizedBrand);
+        validDeals.push(Object.freeze({ ...deal }));
+      } catch (error) {
+        console.warn("Skipping invalid deal entry.", error);
+      }
+    }
+
+    return validDeals;
   }
 
   window.validateDealsData = validateDealsData;
