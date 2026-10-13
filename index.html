@@ -326,8 +326,8 @@
     <div style="display:flex;align-items:center;gap:12px;">
       <span style="font-size:1.8rem;">🆓</span>
       <div style="text-align:left;">
-        <div style="font-size:1.2rem;font-weight:900;color:#fff;letter-spacing:-0.5px;">Completely Free With Your .edu</div>
-        <div style="color:var(--accent3);font-size:.85rem;font-weight:600;">No credit card. No trial. Just free. ↓ Click to expand</div>
+        <div style="font-size:1.2rem;font-weight:900;color:#fff;letter-spacing:-0.5px;">Free Offers &amp; Trials</div>
+        <div style="color:var(--accent3);font-size:.85rem;font-weight:600;">Eligibility, payment details and renewal terms vary. ↓ Click to expand</div>
       </div>
     </div>
     <span id="freeArrow" style="font-size:1.4rem;color:var(--accent3);transition:transform .3s;">▼</span>
@@ -489,9 +489,9 @@
   {
     "brand": "Spotify",
     "icon": "🎵",
-    "discount": "50% off Premium",
+    "discount": "$6.99/month",
     "category": "Music",
-    "desc": "$2.99/mo Spotify Premium — half price. The #1 student deal in music streaming.",
+    "desc": "US Premium Student: $6.99/month plus tax. Eligible students who have not tried Premium before can try 1 month free. For students above 18 at eligible US Title IV accredited colleges or universities; enrollment verified via SheerID and reverified annually (up to 4 years). Includes Hulu (With Ads), subject to eligibility. Terms apply.",
     "affiliate": "Impact.com",
     "commission": "$7.35 per signup",
     "dealUrl": "https://www.spotify.com/us/student/"
@@ -3208,7 +3208,8 @@ const FREE_DEALS = [
   { icon:"☁️", name:"AWS Educate", desc:"Cloud credits, training, and hands-on labs from Amazon Web Services", url:"https://aws.amazon.com/education/awseducate/" },
   { icon:"💧", name:"DigitalOcean $200 Credits", desc:"$200 in cloud hosting credits — host apps and projects free", url:"https://education.github.com/pack" },
   { icon:"🌐", name:"Namecheap Free Domain", desc:"Free .me domain + SSL certificate for 1 year", url:"https://education.github.com/pack" },
-  { icon:"📦", name:"Amazon Prime (6 mo)", desc:"6 months of Amazon Prime completely free with .edu email", url:"https://www.amazon.com/joinstudent" },
+  // Public trial terms rechecked 2026-10-12; keep this route untagged pending program confirmation.
+  { icon:"📦", name:"Amazon Prime (6 mo trial)", desc:"6-month trial of Prime for Young Adults, then $7.49/month. Check Amazon for eligibility and renewal terms.", badge:"TRIAL", cta:"View Trial Terms", url:"https://www.amazon.com/joinstudent" },
   { icon:"💡", name:"LinkedIn Learning", desc:"Thousands of professional courses — many schools provide free access", url:"https://www.linkedin.com/learning/" },
   { icon:"🔒", name:"LastPass Premium", desc:"Password manager Premium free for students", url:"https://www.lastpass.com/solutions/students" },
   { icon:"💬", name:"Discord Nitro (3 mo)", desc:"3 months of Discord Nitro free via GitHub Student Dev Pack", url:"https://education.github.com/pack" },
@@ -3226,11 +3227,11 @@ function renderFreeGrid() {
         onmouseout="this.style.borderColor='rgba(67,232,176,0.2)';this.style.transform='';this.style.boxShadow=''">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
           <div style="display:flex;align-items:center;">${brandLogo(d.name, d.icon, 36)}</div>
-          <span style="font-size:.68rem;font-weight:800;color:var(--accent3);background:rgba(67,232,176,0.1);padding:3px 9px;border-radius:999px;border:1px solid rgba(67,232,176,0.25);">FREE</span>
+          <span style="font-size:.68rem;font-weight:800;color:var(--accent3);background:rgba(67,232,176,0.1);padding:3px 9px;border-radius:999px;border:1px solid rgba(67,232,176,0.25);">${d.badge || 'FREE'}</span>
         </div>
         <div style="font-weight:800;font-size:.95rem;margin-bottom:6px;color:#fff;">${d.name}</div>
         <div style="font-size:.78rem;color:var(--muted);">${d.desc}</div>
-        <div style="margin-top:12px;font-size:.8rem;font-weight:700;color:var(--accent3);">Claim Free →</div>
+        <div style="margin-top:12px;font-size:.8rem;font-weight:700;color:var(--accent3);">${d.cta || 'Claim Free'} →</div>
       </div>
     </a>
   `).join("");
@@ -3260,7 +3261,10 @@ renderGrid();
 const DOTW_DEALS = [
   { icon:"🎨", brand:"Adobe Creative Cloud", discount:"60% off for students", desc:"Photoshop, Illustrator, Premiere Pro, and 20+ apps — the full Creative Cloud suite at 60% off. Every design, art, and media student needs this.", url:"https://www.adobe.com/creativecloud/plans/students.html" },
   { icon:"🔒", brand:"NordVPN", discount:"Up to 63% off + free months", desc:"Stay safe on campus WiFi with the #1 student VPN. Up to 63% off plus extra months free. Essential for anyone using public networks.", url:"https://nordvpn.com/student/" },
-  { icon:"🎵", brand:"Spotify Premium", discount:"$2.99/mo for students", desc:"Spotify Premium for just $2.99/month — that's 50% off the regular price. Ad-free music, offline listening, and unlimited skips.", url:"https://www.spotify.com/us/student/" },
+  // US provider offer rechecked 2026-10-12. Reuse catalogue copy/link to prevent drift.
+  ...DEALS.filter(d => d.brand === "Spotify").map(d => ({
+    icon: d.icon, brand: "Spotify Premium", discount: d.discount, desc: d.desc, url: d.dealUrl
+  })),
   { icon:"📦", brand:"Amazon Prime Student", discount:"6 months FREE then 50% off", desc:"Free 6-month trial then just $7.49/mo (vs $14.99). Free 2-day shipping, Prime Video, Prime Gaming, and more.", url:"https://www.amazon.com/joinstudent?tag=campusunlock-20" },
   { icon:"📺", brand:"Hulu", discount:"$1.99/mo", desc:"Hulu with ads for just $1.99/month with your student verification. Watch current-season TV, movies, and Hulu originals at the best streaming price around.", url:"https://www.hulu.com/student" },
   { icon:"🍎", brand:"Apple Education Store", discount:"Up to 20% off + free AirPods", desc:"Shop the Apple Education Store for discounts on MacBooks, iPads, and AirPods. Seasonal back-to-school deals include free AirPods with Mac purchase.", url:"https://www.apple.com/shop/buy-mac/mac-laptop/students" },
