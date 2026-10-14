@@ -71,6 +71,32 @@ class OfferCopyTests(unittest.TestCase):
             self.assertTrue(self.page.locator('#dotw-brand').inner_text())
             self.assertTrue(self.page.locator('#dotw-link').get_attribute('href').startswith('https://'))
 
+    def test_footer_category_links_show_matching_deals_without_fragment_navigation(self):
+        categories = {
+            '🖥️ Software & Apps': 'Software',
+            '📺 Streaming & Entertainment': 'Entertainment',
+            '👕 Clothing & Fashion': 'Clothing',
+            '💻 Tech & Gadgets': 'Tech',
+            '📚 Textbooks & Education': 'Education',
+            '🍕 Food & Delivery': 'Food & Delivery',
+        }
+        for width, height in ((1440, 900), (390, 844)):
+            self.page.set_viewport_size({'width': width, 'height': height})
+            for label, category in categories.items():
+                with self.subTest(width=width, category=category):
+                    url_before = self.page.url
+                    self.page.get_by_role('link', name=label, exact=True).click()
+                    expected = self.page.evaluate(
+                        '(category) => DEALS.filter(d => d.category === category).length', category)
+                    self.assertGreater(expected, 0)
+                    self.assertEqual(self.page.locator('#grid .card').count(), expected)
+                    self.assertEqual(self.page.locator('.cat-btn.active').inner_text(), category)
+                    self.assertEqual(set(self.page.locator('#grid .cat-tag').all_text_contents()),
+                                     {category})
+                    self.assertEqual(self.page.locator('#resultsMeta').inner_text(),
+                                     f'Showing {expected} deals')
+                    self.assertEqual(self.page.url, url_before)
+
     def test_amazon_free_card_is_a_trial_without_adding_attribution(self):
         self.page.locator('#freeToggleBtn').click()
         card = self.page.locator('#freeGrid a[href="https://www.amazon.com/joinstudent"]')
