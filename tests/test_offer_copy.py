@@ -41,6 +41,40 @@ class OfferCopyTests(unittest.TestCase):
         self.page = self.context.new_page()
         self.page.goto(f'http://127.0.0.1:{self.server.server_port}/', wait_until='load')
 
+    def test_footer_replaces_inactive_newsletter_signup_with_bookmark_guidance(self):
+        for width, height in ((1440, 900), (390, 844)):
+            with self.subTest(width=width):
+                self.page.set_viewport_size({'width': width, 'height': height})
+                footer = self.page.locator('footer')
+                text = footer.inner_text()
+                self.assertEqual(footer.locator('input[type="email"], form, button').count(), 0)
+                self.assertIn('Newsletter signup is unavailable.', text)
+                self.assertIn('Bookmark FroshDeals to browse offers again.', text)
+                for promise in ('New deals drop every week', 'Get Weekly Deals', 'Get them first'):
+                    self.assertNotIn(promise, text)
+                self.assertEqual(self.page.evaluate('document.documentElement.scrollWidth'), width)
+
+    def test_privacy_explains_browsing_without_unsupported_data_promises(self):
+        for width, height in ((1440, 900), (390, 844)):
+            self.page.set_viewport_size({'width': width, 'height': height})
+            self.page.get_by_role('link', name='Privacy Policy', exact=True).click()
+            modal = self.page.locator('#modal-content')
+            self.assertTrue(modal.is_visible())
+            text = modal.inner_text()
+            for disclosure in ('No account or login is needed to browse FroshDeals.',
+                               'Newsletter signup is unavailable.',
+                               'Links to other sites', 'third-party assets', 'hosting providers',
+                               'may process network data', 'their own privacy policies'):
+                with self.subTest(width=width, disclosure=disclosure):
+                    self.assertIn(disclosure, text)
+            for claim in ('We do not collect personal data', 'any personal information',
+                          'your email is stored securely', 'never sold or shared',
+                          'We use standard analytics', 'No personally identifiable information',
+                          'no third-party requests'):
+                with self.subTest(width=width, unsupported_claim=claim):
+                    self.assertNotIn(claim, text)
+            self.page.evaluate('closeModal()')
+
     def test_catalog_does_not_claim_unproven_verification_or_average_savings(self):
         text = self.page.locator('body').inner_text()
         for claim in ('$3,200+', 'Avg Annual Value', 'Verified Deals',
