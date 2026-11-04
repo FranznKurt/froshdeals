@@ -47,7 +47,9 @@
         }
 
         seenBrands.add(normalizedBrand);
-        validDeals.push(Object.freeze({ ...deal }));
+        const categoryAliases = { Food: 'Food & Delivery', Fashion: 'Clothing', Phone: 'Tech' };
+        const category = categoryAliases[deal.category] || deal.category;
+        validDeals.push(Object.freeze({ ...deal, category }));
       } catch (error) {
         console.warn("Skipping invalid deal entry.", error);
       }
@@ -111,12 +113,12 @@
   {
     "brand": "Apple",
     "icon": "🍎",
-    "discount": "10-20% off + free AirPods",
+    "discount": "Education pricing",
     "category": "Tech",
-    "desc": "Save on MacBooks, iPads, AirPods. Seasonal free AirPods with Mac purchase.",
+    "desc": "Apple Education Store pricing on eligible products for students attending or accepted into higher education in the U.S. or Puerto Rico, and parents buying for them. Not every product qualifies; purchase limits and current provider terms apply. No seasonal bonus is guaranteed.",
     "affiliate": "Apple Partners",
     "commission": "2.5% hardware / 400% apps",
-    "dealUrl": "https://www.apple.com/shop/buy-mac/mac-laptop/students"
+    "dealUrl": "https://www.apple.com/us-edu/store"
   },
   {
     "brand": "Nike",
@@ -241,12 +243,12 @@
   {
     "brand": "Canva",
     "icon": "✨",
-    "discount": "Free Pro",
+    "discount": "Campus access via your school",
     "category": "Software",
-    "desc": "Canva Pro free for students. Premium templates, brand kits, unlimited storage.",
+    "desc": "Free premium student access through Canva Campus depends on your institution's qualifying plan; ask your university IT team. A .edu email alone does not unlock Pro. Canva Education is separately free for eligible K-12 educators and their students.",
     "affiliate": "Impact.com",
     "commission": "$36 per new Pro sub",
-    "dealUrl": "https://www.canva.com/education/"
+    "dealUrl": "https://www.canva.com/for-campus/"
   },
   {
     "brand": "Skillshare",

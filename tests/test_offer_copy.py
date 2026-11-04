@@ -41,6 +41,69 @@ class OfferCopyTests(unittest.TestCase):
         self.page = self.context.new_page()
         self.page.goto(f'http://127.0.0.1:{self.server.server_port}/', wait_until='load')
 
+    def test_catalog_does_not_claim_unproven_verification_or_average_savings(self):
+        text = self.page.locator('body').inner_text()
+        for claim in ('$3,200+', 'Avg Annual Value', 'Verified Deals',
+                      'updated every week', '✓ Verified'):
+            self.assertNotIn(claim, text)
+        self.assertEqual(self.page.locator('#grid .verified').count(), 0)
+        self.assertIn('Check eligibility', self.page.locator('#grid .card').first.inner_text())
+        self.page.evaluate("showModal('how')")
+        modal = self.page.locator('#modal-content').inner_text()
+        self.assertIn('not a guarantee', modal)
+        self.assertNotIn('Every deal on FroshDeals is manually checked', modal)
+
+    def test_apple_grid_and_feature_preserve_education_pricing_without_unverified_bonus(self):
+        self.page.locator('#searchInput').fill('Apple')
+        # Exact brand match without conflating Apple Music and Apple TV+.
+        card = self.page.locator('#grid .card').filter(
+            has=self.page.get_by_text('Apple', exact=True))
+        self.assertEqual(card.count(), 1)
+        self.assertEqual(card.locator('.discount').inner_text(), 'Education pricing')
+        self.assertEqual(card.locator('a').get_attribute('href'), 'https://www.apple.com/us-edu/store')
+        self.assertIn('accepted', card.locator('.desc').inner_text())
+        self.page.evaluate('getWeekNumber = () => 5; renderDOTW()')
+        self.assertEqual(self.page.locator('#dotw-discount').inner_text(), 'Education pricing')
+        self.assertEqual(self.page.locator('#dotw-desc').inner_text(), card.locator('.desc').inner_text())
+        self.assertEqual(self.page.locator('#dotw-link').get_attribute('href'), card.locator('a').get_attribute('href'))
+        self.assertNotIn('AirPods', self.page.locator('#dotw-section').inner_text())
+
+    def test_canva_free_access_is_institution_dependent_not_every_edu(self):
+        self.page.locator('#searchInput').fill('Canva')
+        card = self.page.locator('#grid .card')
+        self.assertEqual(card.count(), 1)
+        self.assertEqual(card.locator('.discount').inner_text(), 'Campus access via your school')
+        self.assertIn('institution', card.locator('.desc').inner_text())
+        self.assertIn('K-12', card.locator('.desc').inner_text())
+        self.assertEqual(card.locator('a').get_attribute('href'), 'https://www.canva.com/for-campus/')
+        self.page.locator('#freeToggleBtn').click()
+        free = self.page.locator('#freeGrid a[href="https://www.canva.com/for-campus/"]')
+        self.assertEqual(free.count(), 1)
+        self.assertIn('VIA SCHOOL', free.inner_text())
+        self.assertIn('Check Campus Access', free.inner_text())
+        self.assertNotIn('Claim Free', free.inner_text())
+        self.assertIn('institution', free.inner_text())
+
+    def test_empty_search_renders_input_as_text_not_html(self):
+        query = '<img src=x onerror="window.searchInjected=true">'
+        self.page.locator('#searchInput').fill(query)
+        self.assertEqual(self.page.locator('#grid .card').count(), 0)
+        self.assertEqual(self.page.locator('#grid .empty img').count(), 0)
+        self.assertIn(query.lower(), self.page.locator('#grid .empty').inner_text())
+        self.assertFalse(self.page.evaluate('Boolean(window.searchInjected)'))
+
+    def test_category_buttons_cover_every_displayed_offer(self):
+        visible = set(self.page.locator('.cat-btn').all_text_contents())
+        catalog = set(self.page.evaluate('DEALS.map(d => d.category)'))
+        self.assertTrue(catalog.issubset(visible), f'Unreachable categories: {catalog - visible}')
+        for query, category in [('PUMA', 'Clothing'), ('T-Mobile', 'Tech')]:
+            self.page.locator('#searchInput').fill(query)
+            self.page.get_by_role('button', name=category, exact=True).click()
+            self.assertGreater(self.page.locator('#grid .card').count(), 0)
+            self.assertEqual(set(self.page.locator('#grid .cat-tag').all_text_contents()), {category})
+            self.page.locator('#searchInput').fill('')
+            self.page.get_by_role('button', name='All', exact=True).click()
+
     def test_mobile_offer_interactions(self):
         # Characterization of existing behavior, not a new feature.
         self.page.set_viewport_size({'width': 390, 'height': 844})
