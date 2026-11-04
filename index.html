@@ -201,6 +201,7 @@
     font-size: .75rem; color: var(--muted); font-style: italic;
   }
   .get-btn {
+    display: block; text-align: center; text-decoration: none;
     margin-top: 4px; width: 100%; padding: 13px;
     background: linear-gradient(135deg,var(--accent),var(--accent2));
     border: none; border-radius: 12px; color: #fff;
@@ -312,9 +313,7 @@
       <div style="color:var(--muted);font-size:.95rem;line-height:1.5;max-width:480px;" id="dotw-desc">Creative Cloud Pro for eligible students and teachers: US$19.99/mo for the first year on an annual, billed monthly plan; US$39.99/mo after the first year. Student or teacher eligibility verification required. Check current provider terms and renewal pricing before subscribing.</div>
     </div>
     <div style="flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:12px;">
-      <a id="dotw-link" href="https://www.adobe.com/creativecloud/buy/students.html" target="_blank" rel="noopener" style="text-decoration:none;">
-        <button style="padding:16px 36px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:14px;color:#fff;font-size:1.05rem;font-weight:800;cursor:pointer;white-space:nowrap;transition:opacity .2s,transform .2s;" onmouseover="this.style.opacity='.88';this.style.transform='scale(0.97)'" onmouseout="this.style.opacity='1';this.style.transform=''">Get This Deal →</button>
-      </a>
+      <a id="dotw-link" href="https://www.adobe.com/creativecloud/buy/students.html" target="_blank" rel="noopener" style="display:inline-block;text-align:center;text-decoration:none;padding:16px 36px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:14px;color:#fff;font-size:1.05rem;font-weight:800;cursor:pointer;white-space:nowrap;transition:opacity .2s,transform .2s;" onmouseover="this.style.opacity='.88';this.style.transform='scale(0.97)'" onmouseout="this.style.opacity='1';this.style.transform=''">Get This Deal →</a>
       <div style="font-size:.75rem;color:var(--muted);">Rotates weekly; not a new verification.</div>
     </div>
   </div>
@@ -322,7 +321,7 @@
 
 <!-- FREE SECTION -->
 <section style="max-width:1200px;margin:40px auto 0;padding:0 24px;">
-  <button onclick="toggleFree()" id="freeToggleBtn" style="width:100%;display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid rgba(67,232,176,0.3);border-radius:16px;padding:20px 24px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--accent3)'" onmouseout="this.style.borderColor='rgba(67,232,176,0.3)'">
+  <button onclick="toggleFree()" id="freeToggleBtn" aria-expanded="false" aria-controls="freeGrid" style="width:100%;display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid rgba(67,232,176,0.3);border-radius:16px;padding:20px 24px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--accent3)'" onmouseout="this.style.borderColor='rgba(67,232,176,0.3)'">
     <div style="display:flex;align-items:center;gap:12px;">
       <span style="font-size:1.8rem;">🆓</span>
       <div style="text-align:left;">
@@ -373,10 +372,10 @@
       <div>
         <h4 style="font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:14px;">About</h4>
         <div style="display:flex;flex-direction:column;gap:8px;">
-          <a href="#" onclick="showModal('about')" style="color:var(--text);text-decoration:none;font-size:.9rem;transition:color .2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text)'">About FroshDeals</a>
-          <a href="#" onclick="showModal('how')" style="color:var(--text);text-decoration:none;font-size:.9rem;transition:color .2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text)'">Offer Checks &amp; Eligibility</a>
-          <a href="#" onclick="showModal('privacy')" style="color:var(--text);text-decoration:none;font-size:.9rem;transition:color .2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text)'">Privacy Policy</a>
-          <a href="#" onclick="showModal('affiliate')" style="color:var(--text);text-decoration:none;font-size:.9rem;transition:color .2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text)'">Affiliate Disclosure</a>
+          <a href="#" onclick="showModal('about', this);return false" style="color:var(--text);text-decoration:none;font-size:.9rem;transition:color .2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text)'">About FroshDeals</a>
+          <a href="#" onclick="showModal('how', this);return false" style="color:var(--text);text-decoration:none;font-size:.9rem;transition:color .2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text)'">Offer Checks &amp; Eligibility</a>
+          <a href="#" onclick="showModal('privacy', this);return false" style="color:var(--text);text-decoration:none;font-size:.9rem;transition:color .2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text)'">Privacy Policy</a>
+          <a href="#" onclick="showModal('affiliate', this);return false" style="color:var(--text);text-decoration:none;font-size:.9rem;transition:color .2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text)'">Affiliate Disclosure</a>
           <a href="mailto:hello@froshdeals.com" style="color:var(--text);text-decoration:none;font-size:.9rem;transition:color .2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text)'">Contact Us</a>
         </div>
       </div>
@@ -393,8 +392,8 @@
     <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;">
       <div class="footer-copy">© 2025 FroshDeals. Made with ❤️ for broke college students everywhere.</div>
       <div style="display:flex;gap:16px;font-size:.82rem;">
-        <a href="#" onclick="showModal('privacy')" style="color:var(--muted);text-decoration:none;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">Privacy</a>
-        <a href="#" onclick="showModal('affiliate')" style="color:var(--muted);text-decoration:none;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">Affiliate Disclosure</a>
+        <a href="#" onclick="showModal('privacy', this);return false" style="color:var(--muted);text-decoration:none;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">Privacy</a>
+        <a href="#" onclick="showModal('affiliate', this);return false" style="color:var(--muted);text-decoration:none;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">Affiliate Disclosure</a>
         <a href="mailto:hello@froshdeals.com" style="color:var(--muted);text-decoration:none;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">Contact</a>
       </div>
     </div>
@@ -406,8 +405,8 @@
 
 <!-- MODAL OVERLAY -->
 <div id="modal-overlay" onclick="closeModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:999;backdrop-filter:blur(4px);"></div>
-<div id="modal-box" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1000;background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:36px;max-width:520px;width:calc(100% - 48px);max-height:80vh;overflow-y:auto;">
-  <button onclick="closeModal()" style="position:absolute;top:16px;right:16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:1rem;width:32px;height:32px;cursor:pointer;">✕</button>
+<div id="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1000;background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:36px;max-width:520px;width:calc(100% - 48px);max-height:80vh;overflow-y:auto;">
+  <button onclick="closeModal()" aria-label="Close dialog" style="position:absolute;top:16px;right:16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--muted);font-size:1rem;width:32px;height:32px;cursor:pointer;">✕</button>
   <div id="modal-content"></div>
 </div>
 
@@ -3184,9 +3183,7 @@ function renderGrid() {
       </span>
       <div class="desc">${d.desc}</div>
       <div class="commission-text">${isTrackedDealUrl(d.dealUrl) ? 'We may earn a commission on qualifying purchases.' : 'Check provider for current eligibility and terms.'}</div>
-      <a href="${d.dealUrl}" target="_blank" rel="noopener" style="text-decoration:none;">
-        <button class="get-btn">Get This Deal →</button>
-      </a>
+      <a href="${d.dealUrl}" target="_blank" rel="noopener" class="get-btn">Get This Deal →</a>
     </div>
   `).join("");
 }
@@ -3239,6 +3236,7 @@ function renderFreeGrid() {
 let freeOpen = false;
 function toggleFree() {
   freeOpen = !freeOpen;
+  document.getElementById("freeToggleBtn").setAttribute('aria-expanded', String(freeOpen));
   const grid = document.getElementById("freeGrid");
   const arrow = document.getElementById("freeArrow");
   if (freeOpen) {
@@ -3331,18 +3329,51 @@ const MODALS = {
     <p style="color:var(--muted);line-height:1.7;">Each card now labels whether it opens an affiliate-tracked link or the brand's direct student page.</p>`,
 };
 
-function showModal(key) {
+let modalInvoker = null;
+let modalPreviousOverflow = '';
+function showModal(key, invoker = document.activeElement) {
+  const box = document.getElementById('modal-box');
+  if (box.style.display === 'none') {
+    modalInvoker = invoker;
+    modalPreviousOverflow = document.body.style.overflow;
+  }
   document.getElementById('modal-content').innerHTML = MODALS[key] || '';
+  const title = box.querySelector('h2');
+  if (title) title.id = 'modal-title';
   document.getElementById('modal-overlay').style.display = 'block';
-  document.getElementById('modal-box').style.display = 'block';
+  box.style.display = 'block';
   document.body.style.overflow = 'hidden';
+  box.querySelector('button').focus();
   return false;
 }
 function closeModal() {
+  if (document.getElementById('modal-box').style.display === 'none') return;
   document.getElementById('modal-overlay').style.display = 'none';
   document.getElementById('modal-box').style.display = 'none';
-  document.body.style.overflow = '';
+  document.body.style.overflow = modalPreviousOverflow;
+  if (modalInvoker && modalInvoker.isConnected) modalInvoker.focus();
+  modalInvoker = null;
 }
+
+document.addEventListener('keydown', event => {
+  const box = document.getElementById('modal-box');
+  if (box.style.display === 'none') return;
+  if (event.key === 'Escape') {
+    event.preventDefault();
+    closeModal();
+  } else if (event.key === 'Tab') {
+    const focusable = Array.from(box.querySelectorAll('a[href], button, input, select, textarea, [tabindex]'))
+      .filter(el => !el.disabled && el.tabIndex >= 0 && el.getClientRects().length);
+    const first = focusable[0] || box;
+    const last = focusable[focusable.length - 1] || box;
+    if (!box.contains(document.activeElement) ||
+        (event.shiftKey && document.activeElement === first) ||
+        (!event.shiftKey && document.activeElement === last)) {
+      event.preventDefault();
+      (event.shiftKey ? last : first).focus();
+    }
+  }
+});
 
 </script>
 </body>

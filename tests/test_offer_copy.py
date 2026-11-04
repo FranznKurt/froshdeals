@@ -41,6 +41,99 @@ class OfferCopyTests(unittest.TestCase):
         self.page = self.context.new_page()
         self.page.goto(f'http://127.0.0.1:{self.server.server_port}/', wait_until='load')
 
+    def test_free_toggle_exposes_state_for_mouse_enter_and_space(self):
+        for width, height in ((1440, 900), (390, 844)):
+            with self.subTest(width=width):
+                self.page.set_viewport_size({'width': width, 'height': height})
+                button = self.page.locator('#freeToggleBtn')
+                grid = self.page.locator('#freeGrid')
+                self.assertEqual(button.get_attribute('aria-controls'), 'freeGrid')
+                self.assertEqual(button.get_attribute('aria-expanded'), 'false')
+                self.assertFalse(grid.is_visible())
+                for activation in ('mouse', 'Enter', 'Space'):
+                    for expanded in (True, False):
+                        if activation == 'mouse':
+                            button.click()
+                        else:
+                            button.focus()
+                            self.page.keyboard.press(activation)
+                        self.assertEqual(grid.is_visible(), expanded, activation)
+                        self.assertEqual(button.get_attribute('aria-expanded'), str(expanded).lower())
+                        self.assertEqual(button.get_attribute('aria-controls'), grid.get_attribute('id'))
+                        self.assertTrue(button.evaluate('(el) => el === document.activeElement'))
+
+    def test_outbound_ctas_are_single_semantic_link_tab_stops(self):
+        for width, height in ((1440, 900), (390, 844)):
+            with self.subTest(width=width):
+                self.page.set_viewport_size({'width': width, 'height': height})
+                links = self.page.locator('#grid .card a')
+                self.assertEqual(links.count(), 224)
+                self.assertEqual(links.locator('button, a, input, select, textarea, [tabindex], [role="button"]').count(), 0)
+                self.assertEqual(links.evaluate_all('(els) => els.map(el => el.getAttribute("href"))'),
+                                 self.page.evaluate('DEALS.map(d => d.dealUrl)'))
+                for link in links.all():
+                    self.assertEqual(link.get_attribute('target'), '_blank')
+                    self.assertEqual(link.get_attribute('rel'), 'noopener')
+                    self.assertEqual(link.inner_text(), 'Get This Deal →')
+                    self.assertEqual(link.evaluate('(el) => el.tabIndex'), 0)
+                links.first.focus()
+                self.page.keyboard.press('Tab')
+                self.assertTrue(links.nth(1).evaluate('(el) => el === document.activeElement'))
+                self.page.keyboard.press('Shift+Tab')
+                self.assertTrue(links.first.evaluate('(el) => el === document.activeElement'))
+                for slot in range(6):
+                    self.page.evaluate('(slot) => { getWeekNumber = () => slot; renderDOTW(); }', slot)
+                    feature = self.page.locator('#dotw-link')
+                    self.assertEqual(feature.evaluate('(el) => el.tagName'), 'A')
+                    self.assertEqual(feature.locator('button, a, input, select, textarea, [tabindex], [role="button"]').count(), 0)
+                    self.assertEqual(feature.get_attribute('href'), self.page.evaluate(f'DOTW_DEALS[{slot}].url'))
+                    self.assertEqual(feature.get_attribute('target'), '_blank')
+                    self.assertEqual(feature.get_attribute('rel'), 'noopener')
+                    self.assertEqual(feature.inner_text(), 'Get This Deal →')
+                    feature.focus()
+                    self.page.keyboard.press('Tab')
+                    self.assertFalse(feature.evaluate('(el) => el.contains(document.activeElement)'))
+                    self.page.keyboard.press('Shift+Tab')
+                    self.assertTrue(feature.evaluate('(el) => el === document.activeElement'))
+
+    def test_modal_keyboard_lifecycle_for_every_invoker(self):
+        invokers = self.page.locator('a[onclick^="showModal"]')
+        self.assertEqual(invokers.count(), 6)
+        for width, height in ((1440, 900), (390, 844)):
+            self.page.set_viewport_size({'width': width, 'height': height})
+            for index in range(invokers.count()):
+                with self.subTest(width=width, invoker=index):
+                    trigger = invokers.nth(index)
+                    trigger.focus()
+                    self.page.keyboard.press('Enter')
+                    dialog = self.page.get_by_role('dialog')
+                    self.assertEqual(dialog.count(), 1, 'Open modal must expose dialog semantics')
+                    self.assertEqual(dialog.get_attribute('aria-modal'), 'true')
+                    heading = dialog.get_by_role('heading', level=2)
+                    self.assertTrue(heading.inner_text())
+                    self.assertEqual(dialog.get_attribute('aria-labelledby'), heading.get_attribute('id'))
+                    close = dialog.get_by_role('button', name='Close dialog', exact=True)
+                    self.assertTrue(close.evaluate('(el) => el === document.activeElement'))
+                    for key in ('Tab', 'Tab', 'Shift+Tab', 'Shift+Tab'):
+                        self.page.keyboard.press(key)
+                        self.assertTrue(dialog.evaluate('(el) => el.contains(document.activeElement)'), key)
+                    self.page.keyboard.press('Escape')
+                    self.assertFalse(self.page.locator('#modal-box').is_visible())
+                    self.assertTrue(trigger.evaluate('(el) => el === document.activeElement'))
+                    self.assertEqual(self.page.evaluate('document.body.style.overflow'), '')
+                    # Reopen via the actual invoker, then activate the named close control.
+                    self.page.keyboard.press('Enter')
+                    close.press('Enter')
+                    self.assertFalse(self.page.locator('#modal-box').is_visible())
+                    self.assertTrue(trigger.evaluate('(el) => el === document.activeElement'))
+                    # Pointer close retains the same restoration behavior; content is not the backdrop.
+                    trigger.click()
+                    heading.click()
+                    self.assertTrue(dialog.is_visible())
+                    self.page.locator('#modal-overlay').click(position={'x': 4, 'y': 4})
+                    self.assertFalse(self.page.locator('#modal-box').is_visible())
+                    self.assertTrue(trigger.evaluate('(el) => el === document.activeElement'))
+
     def test_footer_replaces_inactive_newsletter_signup_with_bookmark_guidance(self):
         for width, height in ((1440, 900), (390, 844)):
             with self.subTest(width=width):
