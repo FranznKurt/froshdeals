@@ -47,7 +47,9 @@
         }
 
         seenBrands.add(normalizedBrand);
-        validDeals.push(Object.freeze({ ...deal }));
+        const categoryAliases = { Food: 'Food & Delivery', Fashion: 'Clothing', Phone: 'Tech' };
+        const category = categoryAliases[deal.category] || deal.category;
+        validDeals.push(Object.freeze({ ...deal, category }));
       } catch (error) {
         console.warn("Skipping invalid deal entry.", error);
       }
@@ -81,9 +83,9 @@
   {
     "brand": "Hulu",
     "icon": "📺",
-    "discount": "$1.99/mo",
+    "discount": "$6.49/month bundle",
     "category": "Entertainment",
-    "desc": "Hulu with Ads for just $1.99/month — one of the best streaming deals for students.",
+    "desc": "Student Disney+, Hulu Bundle (With Ads): $6.49/month while enrollment remains verified; then $12.99/month or the current regular price. U.S. residents 18+ at eligible accredited post-secondary institutions; SheerID verification. Direct-billed Disney+ or Hulu purchases only. ESPN subscribers and HBO Max-billed bundles are excluded; existing six-month price-lock plans switch after the lock ends. Check current provider terms.",
     "affiliate": "FlexOffers",
     "commission": "$2–$4 CPA",
     "dealUrl": "https://www.hulu.com/student"
@@ -111,12 +113,12 @@
   {
     "brand": "Apple",
     "icon": "🍎",
-    "discount": "10-20% off + free AirPods",
+    "discount": "Education pricing",
     "category": "Tech",
-    "desc": "Save on MacBooks, iPads, AirPods. Seasonal free AirPods with Mac purchase.",
+    "desc": "Apple Education Store pricing on eligible products for students attending or accepted into higher education in the U.S. or Puerto Rico, and parents buying for them. Not every product qualifies; purchase limits and current provider terms apply. No seasonal bonus is guaranteed.",
     "affiliate": "Apple Partners",
     "commission": "2.5% hardware / 400% apps",
-    "dealUrl": "https://www.apple.com/shop/buy-mac/mac-laptop/students"
+    "dealUrl": "https://www.apple.com/us-edu/store"
   },
   {
     "brand": "Nike",
@@ -141,12 +143,12 @@
   {
     "brand": "Adobe Creative Cloud",
     "icon": "🎨",
-    "discount": "60% off",
+    "discount": "US$19.99/mo first year",
     "category": "Software",
-    "desc": "Photoshop, Illustrator, Premiere Pro — the full suite for creators.",
+    "desc": "Creative Cloud Pro for eligible students and teachers: US$19.99/mo for the first year on an annual, billed monthly plan; US$39.99/mo after the first year. Student or teacher eligibility verification required. Check current provider terms and renewal pricing before subscribing.",
     "affiliate": "CJ Affiliate",
     "commission": "85% of 1st month",
-    "dealUrl": "https://www.adobe.com/creativecloud/plans/students.html"
+    "dealUrl": "https://www.adobe.com/creativecloud/buy/students.html"
   },
   {
     "brand": "Microsoft 365",
@@ -241,12 +243,12 @@
   {
     "brand": "Canva",
     "icon": "✨",
-    "discount": "Free Pro",
+    "discount": "Campus access via your school",
     "category": "Software",
-    "desc": "Canva Pro free for students. Premium templates, brand kits, unlimited storage.",
+    "desc": "Free premium student access through Canva Campus depends on your institution's qualifying plan; ask your university IT team. A .edu email alone does not unlock Pro. Canva Education is separately free for eligible K-12 educators and their students.",
     "affiliate": "Impact.com",
     "commission": "$36 per new Pro sub",
-    "dealUrl": "https://www.canva.com/education/"
+    "dealUrl": "https://www.canva.com/for-campus/"
   },
   {
     "brand": "Skillshare",
