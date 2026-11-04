@@ -83,9 +83,9 @@
   {
     "brand": "Hulu",
     "icon": "📺",
-    "discount": "$1.99/mo",
+    "discount": "$6.49/month bundle",
     "category": "Entertainment",
-    "desc": "Hulu with Ads for just $1.99/month — one of the best streaming deals for students.",
+    "desc": "Student Disney+, Hulu Bundle (With Ads): $6.49/month while enrollment remains verified; then $12.99/month or the current regular price. U.S. residents 18+ at eligible accredited post-secondary institutions; SheerID verification. Direct-billed Disney+ or Hulu purchases only. ESPN subscribers and HBO Max-billed bundles are excluded; existing six-month price-lock plans switch after the lock ends. Check current provider terms.",
     "affiliate": "FlexOffers",
     "commission": "$2–$4 CPA",
     "dealUrl": "https://www.hulu.com/student"
@@ -143,12 +143,12 @@
   {
     "brand": "Adobe Creative Cloud",
     "icon": "🎨",
-    "discount": "60% off",
+    "discount": "US$19.99/mo first year",
     "category": "Software",
-    "desc": "Photoshop, Illustrator, Premiere Pro — the full suite for creators.",
+    "desc": "Creative Cloud Pro for eligible students and teachers: US$19.99/mo for the first year on an annual, billed monthly plan; US$39.99/mo after the first year. Student or teacher eligibility verification required. Check current provider terms and renewal pricing before subscribing.",
     "affiliate": "CJ Affiliate",
     "commission": "85% of 1st month",
-    "dealUrl": "https://www.adobe.com/creativecloud/plans/students.html"
+    "dealUrl": "https://www.adobe.com/creativecloud/buy/students.html"
   },
   {
     "brand": "Microsoft 365",

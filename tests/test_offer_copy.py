@@ -138,6 +138,95 @@ class OfferCopyTests(unittest.TestCase):
             self.page.locator('#searchInput').fill('')
             self.page.get_by_role('button', name='All', exact=True).click()
 
+    def test_hulu_grid_and_feature_match_current_student_bundle(self):
+        self.page.locator('#searchInput').fill('Hulu')
+        card = self.page.locator('#grid .card').filter(
+            has=self.page.get_by_text('Hulu', exact=True))
+        self.assertEqual(card.count(), 1)
+        self.assertEqual(card.locator('.discount').inner_text(), '$6.49/month bundle')
+        description = card.locator('.desc').inner_text()
+        for condition in ('Disney+', 'With Ads', '18+', 'SheerID', '$12.99', 'Direct-billed'):
+            self.assertIn(condition, description)
+        self.assertNotIn('$1.99', description)
+        self.page.evaluate('getWeekNumber = () => 4; renderDOTW()')
+        self.assertEqual(self.page.locator('#dotw-discount').inner_text(), '$6.49/month bundle')
+        self.assertEqual(self.page.locator('#dotw-desc').inner_text(), description)
+        self.assertEqual(self.page.locator('#dotw-link').get_attribute('href'), 'https://www.hulu.com/student')
+
+    def test_adobe_grid_and_feature_disclose_introductory_annual_terms(self):
+        self.page.locator('#searchInput').fill('Adobe Creative Cloud')
+        card = self.page.locator('#grid .card')
+        self.assertEqual(card.count(), 1)
+        self.assertEqual(card.locator('.discount').inner_text(), 'US$19.99/mo first year')
+        description = card.locator('.desc').inner_text()
+        for condition in ('Creative Cloud Pro', 'annual, billed monthly', 'US$39.99/mo',
+                          'after the first year', 'students and teachers', 'verification',
+                          'current provider terms'):
+            self.assertIn(condition, description)
+        self.assertNotIn('60%', card.inner_text())
+        url = 'https://www.adobe.com/creativecloud/buy/students.html'
+        self.assertEqual(card.locator('a').get_attribute('href'), url)
+        self.page.evaluate('getWeekNumber = () => 0; renderDOTW()')
+        self.assertEqual(self.page.locator('#dotw-discount').inner_text(), card.locator('.discount').inner_text())
+        self.assertEqual(self.page.locator('#dotw-desc').inner_text(), description)
+        self.assertEqual(self.page.locator('#dotw-link').get_attribute('href'), url)
+        # The separately maintained data file must not retain the obsolete offer.
+        self.page.evaluate((ROOT / 'deals-data.js').read_text())
+        separate = self.page.evaluate('DEALS_DATA.find(d => d.brand === "Adobe Creative Cloud")')
+        self.assertEqual(separate['discount'], card.locator('.discount').inner_text())
+        self.assertEqual(separate['desc'], description)
+        self.assertEqual(separate['dealUrl'], url)
+        # Static fallback must not advertise the old price or broken URL either.
+        fallback = (ROOT / 'index.html').read_text().split('<!-- DEAL OF THE WEEK -->')[1].split('</section>')[0]
+        self.assertNotIn('60%', fallback)
+        self.assertIn(url, fallback)
+        self.assertIn('US$39.99/mo', fallback)
+
+    def test_nordvpn_grid_and_feature_share_qualified_student_offer(self):
+        self.page.locator('#searchInput').fill('NordVPN')
+        card = self.page.locator('#grid .card')
+        self.assertEqual(card.count(), 1)
+        self.assertEqual(card.locator('.discount').inner_text(), 'Extra student discount')
+        description = card.locator('.desc').inner_text()
+        for condition in ('extra 15%', 'eligible 2-year plans', 'eligibility',
+                          'verification', 'renewal', 'current provider terms'):
+            self.assertIn(condition, description)
+        for unsupported in ('78%', '63%', 'free months', '18-26', '#1'):
+            self.assertNotIn(unsupported, description)
+        url = 'https://nordvpn.com/student-employee-discount/'
+        self.assertEqual(card.locator('a').get_attribute('href'), url)
+        self.page.evaluate('getWeekNumber = () => 1; renderDOTW()')
+        self.assertEqual(self.page.locator('#dotw-discount').inner_text(), card.locator('.discount').inner_text())
+        self.assertEqual(self.page.locator('#dotw-desc').inner_text(), description)
+        self.assertEqual(self.page.locator('#dotw-link').get_attribute('href'), url)
+
+    def test_feature_rotation_excludes_unsubstantiated_student_offers(self):
+        brands = self.page.evaluate('DOTW_DEALS.map(d => d.brand)')
+        self.assertNotIn('Xbox Game Pass Ultimate', brands)
+        self.assertNotIn('Chegg Study', brands)
+        self.assertEqual(brands, ['Adobe Creative Cloud', 'NordVPN', 'Spotify Premium',
+                                  'Amazon Prime Student', 'Hulu', 'Apple Education Store'])
+        self.assertEqual(self.page.evaluate('DEALS_DATA.length'), 239)
+        self.assertEqual(self.page.evaluate('DEALS.length'), 224)
+        catalog_brands = self.page.evaluate('DEALS.map(d => d.brand)')
+        self.assertIn('Xbox Game Pass', catalog_brands)
+        self.assertIn('Chegg', catalog_brands)
+        for week in range(len(brands) * 2):
+            self.page.evaluate('(week) => { getWeekNumber = () => week; renderDOTW(); }', week)
+            self.assertEqual(self.page.locator('#dotw-brand').inner_text(), brands[week % len(brands)])
+            self.assertNotIn('student rates through select campus programs',
+                             self.page.locator('#dotw-section').inner_text())
+
+    def test_feature_rotation_does_not_imply_weekly_offer_reverification(self):
+        text = self.page.locator('#dotw-section').inner_text()
+        self.assertIn('Rotates weekly; not a new verification.', text)
+        self.assertNotIn('Refreshes every Saturday', text)
+        self.assertNotIn('DEAL OF THE WEEK', text)
+        self.assertIn('FEATURED ROTATION', text)
+        fallback = (ROOT / 'index.html').read_text().split('<!-- DEAL OF THE WEEK -->')[1].split('</section>')[0]
+        self.assertIn('Rotates weekly; not a new verification.', fallback)
+        self.assertNotIn('Refreshes every Saturday', fallback)
+
     def test_mobile_offer_interactions(self):
         # Characterization of existing behavior, not a new feature.
         self.page.set_viewport_size({'width': 390, 'height': 844})
